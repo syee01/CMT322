@@ -1,0 +1,126 @@
+.law-firm-page {
+      font-family: 'Arial', sans-serif;
+      color: #333;
+}
+    
+.header-section {
+  position: relative;
+  text-align: center;
+  color: white;
+  font-family: Arial, sans-serif;
+  padding-bottom: 30px;
+}
+
+.background-image {
+  width: 100%;
+  opacity: 0.8; 
+}
+
+.header-title {
+  position: absolute;
+  top: 50%; 
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2.5em; 
+  white-space: nowrap; /* Ensures the text stays on a single line */
+}
+
+.background-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 80px;
+  padding-right: 80px;
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+
+.image-container {
+  flex: 0 0 auto; 
+  margin-right: 40px;
+}
+
+.image-container img {
+  display: block; 
+  width: 100%; 
+  max-width: 350px; 
+}
+
+.text-container {
+  flex: 1;
+  text-align: left;
+}
+
+.text-container h1 {
+  margin: 0;
+  font-size: 2em; 
+  color: #000; 
+}
+
+.text-container h2 {
+  margin: 0;
+  font-size: 1em; 
+  color: #A33434; 
+}
+
+.text-container p {
+  font-size: 20px; 
+  text-align: justify;
+}
+
+.iconlaw{
+  display: block;
+}
+
+.iconlaw img{
+  width: 64px;
+  height: 64px;
+}
+
+.lawtype{
+  color: white;
+}
+
+.lawyer h2,
+.services h2{
+  margin-bottom: 30px;
+  font-size: 2em; 
+  text-align: center;
+}
+
+.service-items {
+  display: flex;
+}
+
+.service-item {
+  background-color: #393E68;
+  padding-top: 50px;
+  padding-bottom: 40px;
+  margin: 10px;
+  flex-grow: 1;
+  text-align: center;
+}
+
+.services{
+  padding-bottom: 30px;
+  padding-left: 80px;
+  padding-right: 80px;
+}
+
+.lawtype{
+  font-size: larger;
+}
+
+
+.footer {
+  display: flex;
+  /* justify-content: space-between; */
+  padding: 20px;
+  background-color: #333;
+  color: white;
+}
+
+.footer > div {
+  flex: 1;
+  text-align: center;
+}

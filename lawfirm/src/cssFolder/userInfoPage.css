@@ -1,0 +1,67 @@
+body{
+    background-color: #393E68;
+}
+
+.user-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center; 
+    margin-left: 200px;
+    margin-right: 200px;
+    margin-top: 100px;
+    margin-bottom: 100px;
+    border: 1px solid #ffffff;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    height: 400px;
+}
+
+.user-info-header {
+    color: #000000;
+    font-size: 24px;
+    margin-bottom: 50px;
+}
+
+.user-info-details {
+    padding-left: 50px;
+    text-align:start;
+    color: #555;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.profileImg{
+    display: block; 
+    margin: 0 auto;
+}
+
+.uploadbtn {
+    background-color: #4CAF50; 
+    color: white; 
+    padding: 12px 12px;
+    font-size: 14px; 
+    font-weight: bold; 
+    border: none; 
+    border-radius: 25px; 
+    cursor: pointer; 
+    text-align: center; 
+}
+
+.left{
+    flex:3;
+}
+
+.right{
+    flex: 1 auto;
+}
+
+.filesection{
+    display: flex;
+    justify-content: start; 
+    align-items: center; 
+    padding: 20px 80px; 
+    padding-left: 80px;
+    padding-right: 80px;
+    padding-bottom: 100px;
+}

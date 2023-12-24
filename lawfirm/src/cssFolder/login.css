@@ -1,0 +1,103 @@
+body{
+  z-index: -1;
+}
+
+.input-container {
+  margin-bottom: 15px;
+}
+
+input {
+  width: 100%; /* Account for padding */
+  padding: 10px;
+  padding-right: 50px;
+  margin: 15px 0;
+  border: 1px solid #2a2929;
+  border-radius: 4px;
+}
+
+.links-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.links-container a {
+  text-decoration: none;
+  color: #0056b3; /* A darker shade of blue to match the login button */
+  display: block;
+}
+
+.login-container {
+  display: flex;
+  height: 100vh;
+}
+
+.panel {
+  flex: auto;
+  background-image: url('../images/court.png');
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat;
+  padding-left: 21rem;
+  padding-right: 21rem;
+  padding-top: 10%;
+}
+
+.form{
+  background-color: #fff;
+  padding-left: 80px;
+  padding-right: 80px;
+  padding-bottom: 50px;
+  padding-top: 20px;
+  border-radius: 15px;
+  box-shadow: 0 0 2px 2px  #c2bfbf;
+}
+
+.h2tag{
+  padding-top:15px;
+  font-size:35px;
+  font-family: 'Roboto', sans-serif;
+  color:  #393E68; /* Color of the font */
+  align-items: center; /* This centers the children (text) horizontally in the flex container */
+  justify-content: center; /* This centers the children (text) vertically in the flex container */
+  text-align: center; /* This centers the text inside the children elements */
+  margin: 0;
+  padding-bottom: 0;
+}
+
+.h3tag{
+  font-size:15px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 100;
+  align-items: center; /* This centers the children (text) horizontally in the flex container */
+  justify-content: center; /* This centers the children (text) vertically in the flex container */
+  text-align: center; /* This centers the text inside the children elements */
+  padding-bottom:30px;
+  margin: 5px;
+}
+
+.loginbutton{
+  background-color: #393E68;
+  padding: 10px;
+  padding-right: 20px;
+  padding-left: 20px;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  margin-top: 20px;
+  cursor: pointer;  
+  position: relative;
+  border: 2px solid  #393E68;
+}
+
+.loginbutton:hover {
+  border: 2px solid black;
+  color: black;
+  background-color: #fff;
+}
+
+.error-message {
+  color: red;
+  margin: -2px;
+}
+
+    
