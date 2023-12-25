@@ -1,20 +1,21 @@
-body{
+.background-colour{
     background-color: #393E68;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .user-info-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    text-align: center; 
-    margin-left: 200px;
-    margin-right: 200px;
-    margin-top: 100px;
-    margin-bottom: 100px;
-    border: 1px solid #ffffff;
+    align-items: center; 
     border-radius: 8px;
     background-color: #f9f9f9;
-    height: 400px;
+    width: calc(100% - 400px); 
+    max-width: 600px; 
+    
 }
 
 .user-info-header {

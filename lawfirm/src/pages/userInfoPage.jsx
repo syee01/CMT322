@@ -3,7 +3,7 @@ import { db, storage } from '../firebase';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
 import profile from  '../images/profile.png';
-import style from '../cssFolder/userInfoPage.css'
+import '../cssFolder/userInfoPage.css'
 
 const UserInfoPage = ({ userId }) => {
   const [userInfo, setUserInfo] = useState(null);
@@ -86,7 +86,7 @@ const UserInfoPage = ({ userId }) => {
   }
 
   return (
-    <div className={style.body}>
+    <div className="background-colour">
     <div className="user-info-container">
       <h1 className="user-info-header">Manage Profile</h1>
         {userInfo && (<div className="user-info-details">
