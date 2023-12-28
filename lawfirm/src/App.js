@@ -8,6 +8,9 @@ import Signup from './pages/signup';
 import Login from './pages/login';
 import LawyerPage from './pages/lawyer.jsx';
 import UserInfoPage from './pages/userInfoPage.jsx';
+import SubmitCase from './pages/client/submit_case.jsx'
+import ViewCases from './pages/client/view_cases.jsx'
+import ViewSpecificCase from './pages/client/view_specific_case.jsx'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -40,6 +43,9 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/lawyer" element={<LawyerPage />} />
             {userId && <Route path="/profile" element={<UserInfoPage userId={userId} />} />}
+            <Route path='/SubmitCase' element={<SubmitCase />}/>
+            <Route path="/ViewCases" element={<ViewCases />}/>
+            <Route path="/ViewSpecificCase/:case_id" element={<ViewSpecificCase />}/>
           </Routes>
         </section>
       </div>
