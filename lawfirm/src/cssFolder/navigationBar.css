@@ -1,0 +1,72 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.nav {
+  background-color: #EEEEEE;
+  color: black;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center; /* Align items vertically */
+  padding: 0 1rem; /* Adjust padding as needed */
+}
+
+.site-title {
+  font-size: 15px;
+  display: flex;
+  align-items: center; /* This will vertically center the site title if it's text */
+}
+
+.nav ul {
+  list-style: none;
+  display: flex; /* Aligns the list items horizontally */
+  align-items: center; /* Centers the list items vertically */
+  padding-left: 0; /* Resets padding */
+  margin: 0; /* Resets margin */
+  gap: 1rem;
+  padding-left: 10px;
+}
+
+.nav li {
+  border: 1px solid transparent; 
+  /* padding: 10px; */
+}
+
+.nav a {
+  color: inherit;
+  text-decoration: none;
+  padding: 10px;
+}
+
+.nav li:hover {
+  border: 1px solid black;
+}
+
+.logo-image img {
+  display: block; /* Ensures the image is block level for proper spacing */
+  max-width: 100%; /* Ensures image is responsive */
+  height: auto; /* Maintains aspect ratio */
+}
+
+.nav .profile-icon {
+  display: flex;
+  align-items: center; /* Aligns the profile icon vertically */
+  justify-content: center; /* Centers the profile icon horizontally */
+  margin-left: auto; /* Pushes the profile icon to the right */
+}
+
+.nav .profile-icon img {
+  border-radius: 50%; /* Makes the image round */
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+}
+
+/* Hover effect for profile icon */
+.nav .profile-icon img:hover {
+  opacity: 0.8;
+}
+
