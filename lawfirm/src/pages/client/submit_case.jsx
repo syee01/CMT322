@@ -4,14 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import '../../cssFolder/client/submit_case.css';
 import { storage, db } from '../../firebase';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { doc, setDoc, collection, getDocs, updateDoc } from 'firebase/firestore';
+import { doc, setDoc, collection, getDocs } from 'firebase/firestore';
 
-const SubmitCase = () => {
+const SubmitCase = ({ userId }) => {
     const navigate = useNavigate();
     const collectionNames = ['case_type', 'lawyer']
     const [collectionsData, setCollectionsData] = useState({});
     const [uploadedFiles, setUploadedFiles] = useState([]);
-    const USERID = 'XpO1g9i8hLTjVrOvm41jo5MXIY33';
 
     useEffect(() => {
         const fetchOptions = async () => {
@@ -96,7 +95,7 @@ const SubmitCase = () => {
             await setDoc(newCaseRef, {
                 case_status: "case_status_01",
                 lawyer: formData.lawyer,
-                client: USERID,
+                client: userId,
                 case_type: formData.case_type,
                 case_title: formData.case_title,
                 case_description: formData.case_description,
@@ -124,7 +123,7 @@ const SubmitCase = () => {
             const clientDocRef = collection(db, 'client');
             const newClientRef = doc(clientDocRef);
             await setDoc(newClientRef, {
-                userID: USERID,
+                userID: userId,
                 client_ic: formData.ic,
                 dob: formData.dob,
                 contact: formData.contact,

@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../cssFolder/client/view_cases.css';
-import { storage, db } from '../../firebase';
-import { doc, setDoc, collection, getDocs, updateDoc, query, where } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 
-const ViewCases = () => {
+const ViewCases = ({ userId }) => {
     const caseName = 'case';
     const collectionNames = ['case_type', 'lawyer', 'case_status'];
     const [collectionsData, setCollectionsData] = useState({});
     const clientField = 'client';
-    const USERID = "XpO1g9i8hLTjVrOvm41jo5MXIY33";
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -17,7 +16,7 @@ const ViewCases = () => {
             const data = {};
             const collectionRef = collection(db, caseName);
             try {
-                const initialQuery = query(collectionRef, where(clientField, '==', USERID));
+                const initialQuery = query(collectionRef, where(clientField, '==', userId));
                 const querySnapshot = await getDocs(initialQuery);
                 data[caseName] = querySnapshot.docs.map((doc) => ({
                     id: doc.id,
