@@ -34,7 +34,6 @@ input {
   display: block;
 }
 
-
 .signuppanel {
     width: 100%;
     padding-left: 21rem;
@@ -55,18 +54,18 @@ input {
 .h2tag{
   padding-top:15px;
   font-size:35px;
-  font-family: 'Roboto', sans-serif;
   color:  #393E68; /* Color of the font */
   align-items: center; /* This centers the children (text) horizontally in the flex container */
   justify-content: center; /* This centers the children (text) vertically in the flex container */
   text-align: center; /* This centers the text inside the children elements */
   margin: 0;
+  font-weight: bold;
   padding-bottom: 0;
 }
 
 .h3tag{
   font-size:15px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Average',sans-serif;
   font-weight: 100;
   align-items: center; /* This centers the children (text) horizontally in the flex container */
   justify-content: center; /* This centers the children (text) vertically in the flex container */

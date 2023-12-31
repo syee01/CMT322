@@ -55,8 +55,8 @@ input {
 .h2tag{
   padding-top:15px;
   font-size:35px;
-  font-family: 'Roboto', sans-serif;
   color:  #393E68; /* Color of the font */
+  font-weight: bold;
   align-items: center; /* This centers the children (text) horizontally in the flex container */
   justify-content: center; /* This centers the children (text) vertically in the flex container */
   text-align: center; /* This centers the text inside the children elements */
