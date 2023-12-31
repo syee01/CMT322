@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { getAuth, onAuthStateChanged, signOut} from 'firebase/auth';
 import Home from './pages/homePage';
 import NavbarBefore from './components/navigationBarBefore.js';
 import NavbarAfter from './components/navigationBarAfter.js';
@@ -14,23 +14,36 @@ import ViewSpecificCase from './pages/client/view_specific_case.jsx'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState(null); // Now stateful
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const auth = getAuth();
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsLoggedIn(true);
-        setUserId(user.uid); // Set the user ID from the authenticated user
+        setUserId(user.uid);
       } else {
         setIsLoggedIn(false);
-        setUserId(null); // Reset the user ID when logged out
+        setUserId(null);
       }
     });
 
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, []);
+    const handleWindowClose = async (event) => {
+      if (isLoggedIn) {
+        await signOut(auth);
+      }
+    };
+
+    window.addEventListener('beforeunload', handleWindowClose);
+
+    // Cleanup subscription and event listener on unmount
+    return () => {
+      unsubscribe();
+      window.removeEventListener('beforeunload', handleWindowClose);
+    };
+  }, [isLoggedIn]);
+
   return (
     <Router>
       <div>
