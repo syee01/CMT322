@@ -47,7 +47,7 @@ const UserInfoPage = ({ userId }) => {
 
  const handleImageUpload = async () => {
     if (!selectedFile) {
-      console.error('No file selected');
+      alert('No file selected');
       return;
     }
    const fileType = selectedFile.type;
@@ -57,7 +57,7 @@ const UserInfoPage = ({ userId }) => {
     } else if (fileType === "image/jpeg") {
       fileExtension = '.jpg';
     } else {
-      console.error('File type not allowed. Only PNG and JPG files are accepted.');
+      alert('File type not allowed. Only PNG and JPG files are accepted.');
       return;
     }
 
@@ -67,7 +67,7 @@ const UserInfoPage = ({ userId }) => {
       const imageUrl = await getDownloadURL(imageRef);
       await updateProfileImageInFirestore(imageUrl);
     } catch (error) {
-      console.error('Error uploading image: ', error);
+      alert('Error uploading image: ', error);
     }
   };
 
@@ -91,6 +91,7 @@ const UserInfoPage = ({ userId }) => {
       await deleteExistingImage(); // Delete the existing image
       await updateDoc(userDocRef, { profileImageUrl: imageUrl });
       setUserInfo({ ...userInfo, profileImageUrl: imageUrl }); // Update local state
+      alert('Profile updated Successfully')
       window.location.reload();
     } catch (error) {
       console.error('Error updating profile image URL: ', error);
@@ -127,6 +128,7 @@ const UserInfoPage = ({ userId }) => {
       await updateDoc(userDocRef, { [field === 'name' ? 'fullname' : 'phoneNumber']: updateValue });
       setUserInfo({ ...userInfo, [field === 'name' ? 'fullname' : 'phoneNumber']: updateValue });
       toggleEditMode(field);
+      alert('Profile updated Successfully')
     } catch (error) {
       console.error('Error updating user information: ', error);
     }

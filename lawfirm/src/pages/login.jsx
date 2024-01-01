@@ -48,7 +48,7 @@ const Login = () => {
            <p className='h3tag'>Log into your Account</p>                                      
                <form onSubmit={onLogin}> 
                    <div className="input-container">
-                       <label htmlFor="email-address">Email address</label>
+                       <label htmlFor="email-address">Email Address</label>
                        <input
                            id="email-address"
                            name="email"

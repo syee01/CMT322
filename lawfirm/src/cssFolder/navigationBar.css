@@ -34,6 +34,8 @@ body {
 .nav li {
   border: 1px solid transparent; 
   /* padding: 10px; */
+  font-family: 'Average', serif;
+  font-size:medium;
 }
 
 .nav a {

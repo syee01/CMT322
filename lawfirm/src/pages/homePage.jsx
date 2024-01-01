@@ -65,7 +65,7 @@ const Home = () => {
       <footer className="footer">
         <div className="address">
           <p>ADDRESS</p>
-          <p>12. Jalan Conlay, 50450, Kuala Lumpur, Malaysia</p>
+          <p>12, Jalan Conlay, 50450, Kuala Lumpur, Malaysia</p>
         </div>
         <div className="contact-number">
           <p>CONTACT</p>
@@ -73,7 +73,7 @@ const Home = () => {
         </div>
         <div className="email">
           <p>EMAIL</p>
-          <p>lawfirm@mail.com</p>
+          <p>LAlawfirm@mail.com</p>
         </div>
       </footer>
     </div>

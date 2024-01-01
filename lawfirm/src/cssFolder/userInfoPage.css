@@ -21,8 +21,8 @@
 }
   
   .user-info-header {
-    color: #000000;
-    font-size: 24px;
+    color: white;
+    font-size: 30px;
     margin-bottom: 20px; /* Adjust as needed */
     width:100%;
     text-align: center;
@@ -44,7 +44,7 @@
 }
 
 .profileContainer{
-    margin-left:30px;
+    margin-left:50px;
     align-items: center;
 }
 
@@ -57,12 +57,20 @@
     border: none;
     border-radius: 25px;
     cursor: pointer;
-    margin-left: 10px;
     margin-top: 20px;
+    border: 2px solid #4CAF50;
+    font-family: 'Spectral',serif;
 }
 
+.editbtn:hover {
+    border: 2px solid black;
+    color: black;
+    background-color: #fff;
+  }
+  
+
 .left{
-    flex:3 auto;
+    flex:2 auto;
 }
 
 .right{
@@ -87,12 +95,10 @@
 }
 
 .edit-box{
-    /* padding-top: auto; */
     margin-left: 80px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    /* margin:0; */
 }
 
 .tick {
@@ -130,5 +136,5 @@
 
 .file-input {
     width: 200px;
-    margin-top: 20px;
+    margin:0;
   }

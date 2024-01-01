@@ -10,10 +10,10 @@ export default function Navbar() {
       </div>
       </Link>
       <ul>
-        <li><CustomLink to="/lawyer">LAWYER</CustomLink></li>
-        <li><CustomLink to="/login">LOGIN</CustomLink></li>
-        <li><CustomLink to="/signup">SIGN UP</CustomLink></li>
-        <li><CustomLink to="/about">CONTACT US</CustomLink></li>
+        <li><CustomLink to="/Lawyer">LAWYER</CustomLink></li>
+        <li><CustomLink to="/Login">LOGIN</CustomLink></li>
+        <li><CustomLink to="/SignUp">SIGN UP</CustomLink></li>
+        <li><CustomLink to="/ContactUs">CONTACT US</CustomLink></li>
       </ul>
     </nav>
   )

@@ -23,7 +23,7 @@
   transform: translate(-50%, -50%);
   font-size: 2.5em; 
   white-space: nowrap; /* Ensures the text stays on a single line */
-  font-family: 'Average',sans-serif;
+  font-family: 'Spectral',serif;
 }
 
 .background-section {
@@ -56,20 +56,21 @@
   margin: 0;
   font-size: 2em; 
   color: #000; 
-  font-family: 'Average',sans-serif;
+  font-family: 'Spectral',serif;
+  font-weight: bold;
 }
 
 .text-container h2 {
   margin: 0;
   font-size: 1em; 
   color: #A33434; 
-  font-family: 'Average',sans-serif;
+  font-family: 'Spectral',serif;
 }
 
 .text-container p {
   font-size: 20px; 
   text-align: justify;
-  font-family: 'Average',sans-serif;
+  font-family: 'Spectral',serif;
 }
 
 .iconlaw{
@@ -83,7 +84,7 @@
 
 .lawtype{
   color: white;
-  font-family: 'Average',sans-serif;
+  font-family: 'Spectral',serif;
 }
 
 .lawyer h2,
@@ -91,7 +92,7 @@
   margin-bottom: 30px;
   font-size: 2em; 
   text-align: center;
-  font-family: 'Average',sans-serif;
+  font-family: 'Spectral',serif;
 }
 
 .service-items {
@@ -124,6 +125,8 @@
   padding: 20px;
   background-color: #333;
   color: white;
+  font-family: 'Spectral',serif;
+  font-size: large;
 }
 
 .footer > div {
