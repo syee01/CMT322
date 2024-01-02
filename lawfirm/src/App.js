@@ -11,6 +11,11 @@ import UserInfoPage from './pages/userInfoPage.jsx';
 import SubmitCase from './pages/client/submit_case.jsx'
 import ViewCases from './pages/client/view_cases.jsx'
 import ViewSpecificCase from './pages/client/view_specific_case.jsx'
+import AdminDashboard from './pages/admin/admin_dashboard.jsx';
+import AdminViewAllCases from './pages/admin/admin_view_all_cases.jsx';
+import AdminViewSpecificRejectedCase from './pages/admin/admin_view_specific_rejected_case.jsx';
+import AdminCaseApplication from './pages/admin/admin_case_application.jsx';
+
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -42,6 +47,10 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/home" element={<Home />} />
             <Route path="/lawyer" element={<LawyerPage />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/ViewAllCases" element={<AdminViewAllCases />} />
+            <Route path="/admin/ViewRejectedCases/:case_id" element={<AdminViewSpecificRejectedCase />} />
+            <Route path="/admin/ViewCaseApplication/:case_id" element={<AdminCaseApplication />} />
             {userId && <Route path="/profile" element={<UserInfoPage userId={userId} />} />}
             <Route path='/SubmitCase' element={<SubmitCase />}/>
             <Route path="/ViewCases" element={<ViewCases />}/>
