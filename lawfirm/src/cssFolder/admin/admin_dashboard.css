@@ -1,0 +1,136 @@
+.admin-dashboard {
+  font-family: Average; 
+  padding: 20px;
+}
+
+.page-header {
+    width: 100%; 
+    height: 100%; 
+    font-size: 45px; 
+    font-family: Average; 
+    font-weight: bold; 
+    word-wrap: break-word;
+    color: black;
+}
+
+.dashboard-row {
+  display: flex;
+  justify-content: space-between; /* Adjusts space between children */
+  align-items: flex-start; /* Aligns items at the start of the cross axis */
+  margin-bottom: 20px; 
+}
+.financial-overview {
+  flex: 60%;
+  font-family: Average; 
+  padding-right: 20px; 
+}
+
+.case-assignment {
+  flex: 40%;
+  font-family: Average; 
+}
+
+.case-types-chart {
+  font-family: Average; 
+  flex: 40%;
+  padding-right: 20px; 
+}
+
+.case-status {
+  flex: 60%;
+   font-family: Average; 
+}
+
+.chart-container {
+  height: 300px; 
+  background-color: #ffffff; 
+  font-family: Average; 
+}
+
+.dashboard-row > div:last-child {
+  padding-right: 0;
+}
+
+.case-assignment h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.case-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.table-header{
+  background-color: #393E68;
+  color: white;
+  padding: 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between; /* This will space out your columns evenly */
+}
+
+.table-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Assign a flex-basis or width to the children of .table-row to ensure they take up the appropriate amount of space */
+.table-header > div, .table-row > div {
+  flex: 1; /* Adjust this as needed, maybe flex: 1 for title, and flex: 2 for type and status if they need more space */
+  text-align: left; /* Align text to the left */
+  padding: 0 10px; /* Add some padding on both sides */
+}
+
+.table-body {
+  display: flex;
+  flex-direction: column;
+  max-height: 200px; 
+  padding: 10px;
+  background-color: #E6EAF4;
+  overflow-y: auto; 
+}
+
+.table-body::-webkit-scrollbar {
+  width: 10px; /* width of the entire scrollbar */
+}
+
+.table-body::-webkit-scrollbar-track {
+  background: #f1f1f1; /* color of the tracking area */
+}
+
+.table-body::-webkit-scrollbar-thumb {
+  background-color: #888; /* color of the scroll thumb */
+  border-radius: 4px; /* roundness of the scroll thumb */
+  border: 2px solid #f1f1f1; /* creates padding around scroll thumb */
+}
+
+.table-body::-webkit-scrollbar-thumb:hover {
+  background: #555; /* color of the scroll thumb when hovered or active */
+}
+
+.table-row {
+  border-bottom: 1px solid #e0e0e0; /* Keep this if you want a border between rows */
+  padding: 10px 0; /* Add vertical padding to each row */
+}
+
+/* Remove the border from the last child to clean up the look */
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.view-all-button {
+  background-color: #393E68;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  float: right;
+  font-size: 0.9em;
+}
