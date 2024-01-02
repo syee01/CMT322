@@ -1,0 +1,57 @@
+.admin_view_all_cases-page {
+    font-family: Average; 
+    color: black;
+    background-color: white;
+    padding: 20px;
+}
+
+.page-header {
+    width: 100%; 
+    height: 100%; 
+    font-size: 45px; 
+    font-family: Average; 
+    font-weight: bold; 
+    word-wrap: break-word;
+    color: black;
+}
+
+.admin-section-container {
+    width: 96%; 
+    height: 100%; 
+    /* background-color: rgba(57.15, 61.80, 103.65, 0.20); */
+    background-color: #E6EAF4;
+    border-radius: 40px; 
+    border: 3px #393E68 solid;
+    margin: 2%;
+    padding: 2%;
+}
+
+.cases-section {
+    display: flex;
+}
+
+.cases-header {
+    flex: 1;
+    text-align: center;
+    color: #393E68;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.cases-row-content-title {
+    flex: 1;
+    text-align: center;
+    color: #393E68;
+    font-size: 20px;
+    margin: 1%;
+    cursor: pointer;
+}
+
+.cases-row-content {
+    flex: 1;
+    text-align: center;
+    color: #393E68;
+    font-size: 20px;
+    margin: 1%;
+    
+}
