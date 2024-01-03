@@ -34,7 +34,6 @@ input {
   display: block;
 }
 
-
 .signuppanel {
     width: 100%;
     padding-left: 21rem;
@@ -52,29 +51,6 @@ input {
   box-shadow: 0 0 2px 2px  #c2bfbf;
 }
 
-.h2tag{
-  padding-top:15px;
-  font-size:35px;
-  font-family: 'Roboto', sans-serif;
-  color:  #393E68; /* Color of the font */
-  align-items: center; /* This centers the children (text) horizontally in the flex container */
-  justify-content: center; /* This centers the children (text) vertically in the flex container */
-  text-align: center; /* This centers the text inside the children elements */
-  margin: 0;
-  padding-bottom: 0;
-}
-
-.h3tag{
-  font-size:15px;
-  font-family: 'Open Sans', sans-serif;
-  font-weight: 100;
-  align-items: center; /* This centers the children (text) horizontally in the flex container */
-  justify-content: center; /* This centers the children (text) vertically in the flex container */
-  text-align: center; /* This centers the text inside the children elements */
-  padding-bottom:30px;
-  margin: 5px;
-}
-
 .createbutton{
   background-color: #393E68;
   padding: 10px;
@@ -87,6 +63,7 @@ input {
   cursor: pointer;  
   position: relative;
   border: 2px solid  #393E68;
+  font-family: 'Spectral',serif;
 }
 
 .createbutton:hover {

@@ -70,11 +70,11 @@ export default function Navbar() {
         </div>
       </Link>
       <ul>
-        <li><CustomLink to="/lawyer">LAWYER</CustomLink></li>
+        <li><CustomLink to="/Lawyer">LAWYER</CustomLink></li>
         <li onClick={handleSignOut}><CustomLink to="/">SIGN OUT</CustomLink></li>
-        <li><CustomLink to="/about">CONTACT US</CustomLink></li>
+        <li><CustomLink to="/ContactUs">CONTACT US</CustomLink></li>
         <li className="profile-icon">
-          <Link to="/profile">
+          <Link to="/Profile">
             <img src={imageUrl} alt="Profile" width={50} height={50} />
           </Link>
         </li>

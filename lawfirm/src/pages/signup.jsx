@@ -76,7 +76,7 @@ const Signup = () => {
                                                       
                 <div className = "input-container">
                     <label htmlFor="email-address">
-                        Email address
+                        Email Address
                     </label>
                     <input
                         id="email-address"
