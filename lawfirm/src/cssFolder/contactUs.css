@@ -1,0 +1,40 @@
+
+  .contact-card h1 {
+    color: #393E68;
+    margin-bottom: 80px;
+    font-size: 50px;
+    font-weight: bold;
+  }
+  
+  .contact-card ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .contact-card li {
+    margin-bottom: 30px;
+    line-height: 1.6;
+    font-size: larger;
+  }
+  
+  .contact-card strong {
+    color: #555;
+  }
+
+  .contact-background {
+    display: flex;
+    align-items: center; /* Align vertically */
+    justify-content: flex-start; /* Align horizontally to the left */
+    height: 100vh;
+    background-image: url('../images/contact.png');
+    background-size: 100% auto; /* Adjust the size of the background image */
+    background-position: right center; /* Position the background to the right */
+    background-repeat: no-repeat;
+  }
+  
+  .contact-card {
+    max-width: 400px; /* Adjust the width of the card */
+    margin-left: 8%; /* Add some margin on the left */
+    z-index: 2;
+  }
+  

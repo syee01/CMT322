@@ -55,18 +55,19 @@ input {
 .h2tag{
   padding-top:15px;
   font-size:35px;
-  font-family: 'Roboto', sans-serif;
   color:  #393E68; /* Color of the font */
+  font-weight: bold;
   align-items: center; /* This centers the children (text) horizontally in the flex container */
   justify-content: center; /* This centers the children (text) vertically in the flex container */
   text-align: center; /* This centers the text inside the children elements */
   margin: 0;
   padding-bottom: 0;
+  font-family: 'Spectral',serif;
 }
 
 .h3tag{
   font-size:15px;
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Spectral',serif;
   font-weight: 100;
   align-items: center; /* This centers the children (text) horizontally in the flex container */
   justify-content: center; /* This centers the children (text) vertically in the flex container */
@@ -87,6 +88,7 @@ input {
   cursor: pointer;  
   position: relative;
   border: 2px solid  #393E68;
+  font-family: 'Spectral',serif;
 }
 
 .loginbutton:hover {

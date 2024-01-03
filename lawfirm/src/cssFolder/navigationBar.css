@@ -34,6 +34,8 @@ body {
 .nav li {
   border: 1px solid transparent; 
   /* padding: 10px; */
+  font-family: 'Average', serif;
+  font-size:medium;
 }
 
 .nav a {
@@ -63,6 +65,7 @@ body {
   border-radius: 50%; /* Makes the image round */
   width: 40px; /* Adjust size as needed */
   height: 40px; /* Adjust size as needed */
+  object-fit: cover;
 }
 
 /* Hover effect for profile icon */
