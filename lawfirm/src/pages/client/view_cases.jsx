@@ -84,7 +84,7 @@ const ViewCases = ({ userId }) => {
         <div className='view_cases-page'>
             <div className='header-section-2'>
                 <div className='header-title-2'>
-                    <h1>ALL CASES</h1>
+                    <div>ALL CASES</div>
                 </div>
             </div>
             <div className='section-container'>

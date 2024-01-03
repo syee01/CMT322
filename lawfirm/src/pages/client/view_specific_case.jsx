@@ -130,7 +130,7 @@ const ViewSpecificCase = ({ userId }) => {
         <div className='view_specific_case-page'>
             <div className='header-section-3'>
                 <div className='header-title-3'>
-                    <h1>CASE DETAILS</h1>
+                    <div>CASE DETAILS</div>
                 </div>
             </div>
             <div className='section-container'>

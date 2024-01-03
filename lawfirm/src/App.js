@@ -15,41 +15,48 @@ import UserInfoPage from './pages/userInfoPage.jsx';
 import SubmitCase from './pages/client/submit_case.jsx'
 import ViewCases from './pages/client/view_cases.jsx'
 import ViewSpecificCase from './pages/client/view_specific_case.jsx'
+// import Test from './pages/test'
 
 function App() {
+  const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null); // Now stateful
   const [userRole, setUserRole] = useState(null);
 
   useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setIsLoggedIn(true);
-        setUserId(user.uid); // Set the user ID from the authenticated user
+    const fetchData = async () => {
+      const auth = getAuth();
+      const authUnsubscribe = onAuthStateChanged(auth, (user) => {
+        if (user) {
+          setIsLoggedIn(true);
+          setUserId(user.uid);
+        } else {
+          setIsLoggedIn(false);
+          setUserId(null);
+        }
+      });
+  
+      if (isLoggedIn && userId) {
+        try {
+          const docRef = doc(db, 'users', userId);
+          const docSnap = await getDoc(docRef);
+          setUserRole(docSnap.data().role);
+        } catch (error) {
+          console.error("Error fetching user data: ", error);
+        } finally {
+          setLoading(false);
+        }
       } else {
-        setIsLoggedIn(false);
-        setUserId(null); // Reset the user ID when logged out
+        setLoading(false);
       }
-    });
-
-    // Cleanup subscription on unmount
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const docRef = doc(db, 'users', userId); // Adjust if your collection name is different
-        const docSnap = await getDoc(docRef);
-        setUserRole(docSnap.data().role);
-      } catch (error) {
-        console.error("Error fetching user data: ", error);
-      } 
+  
+      return () => {
+        authUnsubscribe(); // Cleanup subscription on unmount
+      };
     };
-
-    fetchUserData();
-  }, [userRole]);
+  
+    fetchData();
+  }, [isLoggedIn, userId]); // Dependencies: isLoggedIn and userId
 
   function SetNavBarBasedOnRole(){
     if (!isLoggedIn){
@@ -59,6 +66,7 @@ function App() {
     }
     else {
       if (userRole === "client"){
+        console.log("okay")
         return (
           <NavbarAfter />
         )
@@ -74,11 +82,16 @@ function App() {
         )
       }
       else {
+        console.log("error")
         return (
           <NavbarAfter />
         )
       }
     }
+  }
+
+  if (loading) {
+    return <div></div>;
   }
 
   return (

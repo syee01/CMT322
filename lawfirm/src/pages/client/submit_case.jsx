@@ -99,7 +99,8 @@ const SubmitCase = ({ userId }) => {
                 case_type: formData.case_type,
                 case_title: formData.case_title,
                 case_description: formData.case_description,
-                event_date: formData.event_date
+                case_created_date: db.FieldValue.serverTimestamp(),
+                case_finished_date: null
             });
 
             for (const uploadedFile of uploadedFiles) {
@@ -131,6 +132,7 @@ const SubmitCase = ({ userId }) => {
                 email: formData.email
             });
             alert("Case Submitted Successfully");
+            console.log("Case Submitted Successfully");
             navigate("/home")
         } catch (error) {
             console.error('Error submitting data:', error);
@@ -142,7 +144,7 @@ const SubmitCase = ({ userId }) => {
             <div className='client-page'>
             <div className="header-section-1">
                 <div className="header-title-1">
-                    <h1>SUBMIT YOUR CASE</h1>
+                    <div>SUBMIT YOUR CASE</div>
                 </div>
             </div>
             <div>
