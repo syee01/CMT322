@@ -98,12 +98,18 @@ body {
     padding-left: 5%;
 }
 
+.blank {
+    flex: 1;
+    margin: 10px; /*manual*/
+}
+
 select {
-    width: 100%;
-    padding: 8px;
+    flex: 1;
+    /* width: 100%; */
+    padding: 10.5px; /*manual*/
     box-sizing: border-box;
-    position: relative; /* Ensure z-index works */
-    appearance: none; /* Remove default appearance */
+    /* position: relative; */
+    /* appearance: none; */
     border: 1px solid #ccc;
     cursor: pointer;
 }
