@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { db } from '../../firebase';
 import { doc, getDoc, getDocs, query, where, collection } from 'firebase/firestore';
 
-const ViewSpecificCase = () => {
+const ViewSpecificCase = ({ userId }) => {
     const { case_id } = useParams();  // Assuming case_id is from URL params
     const [collectionsData, setCollectionsData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -13,7 +13,6 @@ const ViewSpecificCase = () => {
     const documentName = 'document';
     const dataNames = ['users', 'client'];
     const collectionNames = ['case_type', 'lawyer', 'case_status'];
-    const USERID = 'XpO1g9i8hLTjVrOvm41jo5MXIY33';
 
     useEffect(() => {
         const fetchData = async () => {
@@ -31,12 +30,10 @@ const ViewSpecificCase = () => {
                 } catch (error) {
                     console.log("Error: ", error);
                 }
-                const user_id = data[caseName].data.client;
-                console.log(user_id);
 
                 for (const dataName of dataNames){
                     try {
-                        const dataRef = doc(db, dataName, user_id);
+                        const dataRef = doc(db, dataName, userId);
                         const querySnapshot = await getDoc(dataRef);
                         data[dataName] = {
                             id: querySnapshot.id,
@@ -133,7 +130,7 @@ const ViewSpecificCase = () => {
         <div className='view_specific_case-page'>
             <div className='header-section-3'>
                 <div className='header-title-3'>
-                    <h1>CASE DETAILS</h1>
+                    <div>CASE DETAILS</div>
                 </div>
             </div>
             <div className='section-container'>
