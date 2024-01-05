@@ -1,5 +1,5 @@
 .admin-dashboard {
-  font-family: Average; 
+  font-family: Average;
   padding: 20px;
 }
 
@@ -7,7 +7,7 @@
     width: 100%; 
     height: 100%; 
     font-size: 45px; 
-    font-family: Average; 
+    font-family: Average;
     font-weight: bold; 
     word-wrap: break-word;
     color: black;
@@ -15,40 +15,27 @@
 
 .dashboard-row {
   display: flex;
-  justify-content: space-between; /* Adjusts space between children */
-  align-items: flex-start; /* Aligns items at the start of the cross axis */
-  margin-bottom: 20px; 
+  flex-wrap: wrap; 
 }
+
 .financial-overview {
-  flex: 60%;
+  flex: 50%;
   font-family: Average; 
-  padding-right: 20px; 
+  padding: 10px;
+}
+
+.line-chart-container {
+
+  border-radius: 5px;
+  border: 3px #E6EAF4 solid;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
 }
 
 .case-assignment {
   flex: 40%;
   font-family: Average; 
-}
-
-.case-types-chart {
-  font-family: Average; 
-  flex: 40%;
-  padding-right: 20px; 
-}
-
-.case-status {
-  flex: 60%;
-   font-family: Average; 
-}
-
-.chart-container {
-  height: 300px; 
-  background-color: #ffffff; 
-  font-family: Average; 
-}
-
-.dashboard-row > div:last-child {
-  padding-right: 0;
+  padding: 10px;
 }
 
 .case-assignment h2 {
@@ -68,10 +55,27 @@
   padding: 10px;
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
-  font-weight: bold;
+  font-weight: normal;
   display: flex;
-  justify-content: space-between; /* This will space out your columns evenly */
+  justify-content: space-between; 
 }
+
+.table-header > div, .table-row > div {
+  flex: 1; 
+  text-align: left;
+  padding: 0 10px;
+}
+
+.table-header > div:nth-child(1), .table-row > div:nth-child(1) {
+  flex: 3; 
+}
+
+
+.table-header > div:nth-child(2), .table-row > div:nth-child(2),
+.table-header > div:nth-child(4), .table-row > div:nth-child(4) {
+  flex: 1; 
+}
+
 
 .table-row {
   display: flex;
@@ -80,46 +84,47 @@
   border-bottom: 1px solid #e0e0e0;
 }
 
-/* Assign a flex-basis or width to the children of .table-row to ensure they take up the appropriate amount of space */
+
 .table-header > div, .table-row > div {
-  flex: 1; /* Adjust this as needed, maybe flex: 1 for title, and flex: 2 for type and status if they need more space */
-  text-align: left; /* Align text to the left */
-  padding: 0 10px; /* Add some padding on both sides */
+  flex: 1; 
+  text-align: left; 
+  padding: 0 10px; 
 }
 
 .table-body {
   display: flex;
   flex-direction: column;
-  max-height: 200px; 
+  max-height: 355px; 
   padding: 10px;
   background-color: #E6EAF4;
   overflow-y: auto; 
+  border-radius: 4px;
 }
 
 .table-body::-webkit-scrollbar {
-  width: 10px; /* width of the entire scrollbar */
+  width: 10px; 
 }
 
 .table-body::-webkit-scrollbar-track {
-  background: #f1f1f1; /* color of the tracking area */
+  background: #f1f1f1; 
 }
 
 .table-body::-webkit-scrollbar-thumb {
-  background-color: #888; /* color of the scroll thumb */
-  border-radius: 4px; /* roundness of the scroll thumb */
-  border: 2px solid #f1f1f1; /* creates padding around scroll thumb */
+  background-color: #888; 
+  border-radius: 4px; 
+  border: 2px solid #f1f1f1; 
 }
 
 .table-body::-webkit-scrollbar-thumb:hover {
-  background: #555; /* color of the scroll thumb when hovered or active */
+  background: #555; 
 }
 
 .table-row {
-  border-bottom: 1px solid #e0e0e0; /* Keep this if you want a border between rows */
-  padding: 10px 0; /* Add vertical padding to each row */
+  border-bottom: 1px solid #e0e0e0; 
+  padding: 10px 0; 
 }
 
-/* Remove the border from the last child to clean up the look */
+
 .table-row:last-child {
   border-bottom: none;
 }
@@ -133,4 +138,78 @@
   cursor: pointer;
   float: right;
   font-size: 0.9em;
+  font-family: Average;
+}
+
+.case-types-chart {
+  flex: 0 0 40%; 
+  max-width: 40%; 
+  padding: 10px;
+}
+
+.chart-container {
+  height: 320px; 
+  background-color: #ffffff;
+  font-family: Average;
+  border-radius: 5px;
+  border: 3px #E6EAF4 solid;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.case-status-charts {
+  flex: 0 0 60%;
+  max-width: 60%;
+  font-family: Average;
+  padding: 10px;
+}
+
+.pie-charts-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 5px;
+  border: 3px #E6EAF4 solid;
+  height: 320px; 
+}
+
+.pie-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  height: 260px; 
+  width: 260px;
+  padding: 10px; 
+}
+
+.pie-chart-container > h3 {
+  margin: 0; 
+  padding: 10px 0; 
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .dashboard-row {
+    flex-direction: column;
+  }
+
+  .case-types-chart, .case-status-charts {
+    /* Allow charts to take full width of the container */
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+
+  .pie-charts-container {
+    flex-direction: column;
+    height: auto; /* Allow variable height for stacked pie charts */
+  }
+
+  .pie-chart-container {
+    /* Full width for each pie chart container on smaller screens */
+    width: 100%;
+    /* Adjust margin-bottom for spacing between stacked charts */
+    margin-bottom: 20px;
+  }
 }

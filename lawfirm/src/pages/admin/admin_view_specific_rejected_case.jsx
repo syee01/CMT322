@@ -5,7 +5,7 @@ import { db } from '../../firebase';
 import { doc, getDoc, getDocs, query, where, collection } from 'firebase/firestore';
 
 const AdminViewSpecificRejectedCase = () => {
-    const { case_id } = useParams();  // Assuming case_id is from URL params
+    const { case_id } = useParams();  
     const [collectionsData, setCollectionsData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -13,8 +13,7 @@ const AdminViewSpecificRejectedCase = () => {
     const documentName = 'document';
     const dataNames = ['users', 'client'];
     const collectionNames = ['case_type', 'lawyer', 'case_status'];
-    const USERID = 'XpO1g9i8hLTjVrOvm41jo5MXIY33';
-
+    
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);

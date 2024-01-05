@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../../cssFolder/admin/admin_case_application.css';
+import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { db } from '../../firebase';
 import { doc, getDoc, getDocs, query, where, collection, updateDoc } from 'firebase/firestore';
@@ -13,10 +14,10 @@ const AdminCaseApplication = () => {
     const documentName = 'document';
     const dataNames = ['users', 'client'];
     const collectionNames = ['case_type', 'lawyer', 'case_status'];
-    const USERID = 'XpO1g9i8hLTjVrOvm41jo5MXIY33';
     const [showModal, setShowModal] = useState(false);
     const [selectedLawyer, setSelectedLawyer] = useState('');
     const [showRejectionConfirm, setShowRejectionConfirm] = useState(false);
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -151,6 +152,7 @@ const AdminCaseApplication = () => {
             });
             alert('The lawyer has been assigned and the case status has been updated to In Progress.');
             setShowModal(false); // close the modal
+            navigate(`/ViewSpecificCase/${case_id}`);
         } catch (error) {
             console.error("Error updating case: ", error);
             alert('There was an error updating the case.');
@@ -174,6 +176,7 @@ const AdminCaseApplication = () => {
             });
             alert('The case has been marked as Rejected.');
             setShowRejectionConfirm(false); // close the modal
+            navigate(`/admin/ViewRejectedCases/${case_id}`);
         } catch (error) {
             console.error("Error updating case status: ", error);
             alert('There was an error updating the status of this case.');
