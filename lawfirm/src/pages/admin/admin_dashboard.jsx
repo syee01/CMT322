@@ -28,16 +28,16 @@ const AdminDashboard = () => {
       label: 'Number of Cases',
       data: [],
       backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)'
+        'rgba(116,164,178, 0.2)',
+        'rgba(246,202,229, 0.2)',
+        'rgba(254,189,89, 0.2)',
+        'rgba(166,166,166, 0.2)'
       ],
       borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)'
+        'rgba(116,164,178, 1)',
+        'rgba(246,202,229, 1)',
+        'rgba(254,189,89, 1)',
+        'rgba(166,166,166, 1)'
       ],
       borderWidth: 1
     }]
@@ -98,9 +98,10 @@ const AdminDashboard = () => {
           const caseType = caseTypes[data.case_type] || 'Unknown';
           const caseStatus = caseStatuses[data.case_status] || 'Unknown';
        
+        if (caseStatus === 'In Progress' || caseStatus === 'Finished') {
           caseTypeCounts[caseType] = (caseTypeCounts[caseType] || 0) + 1;
+        }
 
-          
           return {
             id: doc.id,
             ...data,
@@ -118,16 +119,16 @@ const AdminDashboard = () => {
             label: 'Number of Cases',
             data: Object.values(caseTypeCounts),
             backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)'
+              'rgba(116,164,178, 0.2)',
+              'rgba(246,202,229, 0.2)',
+              'rgba(254,189,89, 0.2)',
+              'rgba(166,166,166, 0.2)'
             ],
             borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)'
+              'rgba(116,164,178, 1)',
+              'rgba(246,202,229, 1)',
+              'rgba(254,189,89, 1)',
+              'rgba(166,166,166, 1)'
             ],
             borderWidth: 1
           }]
