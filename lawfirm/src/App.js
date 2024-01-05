@@ -20,7 +20,7 @@ import AdminDashboard from './pages/admin/admin_dashboard.jsx';
 import AdminViewAllCases from './pages/admin/admin_view_all_cases.jsx';
 import AdminViewSpecificRejectedCase from './pages/admin/admin_view_specific_rejected_case.jsx';
 import AdminCaseApplication from './pages/admin/admin_case_application.jsx';
-
+import AdminViewSpecificCase from './pages/admin/admin_view_specific_case.jsx';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -127,10 +127,11 @@ function App() {
         <section>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/admin" element={<AdminDashboard />} />
-            <Route path="/admin/ViewAllCases" element={<AdminViewAllCases />} />
-            <Route path="/admin/ViewRejectedCases/:case_id" element={<AdminViewSpecificRejectedCase />} />
-            <Route path="/admin/ViewCaseApplication/:case_id" element={<AdminCaseApplication />} />
+            {userId && <Route path="/admin" element={<AdminDashboard userId={userId}/>} />}
+            {userId &&<Route path="/admin/ViewAllCases" element={<AdminViewAllCases userId={userId}/>} />}
+            {userId &&<Route path="/admin/ViewRejectedCases/:case_id" element={<AdminViewSpecificRejectedCase userId={userId} />} />}
+            {userId &&<Route path="/admin/ViewCaseApplication/:case_id" element={<AdminCaseApplication userId={userId}/>} />}
+            {userId &&<Route path="/admin/ViewSpecificCase/:case_id" element={<AdminViewSpecificCase userId={userId}/>} />}
             {userId && <Route path="/profile" element={<UserInfoPage userId={userId} />} />}
             <Route path="/SignUp" element={<Signup />} />
             <Route path="/Login" element={<Login />} />
