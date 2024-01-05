@@ -152,7 +152,7 @@ const AdminCaseApplication = () => {
             });
             alert('The lawyer has been assigned and the case status has been updated to In Progress.');
             setShowModal(false); // close the modal
-            navigate(`/ViewSpecificCase/${case_id}`);
+            navigate(`/admin/ViewSpecificCase/${case_id}`);
         } catch (error) {
             console.error("Error updating case: ", error);
             alert('There was an error updating the case.');

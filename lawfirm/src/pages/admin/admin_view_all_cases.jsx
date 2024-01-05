@@ -91,7 +91,7 @@ const AdminViewAllCases = () => {
             //view report
         }else {
             // in progress
-            navigate(`/ViewSpecificCase/${case_id}`);
+            navigate(`/admin/ViewSpecificCase/${case_id}`);
         }
     }
     
