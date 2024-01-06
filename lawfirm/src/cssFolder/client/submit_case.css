@@ -3,7 +3,7 @@ body {
 }
 
 .client-page {
-    font-family: Arial, sans-serif;
+    font-family: 'Spectral',serif;
     color: black;
     background-color: white;
 }
@@ -18,8 +18,8 @@ body {
     width: 100%; 
     height: 100%; 
     font-size: 45px; 
-    font-family: Average; 
-    font-weight: 400; 
+    font-family: 'Spectral',serif;
+    font-weight: bold; 
     word-wrap: break-word;
     color: black;
     margin-top: 30px;
@@ -44,6 +44,7 @@ body {
     font-weight: 400; 
     word-wrap: break-word;
     margin: 1%;
+    font-weight: bold;
 }
 
 .form-person-container {
