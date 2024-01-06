@@ -27,7 +27,6 @@ const Signup = () => {
             // Use the user's UID as the document ID in Firestore
             const userDocRef = doc(db, 'users', user.uid);
             setDoc(userDocRef, {
-                userID: user.uid,
                 fullname: fullname,
                 email: email,
                 phoneNumber: phoneNumber,
