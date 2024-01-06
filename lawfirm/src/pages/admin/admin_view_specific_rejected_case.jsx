@@ -1,18 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import '../../cssFolder/admin/admin_view_specific_rejected_cases.css';
 import { useParams } from 'react-router-dom';
-import { db } from '../../firebase';
-import { doc, getDoc, getDocs, query, where, collection } from 'firebase/firestore';
+import * as cons from "../constant";
+import * as util from "../utility";
 
 const AdminViewSpecificRejectedCase = () => {
     const { case_id } = useParams();  
     const [collectionsData, setCollectionsData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    const caseName = 'case';
-    const documentName = 'document';
-    const dataNames = ['users', 'client'];
-    const collectionNames = ['case_type', 'lawyer', 'case_status'];
     
     useEffect(() => {
         const fetchData = async () => {
@@ -20,56 +16,16 @@ const AdminViewSpecificRejectedCase = () => {
             setError(null);
             try {
                 const data = {};
-                try {
-                    const caseRef = doc(db, caseName, case_id)
-                    const querySnapshot = await getDoc(caseRef)
-                    data[caseName] = {
-                        id: querySnapshot.id,
-                        data: querySnapshot.data(),
-                    };
-                } catch (error) {
-                    console.log("Error: ", error);
-                }
-                const user_id = data[caseName].data.client;
-                console.log(user_id);
 
-                for (const dataName of dataNames){
-                    try {
-                        const dataRef = doc(db, dataName, user_id);
-                        const querySnapshot = await getDoc(dataRef);
-                        data[dataName] = {
-                            id: querySnapshot.id,
-                            data: querySnapshot.data(),
-                        };
-                    } catch (error) {
-                        console.log('Error: ', error);
-                    }
-                }
-
-                const collectionRef = collection(db, documentName);
-                try {
-                    const initialQuery = query(collectionRef, where('case_id', '==', case_id));
-                    const querySnapshot = await getDocs(initialQuery);
-                    data[documentName] = querySnapshot.docs.map((doc) => ({
-                        id: doc.id,
-                        data: doc.data(),
-                    }));
-                } catch (error) {
-                    console.log("Error: ", error);
-                };
-
-                for (const collectionName of collectionNames) {
-                    const collectionRef = collection(db, collectionName);
-                    try {
-                        const query = await getDocs(collectionRef);
-                        data[collectionName] = query.docs.map((doc) => ({
-                            id: doc.id,
-                            data: doc.data()
-                        }))
-                    } catch (error) {
-                        console.log('Error: ', error);
-                    }
-                };
+                data[cons.caseCollectionName] = await util.getOneCase(case_id);
+                const userId = data[cons.caseCollectionName].data.client;
+                data[cons.usersCollectionName] = await util.getOneUserClient(cons.usersCollectionName, userId);
+                data[cons.clientCollectionName] = await util.getOneUserClient(cons.clientCollectionName, userId);
+                data[cons.documentCollectionName] = await util.getDocumentFromOneCase(case_id);
+                data[cons.lawyerCollectionName] = await util.getLawyerFromUsers();
+                data[cons.case_typeCollectionName] = await util.getCaseTypeStatus(cons.case_typeCollectionName);
+                data[cons.case_statusCollectionName] = await util.getCaseTypeStatus(cons.case_statusCollectionName);
+                
                 setCollectionsData(data);
             } catch (error) {
                 setError(error);
@@ -93,37 +49,6 @@ const AdminViewSpecificRejectedCase = () => {
         return <div>No case data available.</div>;
     }
 
-    // Helper functions (e.g., getCaseTypeName) go here
-    function getCaseTypeName(case_type_id) {
-        const caseTypes = collectionsData['case_type'];
-        const length = caseTypes.length;
-        for (let i=0; i<length; i++){
-            if (caseTypes[i].id === case_type_id){
-                return caseTypes[i].data.case_type_name
-            }
-        }
-    }
-
-    function getLawyerName(lawyer_id) {
-        const lawyerList = collectionsData['lawyer'];
-        const length = lawyerList.length;
-        for (let i=0; i<length; i++){
-            if (lawyerList[i].id === lawyer_id){
-                return lawyerList[i].data.name
-            }
-        }
-    }
-
-    function getCaseStatusName(case_status_id) {
-        const caseStatus = collectionsData['case_status'];
-        const length = caseStatus.length;
-        for (let i=0; i<length; i++){
-            if (caseStatus[i].id === case_status_id){
-                return caseStatus[i].data.case_status_name
-            }
-        }
-    }
-
     function openURL(url){
         window.open(url, '_blank');
     };
@@ -133,7 +58,7 @@ const AdminViewSpecificRejectedCase = () => {
             <div className='page-header'>REJECTED CASE DETAILS</div>
             <div className='section-container'>
                 <div className='form-header'>
-                    {collectionsData['case'].data.case_title}
+                    {collectionsData[cons.caseCollectionName].data.case_title}
                 </div>
 
                 <div>
@@ -148,9 +73,9 @@ const AdminViewSpecificRejectedCase = () => {
                                 <div className='content-label-field'>Contact Number</div>
                             </div>
                             <div className='inner-right-part'>
-                                <div className='content-data-field'>{collectionsData['users'].data.fullname}</div>
-                                <div className='content-data-field'>{collectionsData['client'].data.email}</div>
-                                <div className='content-data-field'>{collectionsData['client'].data.contact}</div>
+                                <div className='content-data-field'>{collectionsData[cons.usersCollectionName].data.fullname}</div>
+                                <div className='content-data-field'>{collectionsData[cons.usersCollectionName].data.email}</div>
+                                <div className='content-data-field'>{collectionsData[cons.usersCollectionName].data.phoneNumber}</div>
                             </div>
                         </div>
                         <div className='divider-right'>
@@ -160,9 +85,9 @@ const AdminViewSpecificRejectedCase = () => {
                                 <div className='content-label-field'>Date of Birth</div>
                             </div>
                             <div className='inner-right-part'>
-                                <div className='content-data-field'>{collectionsData['client'].data.gender}</div>
-                                <div className='content-data-field'>{collectionsData['client'].data.client_ic}</div>
-                                <div className='content-data-field'>{collectionsData['client'].data.dob}</div>
+                                <div className='content-data-field'>{collectionsData[cons.clientCollectionName].data.gender}</div>
+                                <div className='content-data-field'>{collectionsData[cons.clientCollectionName].data.client_ic}</div>
+                                <div className='content-data-field'>{collectionsData[cons.clientCollectionName].data.dob}</div>
                             </div>
                         </div>
                     </div>
@@ -180,21 +105,21 @@ const AdminViewSpecificRejectedCase = () => {
                                 <div className='content-label-field'>Case Status</div>
                             </div>
                             <div className='inner-right-part'>
-                                <div className='content-data-field'>{collectionsData['case'].data.case_title}</div>
-                                <div className='content-data-field'>{getCaseTypeName(collectionsData['case'].data.case_type)}</div>
-                                <div className='content-data-field'>{getCaseStatusName(collectionsData['case'].data.case_status)}</div>
+                                <div className='content-data-field'>{collectionsData[cons.caseCollectionName].data.case_title}</div>
+                                <div className='content-data-field'>{util.getCaseTypeName(collectionsData[cons.case_typeCollectionName], collectionsData[cons.caseCollectionName].data.case_type)}</div>
+                                <div className='content-data-field'>{util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)}</div>
                             </div>
                         </div>
                         <div className='divider-right'>
                             <div className='inner-left-part'>
                                 <div className='content-label-field'>Lawyer</div>
                                 <div className='content-label-field'>Case Price</div>
-                                <div className='content-label-field'>Event Date</div>
+                                <div className='content-label-field'>Submitted Date</div>
                             </div>
                             <div className='inner-right-part'>
-                                <div className='content-data-field'>{getLawyerName(collectionsData['case'].data.lawyer)}</div>
-                                <div className='content-data-field'>{collectionsData['case'].data.lawyer}</div>
-                                <div className='content-data-field'>{collectionsData['case'].data.event_date}</div>
+                                <div className='content-data-field'>{util.getLawyerName(collectionsData[cons.lawyerCollectionName], collectionsData[cons.caseCollectionName].data.lawyer)}</div>
+                                <div className='content-data-field'>{collectionsData[cons.caseCollectionName].data.case_price}</div>
+                                <div className='content-data-field'>{collectionsData[cons.caseCollectionName].data.case_created_date.toDate().toLocaleString()}</div>
                             </div>
                         </div>
                     </div>
@@ -205,7 +130,7 @@ const AdminViewSpecificRejectedCase = () => {
                         Case Description
                     </div>
                     <div className='content-frame'>
-                    {collectionsData['case'].data.case_description}
+                    {collectionsData[cons.caseCollectionName].data.case_description}
                     </div>
                 </div>
 
@@ -214,7 +139,7 @@ const AdminViewSpecificRejectedCase = () => {
                         Related Documents
                     </div>
                     <div className='content-frame'>
-                        {collectionsData['document']?.map((item) => (
+                        {collectionsData[cons.documentCollectionName]?.map((item) => (
                             <li onClick={() => openURL(item.data.url)}>{item.data.document_name}</li>
                         ))}
                     </div>

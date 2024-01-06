@@ -4,42 +4,24 @@ import { useNavigate } from 'react-router-dom';
 import '../../cssFolder/client/submit_case.css';
 import { storage, db } from '../../firebase';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { doc, setDoc, collection, getDocs, serverTimestamp, getDoc  } from 'firebase/firestore';
+import { doc, setDoc, collection, getDocs, serverTimestamp, getDoc, query, where  } from 'firebase/firestore';
+import * as cons from "../constant"
+import * as util from "../utility"
 
 const SubmitCase = ({ userId }) => {
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
-    const collectionNames = ['case_type', 'lawyer']
     const [collectionsData, setCollectionsData] = useState({});
     const [uploadedFiles, setUploadedFiles] = useState([]);
 
     useEffect(() => {
         const fetchOptions = async () => {
             const data = {};
+            data[cons.usersCollectionName] = await util.getOneUserClient(cons.usersCollectionName, userId);
+            data[cons.lawyerCollectionName] = await util.getLawyerFromUsers();
+            data[cons.case_typeCollectionName] = await util.getCaseTypeStatus(cons.case_typeCollectionName);
+            data[cons.case_statusCollectionName] = await util.getCaseTypeStatus(cons.case_statusCollectionName);
 
-            try {
-                const dataRef = doc(db, 'users', userId);
-                const querySnapshot = await getDoc(dataRef);
-                data['users'] = {
-                    id: querySnapshot.id, 
-                    data: querySnapshot.data(),
-                };
-            } catch (error) {
-                console.log('Error: ', error);
-            }
-
-            for (const collectionName of collectionNames) {
-                const collectionRef = collection(db, collectionName);
-                try {
-                    const querySnapshot = await getDocs(collectionRef);
-                    data[collectionName] = querySnapshot.docs.map((doc) => ({
-                        id: doc.id,
-                        data: doc.data()
-                    }))
-                } catch (error) {
-                    console.log('Error: ', error);
-                }
-            };
             setIsLoading(false);
             setCollectionsData(data);
         }
@@ -97,11 +79,6 @@ const SubmitCase = ({ userId }) => {
         });
     };
 
-    const clearData = async () => {
-        setFormData(initialFormData);
-        console.log("clear")
-    }
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -137,9 +114,8 @@ const SubmitCase = ({ userId }) => {
             }
 
             const clientDocRef = collection(db, 'client');
-            const newClientRef = doc(clientDocRef);
+            const newClientRef = doc(clientDocRef, userId);
             await setDoc(newClientRef, {
-                userID: userId,
                 client_ic: formData.ic,
                 dob: formData.dob,
                 gender: formData.gender,
@@ -277,7 +253,7 @@ const SubmitCase = ({ userId }) => {
                                         <option value="Select an option..." disabled selected>Select an option...</option>
                                         {collectionsData['lawyer']?.map((item) => (
                                             <option key={item.id} value={item.id}>
-                                                {item.data.name}
+                                                {item.data.fullname}
                                             </option>
                                         ))}
                                     </select>
@@ -316,7 +292,7 @@ const SubmitCase = ({ userId }) => {
                         </div>
                     </div>
                     <div className='button-section'>
-                        <button className='button' type='button' onClick={clearData}>Clear</button>
+                        {/* <button className='button' type='button' onClick={clearData}>Clear</button> */}
                         <button className='button' type='submit'>Submit</button>
                     </div>
                 </div>
