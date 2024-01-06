@@ -5,6 +5,8 @@ import { Chart as ChartJS, CategoryScale, LinearScale, ArcElement, BarElement,Po
 import '../../cssFolder/admin/admin_dashboard.css'; 
 import { db } from '../../firebase';
 import { collection, getDocs } from 'firebase/firestore';
+import * as cons from "../constant"
+import * as util from "../utility"
 
 ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement, ArcElement, BarElement, Title, Tooltip, Legend);
 
@@ -141,12 +143,13 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     const fetchCasesStatusData = async () => {
+
       // Fetch lawyer names based on IDs
-      const lawyerSnapshot = await getDocs(collection(db, 'lawyer'));
       const lawyerNames = {};
-      lawyerSnapshot.forEach(doc => {
-        lawyerNames[doc.id] = doc.data().name; // Assuming 'name' is the field for the lawyer's name
-      });
+      const lawyerList = await util.getLawyerFromUsers();
+      lawyerList.forEach(lawyer =>{
+        lawyerNames[lawyer.id] = lawyer.data.fullname
+      })
   
       // Assuming `cases` is already populated with the required `lawyer` and `case_status` fields
       const inProgress = cases.filter(c => c.case_status === 'In Progress');
