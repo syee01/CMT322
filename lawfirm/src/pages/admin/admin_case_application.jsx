@@ -227,9 +227,9 @@ const AdminCaseApplication = () => {
                                     className='lawyer-dropdown'
                                 >
                                     <option value="">Select a Lawyer</option>
-                                    {collectionsData[cons.case_statusCollectionName].map((lawyer) => (
+                                    {collectionsData[cons.lawyerCollectionName].map((lawyer) => (
                                         <option key={lawyer.id} value={lawyer.id}>
-                                            {lawyer.data.name}
+                                            {lawyer.data.fullname}
                                         </option>
                                     ))}
                                 </select>
