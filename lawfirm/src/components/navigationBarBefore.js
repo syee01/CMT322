@@ -12,7 +12,7 @@ export default function Navbar() {
       <ul>
         <li><CustomLink to="/Lawyer">LAWYER</CustomLink></li>
         <li><CustomLink to="/Login">LOGIN</CustomLink></li>
-        <li><CustomLink to="/SignUp">SIGN UP</CustomLink></li>
+        {/* <li><CustomLink to="/SignUp">SIGN UP</CustomLink></li> */}
         <li><CustomLink to="/ContactUs">CONTACT US</CustomLink></li>
       </ul>
     </nav>

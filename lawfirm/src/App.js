@@ -21,6 +21,7 @@ import AdminViewAllCases from './pages/admin/admin_view_all_cases.jsx';
 import AdminViewSpecificRejectedCase from './pages/admin/admin_view_specific_rejected_case.jsx';
 import AdminCaseApplication from './pages/admin/admin_case_application.jsx';
 import AdminViewSpecificCase from './pages/admin/admin_view_specific_case.jsx';
+import ForgotPassword from './pages/forgotPassword.jsx';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -138,6 +139,7 @@ function App() {
             <Route path="/Home" element={<Home />} />
             <Route path="/Lawyer" element={<LawyerPage />} />
             {userId && <Route path="/Profile" element={<UserInfoPage userId={userId} />} />}
+            <Route path="/ForgotPassword" element={<ForgotPassword />} />
             <Route path='/ContactUs' element={<ContactUs />}/>
             {userId && <Route path='/SubmitCase' element={<SubmitCase userId={userId} />}/>}
             {userId && <Route path="/ViewCases" element={<ViewCases userId={userId} />}/>}

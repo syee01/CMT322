@@ -62,7 +62,6 @@ input {
   text-align: center; /* This centers the text inside the children elements */
   margin: 0;
   padding-bottom: 0;
-  font-family: 'Spectral',serif;
 }
 
 .h3tag{
@@ -102,4 +101,14 @@ input {
   margin: -2px;
 }
 
-    
+.password-actions {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+}
+
+.forgot {
+  text-decoration: none;
+  margin-left: auto; 
+  color:#0056b3
+}

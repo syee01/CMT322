@@ -1,5 +1,5 @@
 import React from 'react';
-import '../cssFolder/home.css'; // Make sure to create this CSS file
+import '../cssFolder/home.css'; 
 import smallpic from "../images/smallMain.jpg"
 import bigpic from "../images/bigMain.jpg"
 import criminallaw from "../images/criminallaw.png"
