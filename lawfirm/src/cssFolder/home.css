@@ -22,7 +22,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   font-size: 2.5em; 
-  white-space: nowrap; /* Ensures the text stays on a single line */
+  white-space: nowrap; 
   font-family: 'Spectral',serif;
 }
 

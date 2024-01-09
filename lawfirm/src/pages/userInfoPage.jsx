@@ -17,6 +17,7 @@ const UserInfoPage = ({ userId }) => {
   const [editedName, setEditedName] = useState('');
   const [editedContactNumber, setEditedContactNumber] = useState('');
 
+  // check the current user by using the userID store in the database 
   useEffect(() => {
     const fetchUserData = async () => {
       if (!userId) {
@@ -24,9 +25,8 @@ const UserInfoPage = ({ userId }) => {
         setLoading(false);
         return;
       }
-
       try {
-        const docRef = doc(db, 'users', userId); // Adjust if your collection name is different
+        const docRef = doc(db, 'users', userId); 
         const docSnap = await getDoc(docRef);
 
         if (docSnap.exists()) {
@@ -45,11 +45,14 @@ const UserInfoPage = ({ userId }) => {
     fetchUserData();
   }, [userId]);
 
+  // check the image is uploaded by the user 
  const handleImageUpload = async () => {
     if (!selectedFile) {
       alert('No file selected');
       return;
     }
+
+    // check the extension type pf the picture uploaded
    const fileType = selectedFile.type;
     let fileExtension = '';
     if (fileType === "image/png") {
@@ -61,6 +64,7 @@ const UserInfoPage = ({ userId }) => {
       return;
     }
 
+    // upload the picture to the database 
     const imageRef = storageRef(storage, `profileImages/${userId}/profile${fileExtension}`);
     try {
       await uploadBytes(imageRef, selectedFile);
@@ -74,7 +78,7 @@ const UserInfoPage = ({ userId }) => {
   const updateProfileImageInFirestore = async (imageUrl) => {
     const userDocRef = doc(db, 'users', userId);
   
-    // Function to delete existing profile image
+    // Function to delete existing profile image in the database
     const deleteExistingImage = async () => {
       try {
         const existingImageUrl = userInfo.profileImageUrl;
@@ -88,9 +92,11 @@ const UserInfoPage = ({ userId }) => {
     };
   
     try {
-      await deleteExistingImage(); // Delete the existing image
+      // wait until existing image is deleted and uploaded
+      await deleteExistingImage(); 
       await updateDoc(userDocRef, { profileImageUrl: imageUrl });
-      setUserInfo({ ...userInfo, profileImageUrl: imageUrl }); // Update local state
+      // update local state
+      setUserInfo({ ...userInfo, profileImageUrl: imageUrl }); 
       alert('Profile updated Successfully')
       window.location.reload();
     } catch (error) {
@@ -98,6 +104,7 @@ const UserInfoPage = ({ userId }) => {
     }
   };
 
+  // check to edit the name or the contact number
   const toggleEditMode = (field) => {
     setEditMode({ ...editMode, [field]: !editMode[field] });
 
@@ -108,10 +115,12 @@ const UserInfoPage = ({ userId }) => {
     }
   };
 
+  // toggle visibility of file input
   const handleEditClick = () => {
-    setShowFileInput(!showFileInput); // Toggle visibility of file input
+    setShowFileInput(!showFileInput); 
   };
 
+  // if cancel to edit the information
   const cancelEdit = (field) => {
     setEditMode({ ...editMode, [field]: false });
   };
@@ -119,7 +128,8 @@ const UserInfoPage = ({ userId }) => {
   const handleCancel = () => {
     setShowFileInput(false);
   };
-  
+
+  // update the name edited or the contact number edited in the database
   const handleUpdate = async (field) => {
   const updateValue = field === 'name' ? editedName : editedContactNumber;
   const userDocRef = doc(db, 'users', userId);
@@ -144,7 +154,8 @@ const UserInfoPage = ({ userId }) => {
           )}
 
           <div className='filesection'>
-
+      
+      {/* Only allow the file with png, jpg and jpeg in the user desktop to be uploaded*/}
       {showFileInput ? (
           <div className='filesection'>
             <input type="file" className='file-input'

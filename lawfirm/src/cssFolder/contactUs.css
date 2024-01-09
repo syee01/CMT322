@@ -1,4 +1,3 @@
-
   .contact-card h1 {
     color: #393E68;
     margin-bottom: 80px;
@@ -23,18 +22,18 @@
 
   .contact-background {
     display: flex;
-    align-items: center; /* Align vertically */
-    justify-content: flex-start; /* Align horizontally to the left */
+    align-items: center; 
+    justify-content: flex-start; 
     height: 100vh;
     background-image: url('../images/contact.png');
-    background-size: 100% auto; /* Adjust the size of the background image */
-    background-position: right center; /* Position the background to the right */
+    background-size: 100% auto; 
+    background-position: right center; 
     background-repeat: no-repeat;
   }
   
   .contact-card {
-    max-width: 400px; /* Adjust the width of the card */
-    margin-left: 8%; /* Add some margin on the left */
+    max-width: 400px; 
+    margin-left: 8%; 
     z-index: 2;
   }
   

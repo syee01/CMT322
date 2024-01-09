@@ -16,10 +16,12 @@ const Login = () => {
        setEmailError('');
        setPasswordError('');
 
+       // check the email and paswword input in the database
        signInWithEmailAndPassword(auth, email, password)
        .then(() => {
            // Signed in
-           navigate("/home"); // Redirect the user to the home page
+           // Redirect the user to the home page
+           navigate("/home"); 
        })
        .catch((error) => {
         console.error("Login error:", error.code, error.message);
@@ -42,7 +44,6 @@ const Login = () => {
             case 'auth/invalid-api-key':
                 setEmailError('An error occurred with the app configuration. Please contact support.');
                 break;
-            // Include other cases as needed
             default:
                 setEmailError('Failed to sign in. Please try again.');
                 break;
@@ -67,7 +68,8 @@ const Login = () => {
                            placeholder="Email address"
                            onChange={(e) => {
                                setEmail(e.target.value);
-                               setEmailError(''); // Clear email error when user types
+                               // Clear email error when user types
+                               setEmailError(''); 
                              }}
                        />
                        {emailError && <div className="error-message">{emailError}</div>}
@@ -83,16 +85,18 @@ const Login = () => {
                       placeholder="Password"
                       onChange={(e) => {
                           setPassword(e.target.value);
-                          setPasswordError(''); // Clear password error when user types
+                          // Clear password error when user types
+                          setPasswordError(''); 
                       }}
                   />
+                  {/* Link to forgot password page to reset the password */}
                   <div className="password-actions">
                       {passwordError && <div className="error-message">{passwordError}</div>}
                       <NavLink to="/ForgotPassword" className='forgot'>Forgot password?</NavLink>
                       </div>
                   </div>                
                    <button className='loginbutton' type="submit">Login</button>
-                   {/* Uncomment and update links as needed */}
+                   {/* link to sign up page */}
                    <div className="links-container">
                        <NavLink to="/signup">Sign up for an account</NavLink>
                    </div>

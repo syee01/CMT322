@@ -1,10 +1,11 @@
 import React from 'react';
-import '../cssFolder/contactUs.css'; // Make sure to import the CSS file
+import '../cssFolder/contactUs.css'; 
 
 const ContactUs = () => {
   return (
     <div className="contact-background">   
     <div className="contact-card">
+    {/* Display the information of the company */}
       <h1>Contact Us</h1>
       <ul>
         <li><strong>Email:</strong> <br></br> LAlawfirm@gmail.com</li>

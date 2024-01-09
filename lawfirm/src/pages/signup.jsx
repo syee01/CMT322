@@ -22,17 +22,16 @@ const Signup = () => {
       setErrorMessage('');
       setPassMessage('');
 
+      // use the email and password input to create an accoutn in the database
       await createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
-            // console.log(user);
-            // navigate("/login")
             sendEmailVerification(user)
             .then(() => {
-                // Email verification sent!
+                // Email verification sent and navigate to the home page 
                 setEmailVerificationMessage("Verification email sent. Please check your inbox.");
-                navigate("/Home"); // Or you might want to keep them on the same page until they verify
+                navigate("/Home"); 
             });
          
             // Use the user's UID as the document ID in Firestore
@@ -52,6 +51,7 @@ const Signup = () => {
             });
             
         })
+        // validate the input and display error 
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -75,7 +75,8 @@ const Signup = () => {
     <div className="signuppanel">   
         <div className='form'>   
         <h2 className='h2tag'>Welcome to L.A Law Firm</h2>       
-        <p className='h3tag'>Create your Own Account</p>                                      
+        <p className='h3tag'>Create your Own Account</p>
+        {/* Input the account information  */}
             <form> 
                 <div className="input-container">
                     <label htmlFor="fullname">
@@ -135,8 +136,8 @@ const Signup = () => {
                     onChange={(e) => setPhoneNum(e.target.value)}
                     />
                 </div>
-                
                     <button className='createbutton' onClick={onSubmit}>Confirm</button>
+                    {/* If want to move to login page */}
                     <div className="links-container">
                        <NavLink to="/Login">Login Here</NavLink>
                    </div>

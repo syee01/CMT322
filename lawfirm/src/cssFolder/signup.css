@@ -1,13 +1,13 @@
 .signup-container {
-  margin: 0; /* Remove default margin */
-  padding: 0; /* Remove default padding */
-  height: 120vh; /* Ensure the body takes up the full viewport height */
-  background-image: url('../images/signup.png'); /* Set your image path */
-  background-size: cover; /* Cover the entire viewport */
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Do not repeat the image */
-  background-attachment: fixed; /* Optional: Fix the background image */
-  z-index: -1; /* Ensure the background image is behind other content */
+  margin: 0;
+  padding: 0; 
+  height: 120vh; 
+  background-image: url('../images/signup.png'); 
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+  background-attachment: fixed; 
+  z-index: -1; 
   }
 
 .input-container {
@@ -15,7 +15,7 @@
 }
 
 input {
-  width: 100%; /* Account for padding */
+  width: 100%; 
   padding: 10px;
   padding-right: 50px;
   margin: 15px 0;
@@ -30,7 +30,7 @@ input {
 
 .links-container a {
   text-decoration: none;
-  color: #0056b3; /* A darker shade of blue to match the login button */
+  color: #0056b3;
   display: block;
 }
 

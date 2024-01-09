@@ -1,9 +1,7 @@
-// ForgotPassword.jsx
-
 import React, { useState } from 'react';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../firebase';
-import '../cssFolder/resetPassword.css'; // Make sure the path is correct
+import '../cssFolder/resetPassword.css'; 
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -15,11 +13,13 @@ const ForgotPassword = () => {
     setMessage('');
     setError('');
 
+    // sent reset password email to the user
     sendPasswordResetEmail(auth, email)
       .then(() => {
         setMessage('Password reset email sent. Check your inbox.');
       })
       .catch((error) => {
+        // if the email is not registered
         if (error.code === 'auth/user-not-found') {
           setError('The email is not registered.');
         } else {
@@ -30,12 +30,12 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="login-container"> {/* Use the same container class for styling */}
-      <div className="panel"> {/* Use the same panel class for styling */}
-        <div className='form'> {/* Use the same form class for styling */}
+    <div className="login-container"> 
+      <div className="panel"> 
+        <div className='form'> 
           <h2 className='h2resettag'>Reset Password</h2>
           <form onSubmit={onSubmit}>
-            <div className="input-container"> {/* Use the same input container class for styling */}
+            <div className="input-container"> 
               <label htmlFor="email">Email Address</label>
               <input
                 id="email"
@@ -45,9 +45,10 @@ const ForgotPassword = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-            {message && <p className="message">{message}</p>} {/* Add a class for messages */}
-            {error && <p className="error-message">{error}</p>} {/* Use the same error message class for styling */}
-            <button className='loginbutton' type="submit">Send Reset Link</button> {/* Reuse the login button class */}
+            {message && <p className="message">{message}</p>} 
+            {error && <p className="error-message">{error}</p>} 
+            {/* if the submit button is clicked */}
+            <button className='loginbutton' type="submit">Send Reset Link</button> 
           </form>
         </div>
       </div>
