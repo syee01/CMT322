@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import '../../cssFolder/client/view_specific_case.css';
 import { useParams } from 'react-router-dom';
 import { db } from '../../firebase';
-import { doc, getDoc, getDocs, query, where, collection } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import * as cons from "../constant"
 import * as util from "../utility"
 
@@ -11,6 +11,8 @@ const ViewSpecificCase = ({ userId }) => {
     const [collectionsData, setCollectionsData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [acceptConfirmation, setAcceptConfirmation] = useState(false);
+    const [rejectConfirmation, setRejectConfirmation] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -18,7 +20,6 @@ const ViewSpecificCase = ({ userId }) => {
             setError(null);
             try {
                 const data = {};
-
                 data[cons.caseCollectionName] = await util.getOneCase(case_id);
                 data[cons.usersCollectionName] = await util.getOneUserClient(cons.usersCollectionName, userId);
                 data[cons.clientCollectionName] = await util.getOneUserClient(cons.clientCollectionName, userId);
@@ -52,10 +53,66 @@ const ViewSpecificCase = ({ userId }) => {
 
     console.log(collectionsData)
 
+    function displayWithCaseStatus () {
+        const b = collectionsData[cons.caseCollectionName].data.case_status;
+        if (b == "case_status_05"){
+            return (
+                <div className='buttons-container'>
+                    <button className='reject-button' onClick={() => setRejectConfirmation(true)}>Reject</button>
+                    <button className='accept-button' onClick={() => setAcceptConfirmation(true)}>Accept</button>
+                </div>
+            )
+        }
+        else if (b == "case_status_02"){
+            return (
+                <div>
+                    <div className='rejected-status-container'>
+                        Rejected
+                    </div>
+                </div>
+            )
+        }
+    }
+
+    const updateLawyerForCase = async () => {
+        
+        const inProgressStatusId = collectionsData['case_status'].find(status => status.data.case_status_name === 'In Progress').id;
+    
+        const caseRef = doc(db, cons.caseCollectionName, case_id);
+    
+        try {
+            await updateDoc(caseRef, {
+                case_status: inProgressStatusId
+            });
+            setAcceptConfirmation(false);
+            window.location.reload()
+        } catch (error) {
+            console.error("Error updating case: ", error);
+            alert('There was an error updating the case.');
+        }
+    };
+
+    const confirmRejection = async () => {
+        const rejectedStatusId = collectionsData['case_status'].find(status => status.data.case_status_name === 'Rejected').id;
+
+        const caseRef = doc(db, cons.caseCollectionName, case_id);
+
+        try {
+            await updateDoc(caseRef, {
+                case_status: rejectedStatusId
+            });
+            setRejectConfirmation(false);
+            window.location.reload()
+        } catch (error) {
+            console.error("Error updating case status: ", error);
+            alert('There was an error updating the status of this case.');
+        }
+    };
+
     function openURL(url){
         window.open(url, '_blank');
     };
-    // Main component rendering
+
     return (
         <div className='view_specific_case-page'>
             <div className='header-section-3'>
@@ -173,6 +230,43 @@ const ViewSpecificCase = ({ userId }) => {
                         </div>
                     </div>
                 </div>
+
+                {displayWithCaseStatus()}
+
+                {acceptConfirmation && (
+                    <div className='modal'>
+                        <div className='modal-content'>
+                            <div className='modal-header'>
+                                <span className='close' onClick={() => setAcceptConfirmation(false)}>&times;</span>
+                            </div>
+                            <div className='modal-body'>
+                                <p>
+                                    {util.getLawyerName(collectionsData[cons.lawyerCollectionName], collectionsData[cons.caseCollectionName].data.lawyer)} will be the lawyer in charge of your case.
+                                    </p>
+                            </div>
+                            <div className='modal-footer'>
+                                <button className='ok-button' onClick={updateLawyerForCase}>OK</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {rejectConfirmation && (
+                    <div className='modal'>
+                        <div className='modal-content'>
+                            <div className='modal-header'>
+                                <span className='close' onClick={() => setRejectConfirmation(false)}>&times;</span>
+                            </div>
+                            <div className='modal-body'>
+                                <p>Are you sure you want to reject this case with the lawyer?</p>
+                            </div>
+                            <div className='modal-footer'>
+                                <button className='confirm-button' onClick={confirmRejection}>Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
             </div>
         </div>
     );

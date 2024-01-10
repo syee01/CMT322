@@ -3,7 +3,7 @@ import '../../cssFolder/admin/admin_case_application.css';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { db } from '../../firebase';
-import { doc, getDoc, getDocs, query, where, collection, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc } from 'firebase/firestore';
 import * as cons from "../constant"
 import * as util from "../utility"
 
@@ -68,7 +68,7 @@ const AdminCaseApplication = () => {
         }
     
         // Fetch the ID of the 'In Progress' status
-        const inProgressStatusId = collectionsData['case_status'].find(status => status.data.case_status_name === 'In Progress').id;
+        const inProgressStatusId = collectionsData['case_status'].find(status => status.data.case_status_name === 'Pending Accept').id;
     
         const caseRef = doc(db, cons.caseCollectionName, case_id);
     
@@ -77,7 +77,7 @@ const AdminCaseApplication = () => {
                 lawyer: selectedLawyer, // this now contains the lawyer's ID
                 case_status: inProgressStatusId // setting the case status to 'In Progress'
             });
-            alert('The lawyer has been assigned and the case status has been updated to In Progress.');
+            alert('The lawyer has been assigned and the case status has been updated to Pending Accept.');
             setShowModal(false); // close the modal
             navigate(`/admin/ViewSpecificCase/${case_id}`);
         } catch (error) {

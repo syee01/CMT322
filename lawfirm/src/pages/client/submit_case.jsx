@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import '../../cssFolder/client/submit_case.css';
 import { storage, db } from '../../firebase';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { doc, setDoc, collection, getDocs, serverTimestamp, getDoc, query, where  } from 'firebase/firestore';
+import { doc, setDoc, collection, serverTimestamp } from 'firebase/firestore';
 import * as cons from "../constant"
 import * as util from "../utility"
 
