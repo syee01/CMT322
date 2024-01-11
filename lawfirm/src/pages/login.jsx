@@ -3,6 +3,8 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 import { useNavigate, NavLink } from 'react-router-dom';
 import "../cssFolder/login.css";
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const Login = () => {
    const navigate = useNavigate();
@@ -17,17 +19,29 @@ const Login = () => {
     setPasswordError('');
 
     signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
+    .then(async (userCredential) => {
         // Signed in
         const user = userCredential.user;
 
-        // Check if email is verified
-        if (user.emailVerified) {
-            // Email is verified, redirect the user to the home page
-            navigate("/home"); 
+        // Fetch user role from Firestore
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+            const userRole = userDoc.data().role;
+            // Check if email is verified if user role is client
+            if(userRole==='client' && user.emailVerified){
+                navigate("/home");
+            }
+            // Check the user role, if it is not client
+            else if (userRole!=='client') {
+                navigate("/home"); 
+            } else {
+                // Email is not verified, set an error message
+                setEmailError('Please verify your email first');
+            }
         } else {
-            // Email is not verified, set an error message
-            setEmailError('Please verify your email first');
+            console.error("User document does not exist in Firestore");
         }
     })
     .catch((error) => {

@@ -90,7 +90,7 @@ function App() {
   }, [isLoggedIn, userId]); // Dependencies: isLoggedIn and userId
 
   function SetNavBarBasedOnRole(){
-    if (!isLoggedIn||!isEmailVerified){
+    if (!isLoggedIn||!isEmailVerified &&userRole==='client') {
       return (
         <NavbarBefore />
       )
