@@ -114,7 +114,7 @@ const AdminCaseApplication = () => {
     return (
         <div className='admin_view_specific_rejected_case-page'>
             <div className='page-header'>CASE APPLICATION DETAILS</div>
-            <div className='section-container'>
+            <div className='apply-section-container'>
                 <div className='form-header'>
                     {collectionsData['case'].data.case_title}
                 </div>

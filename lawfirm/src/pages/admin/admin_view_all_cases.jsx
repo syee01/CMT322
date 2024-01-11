@@ -50,14 +50,13 @@ const AdminViewAllCases = () => {
             <div className='admin-section-container'>
                 <div className='cases-section'>
                     <div className='cases-header'>Title</div>
-                    <div className='cases-header'>Type</div>
-                    <div className='cases-header'>Lawyer</div>
-                    <div className='cases-header'>Status</div>
+                    <div className='cases-header-small'>Type</div>
+                    <div className='cases-header-small'>Lawyer</div>
+                    <div className='cases-header-small'>Status</div>
                 </div>
-                <hr className='line' color='black'/>
-                {collectionsData[cons.caseCollectionName]?.map((item) => (
+                {collectionsData[cons.caseCollectionName]?.map((item, index) => (
                     <React.Fragment key={item.id}>
-                    <div className='cases-section'>
+                    <div className={`cases-section-${index % 2 === 0 ? 'even': 'odd'}`}>
                         <div 
                             className='cases-row-content-title' 
                             onClick={() => directToCase(item.id, item.data.case_status)}

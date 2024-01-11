@@ -145,7 +145,7 @@ const SubmitCase = ({ userId }) => {
                 </div>
             </div>
             <div>
-                <div className='section-container'>
+                <div className='client-section-container-2'>
                     <div className='form-header'>
                         Case Application Form
                     </div>
@@ -258,13 +258,6 @@ const SubmitCase = ({ userId }) => {
                                         ))}
                                     </select>
                                     <div className='blank'></div>
-                                    {/* <input 
-                                        className='input-field' 
-                                        type="date"
-                                        name="event_date" 
-                                        onChange={handleChange}
-                                        required
-                                    /> */}
                                 </div>
                             </div>
                         </div>

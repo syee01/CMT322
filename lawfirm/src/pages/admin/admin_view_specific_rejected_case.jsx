@@ -56,7 +56,7 @@ const AdminViewSpecificRejectedCase = () => {
     return (
         <div className='admin_view_specific_rejected_case-page'>
             <div className='page-header'>REJECTED CASE DETAILS</div>
-            <div className='section-container'>
+            <div className='reject-section-container'>
                 <div className='form-header'>
                     {collectionsData[cons.caseCollectionName].data.case_title}
                 </div>
