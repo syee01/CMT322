@@ -33,7 +33,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #afb8d0;
+    background-color: #393E68;
     border-bottom: 3px #393E68 solid;
     min-height: 70px;
     padding-left: 2%;
@@ -63,16 +63,16 @@
 .client-cases-header {
     flex: 1;
     text-align: center;
-    color: #393E68;
-    font-size: 20px;
+    color: white;
+    font-size: 22px;
     font-weight: bold;
 }
 
 .client-cases-header-small {
     flex: 0.5;
     text-align: center;
-    color: #393E68;
-    font-size: 20px;
+    color: white;
+    font-size: 22px;
     font-weight: bold;
 }
 
@@ -90,4 +90,19 @@
     text-align: center;
     color: #393E68;
     font-size: 20px;
+}
+
+.client-no-data-found {
+    text-align: center;
+    padding: 20px;
+    color: #777;  /* Adjust the color as needed */
+    font-size: 18px;
+    font-weight: bold;
+    border: 2px solid #ddd;  /* Add a border for emphasis */
+    border-radius: 4px;
+    background-color: #f9f9f9;  /* Add a background color */
+    min-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

@@ -28,7 +28,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #afb8d0;
+    background-color: #393E68;
     border-bottom: 3px #393E68 solid;
     min-height: 70px;
     padding-left: 2%;
@@ -58,16 +58,16 @@
 .cases-header {
     flex: 1;
     text-align: center;
-    color: #393E68;
-    font-size: 20px;
+    color: white;
+    font-size: 22px;
     font-weight: bold;
 }
 
 .cases-header-small {
     flex: 0.5;
     text-align: center;
-    color: #393E68;
-    font-size: 20px;
+    color: white;
+    font-size: 22px;
     font-weight: bold;
 }
 

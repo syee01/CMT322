@@ -17,7 +17,6 @@ const ViewCases = ({ userId }) => {
             data[cons.lawyerCollectionName] = await util.getLawyerFromUsers();
             data[cons.case_typeCollectionName] = await util.getCaseTypeStatus(cons.case_typeCollectionName);
             data[cons.case_statusCollectionName] = await util.getCaseTypeStatus(cons.case_statusCollectionName);
-
             setCollectionsData(data);
             setIsLoading(false);
         }
@@ -26,6 +25,23 @@ const ViewCases = ({ userId }) => {
     }, []);
 
     console.log("CollectionData: ",collectionsData)
+
+    function checkNumberOfCases() {
+        const numberCases = collectionsData[cons.caseCollectionName].length;
+        if (numberCases == 0) {
+            return (
+                <div className='client-no-data-found'>
+                    No Data Found
+                </div>
+            )
+        }
+        else{
+            return (
+                <div>
+                </div>
+            )
+        }
+    }
 
     function directToCase(case_id) {
         navigate(`/ViewSpecificCase/${case_id}`)
@@ -49,7 +65,9 @@ const ViewCases = ({ userId }) => {
                     <div className='client-cases-header-small'>Lawyer</div>
                     <div className='client-cases-header-small'>Status</div>
                 </div>
-                {/* <hr className='client-line'/> */}
+
+                {checkNumberOfCases()}
+
                 {collectionsData[caseCollectionName]?.map((item, index) => (
                     <React.Fragment key={item.id}>
                         <div className={`client-cases-section-${index % 2 === 0 ? 'even': 'odd'}`}>
@@ -68,6 +86,7 @@ const ViewCases = ({ userId }) => {
                         </div>
                     </React.Fragment>
                 ))}
+                
             </div>
         </div>
     );

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../cssFolder/client/view_specific_case.css';
 import { useParams } from 'react-router-dom';
 import { db } from '../../firebase';
@@ -13,6 +14,7 @@ const ViewSpecificCase = ({ userId }) => {
     const [error, setError] = useState(null);
     const [acceptConfirmation, setAcceptConfirmation] = useState(false);
     const [rejectConfirmation, setRejectConfirmation] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,6 +24,10 @@ const ViewSpecificCase = ({ userId }) => {
                 const data = {};
                 data[cons.caseCollectionName] = await util.getOneCase(case_id);
                 data[cons.usersCollectionName] = await util.getOneUserClient(cons.usersCollectionName, userId);
+                if (data[cons.usersCollectionName].data.role !== "client"){
+                    alert("This pages can only be visited by client. Redirecting to Home Page");
+                    navigate("/home");
+                }
                 data[cons.clientCollectionName] = await util.getOneUserClient(cons.clientCollectionName, userId);
                 data[cons.documentCollectionName] = await util.getDocumentFromOneCase(case_id);
                 data[cons.lawyerCollectionName] = await util.getLawyerFromUsers();
