@@ -36,33 +36,33 @@ const ViewCases = ({ userId }) => {
     }
 
     return (
-        <div className='view_cases-page'>
-            <div className='header-section-2'>
-                <div className='header-title-2'>
+        <div className='client-view_cases-page'>
+            <div className='client-header-section-2'>
+                <div className='client-header-title-2'>
                     <div>ALL CASES</div>
                 </div>
             </div>
-            <div className='section-container'>
-                <div className='cases-section'>
-                    <div className='cases-header'>Title</div>
-                    <div className='cases-header'>Type</div>
-                    <div className='cases-header'>Lawyer</div>
-                    <div className='cases-header'>Status</div>
+            <div className='client-section-container'>
+                <div className='client-cases-section'>
+                    <div className='client-cases-header'>Title</div>
+                    <div className='client-cases-header-small'>Type</div>
+                    <div className='client-cases-header-small'>Lawyer</div>
+                    <div className='client-cases-header-small'>Status</div>
                 </div>
-                <hr className='line' color='black'/>
-                {collectionsData[caseCollectionName]?.map((item) => (
+                {/* <hr className='client-line'/> */}
+                {collectionsData[caseCollectionName]?.map((item, index) => (
                     <React.Fragment key={item.id}>
-                        <div className='cases-section'>
-                            <div className='cases-row-content' onClick={() => directToCase(item.id)}>
+                        <div className={`client-cases-section-${index % 2 === 0 ? 'even': 'odd'}`}>
+                            <div className='client-cases-row-content-title' onClick={() => directToCase(item.id)}>
                                 {item.data.case_title}
                             </div>
-                            <div className='cases-row-content'>
+                            <div className='client-cases-row-content-small'>
                                 {util.getCaseTypeName(collectionsData[cons.case_typeCollectionName], item.data.case_type)}
                             </div> 
-                            <div className='cases-row-content'>
+                            <div className='client-cases-row-content-small'>
                                 {util.getLawyerName(collectionsData[cons.lawyerCollectionName], item.data.lawyer)}
                             </div>
-                            <div className='cases-row-content'>
+                            <div className='client-cases-row-content-small'>
                                 {util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], item.data.case_status)}
                             </div>
                         </div>

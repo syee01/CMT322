@@ -54,19 +54,21 @@ const ViewSpecificCase = ({ userId }) => {
     console.log(collectionsData)
 
     function displayWithCaseStatus () {
-        const b = collectionsData[cons.caseCollectionName].data.case_status;
-        if (b == "case_status_05"){
+        const cur_case_status = collectionsData[cons.caseCollectionName].data.case_status;
+        const pendingAcceptID = collectionsData['case_status'].find(status => status.data.case_status_name === 'Pending Accept').id;
+        const rejectID = collectionsData['case_status'].find(status => status.data.case_status_name === 'Rejected').id;
+        if (cur_case_status == pendingAcceptID){
             return (
-                <div className='buttons-container'>
-                    <button className='reject-button' onClick={() => setRejectConfirmation(true)}>Reject</button>
-                    <button className='accept-button' onClick={() => setAcceptConfirmation(true)}>Accept</button>
+                <div className='client-buttons-container'>
+                    <button className='client-reject-button' onClick={() => setRejectConfirmation(true)}>Reject</button>
+                    <button className='client-accept-button' onClick={() => setAcceptConfirmation(true)}>Accept</button>
                 </div>
             )
         }
-        else if (b == "case_status_02"){
+        else if (cur_case_status == rejectID){
             return (
                 <div>
-                    <div className='rejected-status-container'>
+                    <div className='client-rejected-status-container'>
                         Rejected
                     </div>
                 </div>
@@ -234,34 +236,34 @@ const ViewSpecificCase = ({ userId }) => {
                 {displayWithCaseStatus()}
 
                 {acceptConfirmation && (
-                    <div className='modal'>
-                        <div className='modal-content'>
-                            <div className='modal-header'>
-                                <span className='close' onClick={() => setAcceptConfirmation(false)}>&times;</span>
+                    <div className='client-modal'>
+                        <div className='client-modal-content'>
+                            <div className='client-modal-header'>
+                                <span className='client-close' onClick={() => setAcceptConfirmation(false)}>&times;</span>
                             </div>
-                            <div className='modal-body'>
+                            <div className='client-modal-body'>
                                 <p>
                                     {util.getLawyerName(collectionsData[cons.lawyerCollectionName], collectionsData[cons.caseCollectionName].data.lawyer)} will be the lawyer in charge of your case.
                                     </p>
                             </div>
-                            <div className='modal-footer'>
-                                <button className='ok-button' onClick={updateLawyerForCase}>OK</button>
+                            <div className='client-modal-footer'>
+                                <button className='client-ok-button' onClick={updateLawyerForCase}>OK</button>
                             </div>
                         </div>
                     </div>
                 )}
 
                 {rejectConfirmation && (
-                    <div className='modal'>
-                        <div className='modal-content'>
-                            <div className='modal-header'>
-                                <span className='close' onClick={() => setRejectConfirmation(false)}>&times;</span>
+                    <div className='client-modal'>
+                        <div className='client-modal-content'>
+                            <div className='client-modal-header'>
+                                <span className='client-close' onClick={() => setRejectConfirmation(false)}>&times;</span>
                             </div>
-                            <div className='modal-body'>
+                            <div className='client-modal-body'>
                                 <p>Are you sure you want to reject this case with the lawyer?</p>
                             </div>
-                            <div className='modal-footer'>
-                                <button className='confirm-button' onClick={confirmRejection}>Confirm</button>
+                            <div className='client-modal-footer'>
+                                <button className='client-confirm-button' onClick={confirmRejection}>Confirm</button>
                             </div>
                         </div>
                     </div>

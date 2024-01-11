@@ -147,13 +147,13 @@
     line-height: normal;
 }
 
-.buttons-container {
+.client-buttons-container {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
 
-.reject-button, .accept-button {
+.client-reject-button, .client-accept-button {
     font-family: Average;
     font-size: 20px;
     font-weight: bold;
@@ -166,25 +166,25 @@
     border-radius: 5px; 
 }
 
-.reject-button {
+.client-reject-button {
     background-color: #b8514e;
     color:white;
 }
 
-.reject-button:hover {
+.client-reject-button:hover {
     background-color: #ba0600;
 }
 
-.accept-button {
+.client-accept-button {
     background-color: #74c681;
     color: white;
 }
 
-.accept-button:hover {
+.client-accept-button:hover {
     background-color: #278036;
 }
 
-.rejected-status-container {
+.client-rejected-status-container {
     font-family: Average, sans-serif;
     color: #D8000C; 
     background-color: #FFD2D2; 
@@ -200,7 +200,7 @@
     margin-right: auto; 
 }
 
-.modal {
+.client-modal {
     position: fixed;
     z-index: 2;
     left: 0;
@@ -214,7 +214,7 @@
     justify-content: center;
 }
 
-.modal-content {
+.client-modal-content {
     font-family: Average;
     font-size: 25px;
     font-weight: 400;
@@ -229,22 +229,22 @@
     flex-direction: column;
 }
 
-.modal-header {
+.client-modal-header {
     display: flex;
     justify-content: flex-end;
 }
 
-.modal-body {
+.client-modal-body {
     margin-top: 20px;
 }
 
-.modal-footer {
+.client-modal-footer {
     margin-top: 20px;
     display: flex;
     justify-content: flex-end;
 }
 
-.close {
+.client-close {
     background: none;
     color: #393E68;
     border: none;
@@ -252,7 +252,7 @@
     cursor: pointer;
 }
 
-.ok-button {
+.client-ok-button {
     background-color: #393E68;
     color: white;
     padding: 10px 20px;
@@ -261,11 +261,11 @@
     border-radius: 5px;
 }
 
-.ok-button:hover {
+.client-ok-button:hover {
     background-color: #272b49;
 }
 
-.confirm-button {
+.client-confirm-button {
     background-color: #b8514e;
     color: white;
     padding: 10px 20px;
@@ -275,6 +275,6 @@
     margin-right: 10px;
 }
 
-.confirm-button:hover {
+.client-confirm-button:hover {
     background-color: #ba0600;
 }

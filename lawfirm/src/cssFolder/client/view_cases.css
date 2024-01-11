@@ -1,16 +1,16 @@
-.view_cases-page {
+.client-view_cases-page {
     font-family: Arial, sans-serif;
     color: black;
     background-color: white;
 }
 
-.header-section-2{
+.client-header-section-2{
   position: relative;
   text-align: left;
   padding-left: 2%;
 }
 
-.header-title-2{
+.client-header-title-2{
     width: 100%; 
     height: 100%; 
     font-size: 45px; 
@@ -21,32 +21,75 @@
     margin-top: 30px;
 }
 
-.section-container {
+.client-section-container {
     width: 96%; 
     height: 100%; 
     /* background: rgba(57.15, 61.80, 103.65, 0.20);  */
     background-color: #E6EAF4;
-    border-radius: 40px; 
+    /* border-radius: 40px;  */
     border: 3px #393E68 solid;
     margin: 2%;
-    padding: 2%;
 }
 
-.cases-section {
+.client-cases-section {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #afb8d0;
+    border-bottom: 3px #393E68 solid;
+    min-height: 70px;
+    padding-left: 2%;
 }
 
-.cases-header {
+.client-cases-section-even {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70px;
+    align-items: space-evenly;
+    align-content: center;
+    padding-left: 2%;
+}
+
+.client-cases-section-odd {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #c7cfe4;
+    min-height: 70px;
+    align-items: space-evenly;
+    align-content: center;
+    padding-left: 2%;
+}
+
+.client-cases-header {
     flex: 1;
     text-align: center;
     color: #393E68;
     font-size: 20px;
+    font-weight: bold;
 }
 
-.cases-row-content {
-    flex: 1;
+.client-cases-header-small {
+    flex: 0.5;
     text-align: center;
     color: #393E68;
     font-size: 20px;
-    margin: 1%;
+    font-weight: bold;
+}
+
+.client-cases-row-content-title {
+    flex: 1;
+    text-align: left;
+    color: #393E68;
+    font-size: 20px;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.client-cases-row-content-small {
+    flex: 0.5;
+    text-align: center;
+    color: #393E68;
+    font-size: 20px;
 }
