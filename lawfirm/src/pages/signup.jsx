@@ -15,7 +15,7 @@ const Signup = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const [passMessage, setPassMessage] = useState('');
     const [emailVerificationMessage, setEmailVerificationMessage] = useState('');
- 
+    const [isVerificationEmailSent, setIsVerificationEmailSent] = useState(false);
     const onSubmit = async (e) => {
       e.preventDefault()
 
@@ -31,7 +31,8 @@ const Signup = () => {
             .then(() => {
                 // Email verification sent and navigate to the home page 
                 setEmailVerificationMessage("Verification email sent. Please check your inbox.");
-                navigate("/Home"); 
+                setIsVerificationEmailSent(true);
+                navigate("/Login"); 
             });
          
             // Use the user's UID as the document ID in Firestore
@@ -68,7 +69,17 @@ const Signup = () => {
             }
         });
 
+    };
+
+    if (isVerificationEmailSent) {
+        return (
+            <div className="verification-message">
+                <p>{emailVerificationMessage}</p>
+                <p>Please verify your email and login your account in the login page.</p>
+            </div>
+        );
     }
+
  
   return (
     <div className="signup-container">

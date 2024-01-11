@@ -28,20 +28,24 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null); // Now stateful
   const [userRole, setUserRole] = useState(null);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       const auth = getAuth();
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
         if (user) {
           setIsLoggedIn(true);
           setUserId(user.uid);
+          await user.reload();
+          setIsEmailVerified(user.emailVerified);
         } else {
           setIsLoggedIn(false);
           setUserId(null);
+          setIsEmailVerified(false); // Reset email verified status when logged out
         }
       });
-  
+
       if (isLoggedIn && userId) {
         try {
           const docRef = doc(db, 'users', userId);
@@ -86,7 +90,7 @@ function App() {
   }, [isLoggedIn, userId]); // Dependencies: isLoggedIn and userId
 
   function SetNavBarBasedOnRole(){
-    if (!isLoggedIn){
+    if (!isLoggedIn||!isEmailVerified){
       return (
         <NavbarBefore />
       )

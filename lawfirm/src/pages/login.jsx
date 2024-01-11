@@ -12,25 +12,29 @@ const Login = () => {
    const [passwordError, setPasswordError] = useState('');
 
    const onLogin = (e) => {
-       e.preventDefault();
-       setEmailError('');
-       setPasswordError('');
+    e.preventDefault();
+    setEmailError('');
+    setPasswordError('');
 
-       // check the email and paswword input in the database
-       signInWithEmailAndPassword(auth, email, password)
-       .then(() => {
-           // Signed in
-           // Redirect the user to the home page
-           navigate("/home"); 
-       })
-       .catch((error) => {
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+        // Signed in
+        const user = userCredential.user;
+
+        // Check if email is verified
+        if (user.emailVerified) {
+            // Email is verified, redirect the user to the home page
+            navigate("/home"); 
+        } else {
+            // Email is not verified, set an error message
+            setEmailError('Please verify your email first');
+        }
+    })
+    .catch((error) => {
         console.error("Login error:", error.code, error.message);
-    
-        // Reset previous errors first
         setEmailError('');
         setPasswordError('');
-    
-        // Match the error code and set the state
+
         switch (error.code) {
             case 'auth/wrong-password':
                 setPasswordError('Incorrect password. Please try again.');
@@ -49,7 +53,7 @@ const Login = () => {
                 break;
         }
     });
-   };;
+};
 
    return (
      <div className="login-container">
