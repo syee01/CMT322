@@ -3,7 +3,7 @@ body {
 }
 
 .client-page {
-    font-family: Arial, sans-serif;
+    font-family: 'Spectral',serif;
     color: black;
     background-color: white;
 }
@@ -18,21 +18,22 @@ body {
     width: 100%; 
     height: 100%; 
     font-size: 45px; 
-    font-family: Average; 
-    font-weight: 400; 
+    font-family: 'Spectral',serif;
+    font-weight: bold; 
     word-wrap: break-word;
     color: black;
+    margin-top: 30px;
 }
 
-.section-container {
+.client-section-container-2 {
     width: 96%; 
     height: 100%; 
-    /* background: rgba(57.15, 61.80, 103.65, 0.20);  */
-    background-color: rgba(57.15, 61.80, 103.65, 0.20);
-    border-radius: 40px; 
+    background: #E6EAF4;
+    background-color: #E6EAF4;
     border: 3px #393E68 solid;
     margin: 2%;
     padding: 2%;
+    padding-top: 1%;
 }
 
 .form-header {
@@ -43,6 +44,8 @@ body {
     font-weight: 400; 
     word-wrap: break-word;
     margin: 1%;
+    font-weight: bold;
+    margin-top: 0;
 }
 
 .form-person-container {
@@ -90,19 +93,25 @@ body {
     width: 100%;  
     margin: 0.5%;
     background: white; 
-    border-radius: 40px; 
+    /* border-radius: 40px;  */
     border: 1px #393E68 solid;
     font-size: 16px;
     color: #393E68;
     padding-left: 5%;
 }
 
+.blank {
+    flex: 1;
+    margin: 10px; /*manual*/
+}
+
 select {
-    width: 100%;
-    padding: 8px;
+    flex: 1;
+    /* width: 100%; */
+    padding: 10.5px; /*manual*/
     box-sizing: border-box;
-    position: relative; /* Ensure z-index works */
-    appearance: none; /* Remove default appearance */
+    /* position: relative; */
+    /* appearance: none; */
     border: 1px solid #ccc;
     cursor: pointer;
 }
@@ -120,7 +129,6 @@ textarea {
     width: 100%;  
     margin: 0.5%;
     background: white; 
-    border-radius: 40px; 
     border: 1px #393E68 solid;
     font-size: 16px;
     color: #393E68;
@@ -146,7 +154,6 @@ textarea {
     display: flex;
     flex-direction: column;
     border: 3px dashed #393E68;
-    border-radius: 40px;
     padding: 20px;
     justify-content: center;
     min-height: 200px;

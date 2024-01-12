@@ -1,79 +1,158 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { getAuth, onAuthStateChanged, signOut} from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from './firebase';
 import Home from './pages/homePage';
 import NavbarBefore from './components/navigationBarBefore.js';
 import NavbarAfter from './components/navigationBarAfter.js';
+import NavbarAdmin from './components/navigationBarAdmin.js';
+import NavbarLawyer from './components/navigationBarLawyer.js';
 import Signup from './pages/signup';
 import Login from './pages/login';
 import LawyerPage from './pages/lawyer.jsx';
 import ContactUs from './pages/contactUs.jsx';
 import UserInfoPage from './pages/userInfoPage.jsx';
-import SubmitCase from './pages/client/submit_case.jsx';
-import ViewCases from './pages/client/view_cases.jsx';
-import ViewSpecificCase from './pages/client/view_specific_case.jsx';
-
+import SubmitCase from './pages/client/submit_case.jsx'
+import ViewCases from './pages/client/view_cases.jsx'
+import ViewSpecificCase from './pages/client/view_specific_case.jsx'
+import AdminDashboard from './pages/admin/admin_dashboard.jsx';
+import AdminViewAllCases from './pages/admin/admin_view_all_cases.jsx';
+import AdminViewSpecificRejectedCase from './pages/admin/admin_view_specific_rejected_case.jsx';
+import AdminCaseApplication from './pages/admin/admin_case_application.jsx';
+import AdminViewSpecificCase from './pages/admin/admin_view_specific_case.jsx';
+import ForgotPassword from './pages/forgotPassword.jsx';
 
 function App() {
+  const [loading, setLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState(null);
+  const [userId, setUserId] = useState(null); // Now stateful
+  const [userRole, setUserRole] = useState(null);
+  const [isEmailVerified, setIsEmailVerified] = useState(false);
+  // to be deleted for mohtest@gmail.com 
+  const [userEmail,setUserEmail] = useState(null);
 
   useEffect(() => {
-    const auth = getAuth();
+    const fetchData = async () => {
+      const auth = getAuth();
+      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          setIsLoggedIn(true);
+          setUserId(user.uid);
+          await user.reload();
+          setIsEmailVerified(user.emailVerified);
+        } else {
+          setIsLoggedIn(false);
+          setUserId(null);
+          setIsEmailVerified(false); // Reset email verified status when logged out
+        }
+      });
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setIsLoggedIn(true);
-        setUserId(user.uid);
+      if (isLoggedIn && userId) {
+        try {
+          const docRef = doc(db, 'users', userId);
+          const docSnap = await getDoc(docRef);
+          setUserRole(docSnap.data().role);
+          //  to be deleted for moh test 
+          setUserEmail(doc.docSnap.date().email);
+        } catch (error) {
+          console.error("Error fetching user data: ", error);
+        } finally {
+          setLoading(false);
+        }
       } else {
-        setIsLoggedIn(false);
-        setUserId(null);
+        setLoading(false);
       }
-    });
 
-    const handleVisibilityChange = async () => {
-      if (document.visibilityState === 'hidden') {
-        // Set a flag that the window is expected to close
-        localStorage.setItem('isWindowExpectedToClose', 'true');
+      const handleVisibilityChange = async () => {
+        if (document.visibilityState === 'hidden') {
+          // Set a flag that the window is expected to close
+          localStorage.setItem('isWindowExpectedToClose', 'true');
+        }
+      };
+  
+      const handleWindowClose = async () => {
+        // Check the flag to determine if it was a reload or a close
+        if (localStorage.getItem('isWindowExpectedToClose') === 'true' && isLoggedIn) {
+          await signOut(auth);
+        }
+        // Clear the flag on the unload event
+        localStorage.removeItem('isWindowExpectedToClose');
+      };
+  
+      window.addEventListener('visibilitychange', handleVisibilityChange);
+      window.addEventListener('unload', handleWindowClose);
+  
+      return () => {
+        unsubscribe(); // Cleanup subscription on unmount
+        window.removeEventListener('visibilitychange', handleVisibilityChange);
+        window.removeEventListener('unload', handleWindowClose);
+      };
+    };
+  
+    fetchData();
+  }, [isLoggedIn, userId]); // Dependencies: isLoggedIn and userId
+
+  function SetNavBarBasedOnRole(){
+    //  to be deleted the &&userEmaail ==='mohtest@gmail.com'
+    if (!isLoggedIn||!isEmailVerified && userRole==='client' &&userEmail==='mohtest@gmail.com') {
+      return (
+        <NavbarBefore />
+      )
+    }
+    else {
+      if (userRole === "client"){
+        console.log("okay")
+        return (
+          <NavbarAfter />
+        )
       }
-    };
-
-    const handleWindowClose = async () => {
-      // Check the flag to determine if it was a reload or a close
-      if (localStorage.getItem('isWindowExpectedToClose') === 'true' && isLoggedIn) {
-        await signOut(auth);
+      else if (userRole === 'admin'){
+        return (
+          <NavbarAdmin />
+        )
       }
-      // Clear the flag on the unload event
-      localStorage.removeItem('isWindowExpectedToClose');
-    };
+      else if (userRole === "lawyer"){
+        return (
+          <NavbarLawyer />
+        )
+      }
+      else {
+        console.log("error")
+        return (
+          <NavbarAfter />
+        )
+      }
+    }
+  }
 
-    window.addEventListener('visibilitychange', handleVisibilityChange);
-    window.addEventListener('unload', handleWindowClose);
-
-    // Cleanup subscription and event listener on unmount
-    return () => {
-      unsubscribe();
-      window.removeEventListener('visibilitychange', handleVisibilityChange);
-      window.removeEventListener('unload', handleWindowClose);
-    };
-  }, [isLoggedIn]);
+  if (loading) {
+    return <div></div>;
+  }
 
   return (
     <Router>
       <div>
-        {isLoggedIn ? <NavbarAfter /> : <NavbarBefore />}
+        {SetNavBarBasedOnRole()}
         <section>
           <Routes>
             <Route path="/" element={<Home />} />
+            {userId && <Route path="/admin" element={<AdminDashboard userId={userId}/>} />}
+            {userId &&<Route path="/admin/ViewAllCases" element={<AdminViewAllCases userId={userId}/>} />}
+            {userId &&<Route path="/admin/ViewRejectedCases/:case_id" element={<AdminViewSpecificRejectedCase userId={userId} />} />}
+            {userId &&<Route path="/admin/ViewCaseApplication/:case_id" element={<AdminCaseApplication userId={userId}/>} />}
+            {userId &&<Route path="/admin/ViewSpecificCase/:case_id" element={<AdminViewSpecificCase userId={userId}/>} />}
+            {userId && <Route path="/profile" element={<UserInfoPage userId={userId} />} />}
             <Route path="/SignUp" element={<Signup />} />
             <Route path="/Login" element={<Login />} />
             <Route path="/Home" element={<Home />} />
             <Route path="/Lawyer" element={<LawyerPage />} />
             {userId && <Route path="/Profile" element={<UserInfoPage userId={userId} />} />}
+            <Route path="/ForgotPassword" element={<ForgotPassword />} />
             <Route path='/ContactUs' element={<ContactUs />}/>
-            <Route path='/SubmitCase' element={<SubmitCase />}/>
-            <Route path="/ViewCases" element={<ViewCases />}/>
-            <Route path="/ViewSpecificCase/:case_id" element={<ViewSpecificCase />}/>
+            {userId && <Route path='/SubmitCase' element={<SubmitCase userId={userId} />}/>}
+            {userId && <Route path="/ViewCases" element={<ViewCases userId={userId} />}/>}
+            {userId && <Route path="/ViewSpecificCase/:case_id" element={<ViewSpecificCase userId={userId} />}/>}
           </Routes>
         </section>
       </div>

@@ -1,30 +1,24 @@
-.view_specific_case-page {
-    font-family: Arial, sans-serif;
+.admin_view_specific_rejected_case-page {
+    font-family: Average; 
     color: black;
     background-color: white;
+    padding: 20px;
 }
 
-.header-section-3{
-    position: relative;
-    text-align: left;
-    padding-left: 2%;
-}
-
-.header-title-3{
+.page-header {
     width: 100%; 
     height: 100%; 
     font-size: 45px; 
     font-family: Average; 
-    font-weight: 400; 
+    font-weight: bold; 
     word-wrap: break-word;
     color: black;
-    margin-top: 30px;
 }
 
-.section-container {
+.reject-section-container {
     width: 96%; 
     height: 100%; 
-    background-color: #E6EAF4;
+    background-color: rgba(57.15, 61.80, 103.65, 0.20);
     border: 3px #393E68 solid;
     margin: 2%;
     padding: 2%;
@@ -94,7 +88,7 @@
 .content-frame {
     height: 200px;
     border: 1px solid #000;
-    background: #D9D9D9;
+    background: #E3E5EB;
     padding: 2%;
     color: #393E68;
     text-align: justify;
@@ -145,44 +139,7 @@
     line-height: normal;
 }
 
-.client-buttons-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-.client-reject-button, .client-accept-button {
-    font-family: Average;
-    font-size: 20px;
-    font-weight: bold;
-    text-transform: uppercase;
-    padding: 10px 40px;
-    margin: 0 10px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border-radius: 5px; 
-}
-
-.client-reject-button {
-    background-color: #b8514e;
-    color:white;
-}
-
-.client-reject-button:hover {
-    background-color: #ba0600;
-}
-
-.client-accept-button {
-    background-color: #74c681;
-    color: white;
-}
-
-.client-accept-button:hover {
-    background-color: #278036;
-}
-
-.client-rejected-status-container {
+.rejected-status-container {
     font-family: Average, sans-serif;
     color: #D8000C; 
     background-color: #FFD2D2; 
@@ -196,83 +153,4 @@
     width: fit-content;
     margin-left: auto; 
     margin-right: auto; 
-}
-
-.client-modal {
-    position: fixed;
-    z-index: 2;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.client-modal-content {
-    font-family: Average;
-    font-size: 25px;
-    font-weight: 400;
-    background-color: #E6EAF4;
-    margin: auto;
-    padding: 20px;
-    border: 3px #393E68 solid;
-    width: 50%;
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-}
-
-.client-modal-header {
-    display: flex;
-    justify-content: flex-end;
-}
-
-.client-modal-body {
-    margin-top: 20px;
-}
-
-.client-modal-footer {
-    margin-top: 20px;
-    display: flex;
-    justify-content: flex-end;
-}
-
-.client-close {
-    background: none;
-    color: #393E68;
-    border: none;
-    font-size: 30px;
-    cursor: pointer;
-}
-
-.client-ok-button {
-    background-color: #393E68;
-    color: white;
-    padding: 10px 20px;
-    border: 3px #393E68 solid;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.client-ok-button:hover {
-    background-color: #272b49;
-}
-
-.client-confirm-button {
-    background-color: #b8514e;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-right: 10px;
-}
-
-.client-confirm-button:hover {
-    background-color: #ba0600;
 }

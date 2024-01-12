@@ -7,7 +7,7 @@ body{
 }
 
 input {
-  width: 100%; /* Account for padding */
+  width: 100%; 
   padding: 10px;
   padding-right: 50px;
   margin: 15px 0;
@@ -22,7 +22,7 @@ input {
 
 .links-container a {
   text-decoration: none;
-  color: #0056b3; /* A darker shade of blue to match the login button */
+  color: #0056b3; 
   display: block;
 }
 
@@ -55,23 +55,22 @@ input {
 .h2tag{
   padding-top:15px;
   font-size:35px;
-  color:  #393E68; /* Color of the font */
+  color:  #393E68; 
   font-weight: bold;
-  align-items: center; /* This centers the children (text) horizontally in the flex container */
-  justify-content: center; /* This centers the children (text) vertically in the flex container */
-  text-align: center; /* This centers the text inside the children elements */
+  align-items: center; 
+  justify-content: center; 
+  text-align: center; 
   margin: 0;
   padding-bottom: 0;
-  font-family: 'Spectral',serif;
 }
 
 .h3tag{
   font-size:15px;
   font-family: 'Spectral',serif;
   font-weight: 100;
-  align-items: center; /* This centers the children (text) horizontally in the flex container */
-  justify-content: center; /* This centers the children (text) vertically in the flex container */
-  text-align: center; /* This centers the text inside the children elements */
+  align-items: center; 
+  justify-content: center; 
+  text-align: center; 
   padding-bottom:30px;
   margin: 5px;
 }
@@ -88,7 +87,7 @@ input {
   cursor: pointer;  
   position: relative;
   border: 2px solid  #393E68;
-  font-family: 'Spectral',serif;
+  font-weight: bolder;
 }
 
 .loginbutton:hover {
@@ -102,4 +101,14 @@ input {
   margin: -2px;
 }
 
-    
+.password-actions {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+}
+
+.forgot {
+  text-decoration: none;
+  margin-left: auto; 
+  color:#0056b3
+}

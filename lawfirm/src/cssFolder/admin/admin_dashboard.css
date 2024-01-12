@@ -1,0 +1,215 @@
+.admin-dashboard {
+  font-family: Average;
+  padding: 20px;
+}
+
+.page-header {
+    width: 100%; 
+    height: 100%; 
+    font-size: 45px; 
+    font-family: Average;
+    font-weight: bold; 
+    word-wrap: break-word;
+    color: black;
+}
+
+.dashboard-row {
+  display: flex;
+  flex-wrap: wrap; 
+}
+
+.financial-overview {
+  flex: 50%;
+  font-family: Average; 
+  padding: 10px;
+}
+
+.line-chart-container {
+
+  border-radius: 5px;
+  border: 3px #E6EAF4 solid;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  
+}
+
+.case-assignment {
+  flex: 40%;
+  font-family: Average; 
+  padding: 10px;
+}
+
+.case-assignment h2 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.case-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.table-header{
+  background-color: #393E68;
+  color: white;
+  padding: 10px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  font-weight: normal;
+  display: flex;
+  justify-content: space-between; 
+}
+
+.table-header > div, .table-row > div {
+  flex: 1; 
+  text-align: left;
+  padding: 0 10px;
+}
+
+.table-header > div:nth-child(1), .table-row > div:nth-child(1) {
+  flex: 3; 
+}
+
+
+.table-header > div:nth-child(2), .table-row > div:nth-child(2),
+.table-header > div:nth-child(4), .table-row > div:nth-child(4) {
+  flex: 1; 
+}
+
+
+.table-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+
+.table-header > div, .table-row > div {
+  flex: 1; 
+  text-align: left; 
+  padding: 0 10px; 
+}
+
+.table-body {
+  display: flex;
+  flex-direction: column;
+  max-height: 355px; 
+  padding: 10px;
+  background-color: #E6EAF4;
+  overflow-y: auto; 
+  border-radius: 4px;
+}
+
+.table-body::-webkit-scrollbar {
+  width: 10px; 
+}
+
+.table-body::-webkit-scrollbar-track {
+  background: #f1f1f1; 
+}
+
+.table-body::-webkit-scrollbar-thumb {
+  background-color: #888; 
+  border-radius: 4px; 
+  border: 2px solid #f1f1f1; 
+}
+
+.table-body::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+
+.table-row {
+  border-bottom: 1px solid #e0e0e0; 
+  padding: 10px 0; 
+}
+
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.view-all-button {
+  background-color: #393E68;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  float: right;
+  font-size: 0.9em;
+  font-family: Average;
+}
+
+.case-types-chart {
+  flex: 0 0 40%; 
+  max-width: 40%; 
+  padding: 10px;
+}
+
+.chart-container {
+  height: 320px; 
+  background-color: #ffffff;
+  font-family: Average;
+  border-radius: 5px;
+  border: 3px #E6EAF4 solid;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+.case-status-charts {
+  flex: 0 0 60%;
+  max-width: 60%;
+  font-family: Average;
+  padding: 10px;
+}
+
+.pie-charts-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 5px;
+  border: 3px #E6EAF4 solid;
+  height: 320px; 
+}
+
+.pie-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; 
+  height: 260px; 
+  width: 260px;
+  padding: 10px; 
+}
+
+.pie-chart-container > h3 {
+  margin: 0; 
+  padding: 10px 0; 
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .dashboard-row {
+    flex-direction: column;
+  }
+
+  .case-types-chart, .case-status-charts {
+    /* Allow charts to take full width of the container */
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+
+  .pie-charts-container {
+    flex-direction: column;
+    height: auto; /* Allow variable height for stacked pie charts */
+  }
+
+  .pie-chart-container {
+    /* Full width for each pie chart container on smaller screens */
+    width: 100%;
+    /* Adjust margin-bottom for spacing between stacked charts */
+    margin-bottom: 20px;
+  }
+}

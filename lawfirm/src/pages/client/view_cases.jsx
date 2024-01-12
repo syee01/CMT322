@@ -1,79 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../cssFolder/client/view_cases.css';
-import { storage, db } from '../../firebase';
-import { doc, setDoc, collection, getDocs, updateDoc, query, where } from 'firebase/firestore';
+import * as cons from "../constant"
+import * as util from "../utility"
 
-const ViewCases = () => {
-    const caseName = 'case';
-    const collectionNames = ['case_type', 'lawyer', 'case_status'];
+const ViewCases = ({ userId }) => {
+    const caseCollectionName = 'case';
     const [collectionsData, setCollectionsData] = useState({});
-    const clientField = 'client';
-    const USERID = "XpO1g9i8hLTjVrOvm41jo5MXIY33";
+    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchOptions = async () => {
             const data = {};
-            const collectionRef = collection(db, caseName);
-            try {
-                const initialQuery = query(collectionRef, where(clientField, '==', USERID));
-                const querySnapshot = await getDocs(initialQuery);
-                data[caseName] = querySnapshot.docs.map((doc) => ({
-                    id: doc.id,
-                    data: doc.data(),
-                }));
-            } catch (error) {
-                console.log("Error: ", error);
-            };
-
-            for (const collectionName of collectionNames) {
-                const collectionRef = collection(db, collectionName);
-                try {
-                    const query = await getDocs(collectionRef);
-                    data[collectionName] = query.docs.map((doc) => ({
-                        id: doc.id,
-                        data: doc.data()
-                    }))
-                } catch (error) {
-                    console.log('Error: ', error);
-                }
-            };
-
+            data[cons.caseCollectionName] = await util.getAllCasesUnderOneClient(userId);
+            data[cons.lawyerCollectionName] = await util.getLawyerFromUsers();
+            data[cons.case_typeCollectionName] = await util.getCaseTypeStatus(cons.case_typeCollectionName);
+            data[cons.case_statusCollectionName] = await util.getCaseTypeStatus(cons.case_statusCollectionName);
             setCollectionsData(data);
+            setIsLoading(false);
         }
-        console.log(collectionsData)
         fetchOptions();
 
     }, []);
 
-    function getCaseTypeName(case_type_id) {
-        const caseTypes = collectionsData['case_type'];
-        const length = caseTypes.length;
-        for (let i=0; i<length; i++){
-            if (caseTypes[i].id === case_type_id){
-                return caseTypes[i].data.case_type_name
-            }
-        }
-    }
+    console.log("CollectionData: ",collectionsData)
 
-    function getLawyerName(lawyer_id) {
-        const lawyerList = collectionsData['lawyer'];
-        const length = lawyerList.length;
-        for (let i=0; i<length; i++){
-            if (lawyerList[i].id === lawyer_id){
-                return lawyerList[i].data.name
-            }
+    function checkNumberOfCases() {
+        const numberCases = collectionsData[cons.caseCollectionName].length;
+        if (numberCases == 0) {
+            return (
+                <div className='client-no-data-found'>
+                    No Data Found
+                </div>
+            )
         }
-    }
-
-    function getCaseStatusName(case_status_id) {
-        const caseStatus = collectionsData['case_status'];
-        const length = caseStatus.length;
-        for (let i=0; i<length; i++){
-            if (caseStatus[i].id === case_status_id){
-                return caseStatus[i].data.case_status_name
-            }
+        else{
+            return (
+                <div>
+                </div>
+            )
         }
     }
 
@@ -81,39 +47,46 @@ const ViewCases = () => {
         navigate(`/ViewSpecificCase/${case_id}`)
     }
 
+    if (isLoading) {
+        return <div></div>;
+    }
+
     return (
-        <div className='view_cases-page'>
-            <div className='header-section-2'>
-                <div className='header-title-2'>
-                    <h1>ALL CASES</h1>
+        <div className='client-view_cases-page'>
+            <div className='client-header-section-2'>
+                <div className='client-header-title-2'>
+                    <div>ALL CASES</div>
                 </div>
             </div>
-            <div className='section-container'>
-                <div className='cases-section'>
-                    <div className='cases-header'>Title</div>
-                    <div className='cases-header'>Type</div>
-                    <div className='cases-header'>Lawyer</div>
-                    <div className='cases-header'>Status</div>
+            <div className='client-section-container'>
+                <div className='client-cases-section'>
+                    <div className='client-cases-header'>Title</div>
+                    <div className='client-cases-header-small'>Type</div>
+                    <div className='client-cases-header-small'>Lawyer</div>
+                    <div className='client-cases-header-small'>Status</div>
                 </div>
-                <hr className='line' color='black'/>
-                {collectionsData['case']?.map((item) => (
+
+                {checkNumberOfCases()}
+
+                {collectionsData[caseCollectionName]?.map((item, index) => (
                     <React.Fragment key={item.id}>
-                        <div className='cases-section'>
-                            <div className='cases-row-content' onClick={() => directToCase(item.id)}>
+                        <div className={`client-cases-section-${index % 2 === 0 ? 'even': 'odd'}`}>
+                            <div className='client-cases-row-content-title' onClick={() => directToCase(item.id)}>
                                 {item.data.case_title}
                             </div>
-                            <div className='cases-row-content'>
-                                {getCaseTypeName(item.data.case_type)}
+                            <div className='client-cases-row-content-small'>
+                                {util.getCaseTypeName(collectionsData[cons.case_typeCollectionName], item.data.case_type)}
                             </div> 
-                            <div className='cases-row-content'>
-                                {getLawyerName(item.data.lawyer)}
+                            <div className='client-cases-row-content-small'>
+                                {util.getLawyerName(collectionsData[cons.lawyerCollectionName], item.data.lawyer)}
                             </div>
-                            <div className='cases-row-content'>
-                                {getCaseStatusName(item.data.case_status)}
+                            <div className='client-cases-row-content-small'>
+                                {util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], item.data.case_status)}
                             </div>
                         </div>
                     </React.Fragment>
                 ))}
+                
             </div>
         </div>
     );

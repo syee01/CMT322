@@ -1,27 +1,20 @@
-.view_specific_case-page {
-    font-family: Arial, sans-serif;
+.admin_case_application-page {
+    font-family: Average; 
     color: black;
     background-color: white;
+    padding: 20px;
 }
 
-.header-section-3{
-    position: relative;
-    text-align: left;
-    padding-left: 2%;
-}
-
-.header-title-3{
+.page-header {
     width: 100%; 
     height: 100%; 
     font-size: 45px; 
     font-family: Average; 
-    font-weight: 400; 
+    font-weight: bold; 
     word-wrap: break-word;
     color: black;
-    margin-top: 30px;
 }
-
-.section-container {
+.apply-section-container {
     width: 96%; 
     height: 100%; 
     background-color: #E6EAF4;
@@ -94,7 +87,7 @@
 .content-frame {
     height: 200px;
     border: 1px solid #000;
-    background: #D9D9D9;
+    background: #E3E5EB;
     padding: 2%;
     color: #393E68;
     text-align: justify;
@@ -145,13 +138,13 @@
     line-height: normal;
 }
 
-.client-buttons-container {
+.buttons-container {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
 
-.client-reject-button, .client-accept-button {
+.reject-button, .accept-button {
     font-family: Average;
     font-size: 20px;
     font-weight: bold;
@@ -164,41 +157,25 @@
     border-radius: 5px; 
 }
 
-.client-reject-button {
+.reject-button {
     background-color: #b8514e;
     color:white;
 }
 
-.client-reject-button:hover {
+.reject-button:hover {
     background-color: #ba0600;
 }
 
-.client-accept-button {
+.accept-button {
     background-color: #74c681;
     color: white;
 }
 
-.client-accept-button:hover {
+.accept-button:hover {
     background-color: #278036;
 }
 
-.client-rejected-status-container {
-    font-family: Average, sans-serif;
-    color: #D8000C; 
-    background-color: #FFD2D2; 
-    font-size: 25px;
-    font-weight: bold;
-    text-align: center;
-    padding: 10px;
-    margin-top: 20px; 
-    border: 3px solid #D8000C; 
-    border-radius: 5px; 
-    width: fit-content;
-    margin-left: auto; 
-    margin-right: auto; 
-}
-
-.client-modal {
+.modal {
     position: fixed;
     z-index: 2;
     left: 0;
@@ -212,7 +189,7 @@
     justify-content: center;
 }
 
-.client-modal-content {
+.modal-content {
     font-family: Average;
     font-size: 25px;
     font-weight: 400;
@@ -227,22 +204,22 @@
     flex-direction: column;
 }
 
-.client-modal-header {
+.modal-header {
     display: flex;
     justify-content: flex-end;
 }
 
-.client-modal-body {
+.modal-body {
     margin-top: 20px;
 }
 
-.client-modal-footer {
+.modal-footer {
     margin-top: 20px;
     display: flex;
     justify-content: flex-end;
 }
 
-.client-close {
+.close {
     background: none;
     color: #393E68;
     border: none;
@@ -250,7 +227,19 @@
     cursor: pointer;
 }
 
-.client-ok-button {
+.lawyer-dropdown {
+    font-family: Average;
+    font-size: 25px;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border: 3px #393E68 solid;
+    border-radius: 5px;
+}
+
+.ok-button {
     background-color: #393E68;
     color: white;
     padding: 10px 20px;
@@ -259,11 +248,11 @@
     border-radius: 5px;
 }
 
-.client-ok-button:hover {
+.ok-button:hover {
     background-color: #272b49;
 }
 
-.client-confirm-button {
+.confirm-button {
     background-color: #b8514e;
     color: white;
     padding: 10px 20px;
@@ -273,6 +262,7 @@
     margin-right: 10px;
 }
 
-.client-confirm-button:hover {
+.confirm-button:hover {
     background-color: #ba0600;
 }
+

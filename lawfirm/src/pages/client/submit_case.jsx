@@ -4,37 +4,32 @@ import { useNavigate } from 'react-router-dom';
 import '../../cssFolder/client/submit_case.css';
 import { storage, db } from '../../firebase';
 import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { doc, setDoc, collection, getDocs, updateDoc } from 'firebase/firestore';
+import { doc, setDoc, collection, serverTimestamp } from 'firebase/firestore';
+import * as cons from "../constant"
+import * as util from "../utility"
 
-const SubmitCase = () => {
+const SubmitCase = ({ userId }) => {
+    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
-    const collectionNames = ['case_type', 'lawyer']
     const [collectionsData, setCollectionsData] = useState({});
     const [uploadedFiles, setUploadedFiles] = useState([]);
-    const USERID = 'XpO1g9i8hLTjVrOvm41jo5MXIY33';
 
     useEffect(() => {
         const fetchOptions = async () => {
             const data = {};
+            data[cons.usersCollectionName] = await util.getOneUserClient(cons.usersCollectionName, userId);
+            data[cons.lawyerCollectionName] = await util.getLawyerFromUsers();
+            data[cons.case_typeCollectionName] = await util.getCaseTypeStatus(cons.case_typeCollectionName);
+            data[cons.case_statusCollectionName] = await util.getCaseTypeStatus(cons.case_statusCollectionName);
 
-            for (const collectionName of collectionNames) {
-                const collectionRef = collection(db, collectionName);
-                try {
-                    const query = await getDocs(collectionRef);
-                    data[collectionName] = query.docs.map((doc) => ({
-                        id: doc.id,
-                        data: doc.data()
-                    }))
-                } catch (error) {
-                    console.log('Error: ', error);
-                }
-            };
+            setIsLoading(false);
             setCollectionsData(data);
         }
         
         fetchOptions();
 
     }, []);
+    console.log(collectionsData)
 
     const initialFormData = {
         name: '',
@@ -48,6 +43,8 @@ const SubmitCase = () => {
         lawyer: '',
         event_date: '',
         case_description: '',
+        case_created_date: '',
+        case_finished_date: ''
     };
 
     const [formData, setFormData] = useState(initialFormData);
@@ -76,17 +73,11 @@ const SubmitCase = () => {
             ...prevFormData,
             [e.target.name]: e.target.value,
           };
-      
           console.log('Form data updated:', updatedFormData);
       
           return updatedFormData;
         });
     };
-
-    const clearData = async () => {
-        setFormData(initialFormData);
-        console.log("clear")
-    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -96,11 +87,12 @@ const SubmitCase = () => {
             await setDoc(newCaseRef, {
                 case_status: "case_status_01",
                 lawyer: formData.lawyer,
-                client: USERID,
+                client: userId,
                 case_type: formData.case_type,
                 case_title: formData.case_title,
                 case_description: formData.case_description,
-                event_date: formData.event_date
+                case_created_date: serverTimestamp(),
+                case_finished_date: null
             });
 
             for (const uploadedFile of uploadedFiles) {
@@ -122,32 +114,38 @@ const SubmitCase = () => {
             }
 
             const clientDocRef = collection(db, 'client');
-            const newClientRef = doc(clientDocRef);
+            const newClientRef = doc(clientDocRef, userId);
             await setDoc(newClientRef, {
-                userID: USERID,
                 client_ic: formData.ic,
                 dob: formData.dob,
-                contact: formData.contact,
                 gender: formData.gender,
-                email: formData.email
+                // contact: formData.contact,
+                // email: formData.email
             });
             alert("Case Submitted Successfully");
+            console.log("Case Submitted Successfully");
             navigate("/home")
         } catch (error) {
             console.error('Error submitting data:', error);
         }
     };
+
+    if (isLoading){
+        return (
+            <div></div>
+        )
+    }
     
     return (
         <form onSubmit={handleSubmit}>
             <div className='client-page'>
             <div className="header-section-1">
                 <div className="header-title-1">
-                    <h1>SUBMIT YOUR CASE</h1>
+                    <div>SUBMIT YOUR CASE</div>
                 </div>
             </div>
             <div>
-                <div className='section-container'>
+                <div className='client-section-container-2'>
                     <div className='form-header'>
                         Case Application Form
                     </div>
@@ -164,21 +162,27 @@ const SubmitCase = () => {
                                     type="text"
                                     name="name" 
                                     onChange={handleChange}
+                                    value={collectionsData['users'].data.fullname}
                                     required
+                                    readOnly
                                 />
                                 <input 
                                     className='input-field' 
                                     type="text"
                                     name="contact" 
                                     onChange={handleChange}
+                                    value={collectionsData['users'].data.phoneNumber}
                                     required
+                                    readOnly
                                 />
                                 <input 
                                     className='input-field' 
                                     type="text"
                                     name="email" 
                                     onChange={handleChange}
+                                    value={collectionsData['users'].data.email}
                                     required
+                                    readOnly
                                 />
                             </div>
                         </div>
@@ -242,24 +246,18 @@ const SubmitCase = () => {
                             <div className='form-person-container-right'>
                                 <div className='form-inner-left'>
                                     <div className='label-field'>Lawyer Preferred</div>
-                                    <div className='label-field'>Event Date</div>
+                                    {/* <div className='label-field'>Event Date</div> */}
                                 </div>
                                 <div className='form-inner-right'>
                                     <select className='input-field'  name="lawyer" onChange={handleChange} required>
                                         <option value="Select an option..." disabled selected>Select an option...</option>
                                         {collectionsData['lawyer']?.map((item) => (
                                             <option key={item.id} value={item.id}>
-                                                {item.data.name}
+                                                {item.data.fullname}
                                             </option>
                                         ))}
                                     </select>
-                                    <input 
-                                        className='input-field' 
-                                        type="date"
-                                        name="event_date" 
-                                        onChange={handleChange}
-                                        required
-                                    />
+                                    <div className='blank'></div>
                                 </div>
                             </div>
                         </div>
@@ -287,7 +285,7 @@ const SubmitCase = () => {
                         </div>
                     </div>
                     <div className='button-section'>
-                        <button className='button' type='button' onClick={clearData}>Clear</button>
+                        {/* <button className='button' type='button' onClick={clearData}>Clear</button> */}
                         <button className='button' type='submit'>Submit</button>
                     </div>
                 </div>

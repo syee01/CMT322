@@ -1,20 +1,22 @@
 import React, { useEffect, useState } from 'react';
+import '../../cssFolder/admin/admin_case_application.css';
 import { useNavigate } from 'react-router-dom';
-import '../../cssFolder/client/view_specific_case.css';
 import { useParams } from 'react-router-dom';
 import { db } from '../../firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import * as cons from "../constant"
 import * as util from "../utility"
 
-const ViewSpecificCase = ({ userId }) => {
+const AdminCaseApplication = () => {
     const { case_id } = useParams();  // Assuming case_id is from URL params
     const [collectionsData, setCollectionsData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [acceptConfirmation, setAcceptConfirmation] = useState(false);
-    const [rejectConfirmation, setRejectConfirmation] = useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [selectedLawyer, setSelectedLawyer] = useState('');
+    const [showRejectionConfirm, setShowRejectionConfirm] = useState(false);
     const navigate = useNavigate();
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,18 +24,16 @@ const ViewSpecificCase = ({ userId }) => {
             setError(null);
             try {
                 const data = {};
+
                 data[cons.caseCollectionName] = await util.getOneCase(case_id);
+                const userId = data[cons.caseCollectionName].data.client;
                 data[cons.usersCollectionName] = await util.getOneUserClient(cons.usersCollectionName, userId);
-                if (data[cons.usersCollectionName].data.role !== "client"){
-                    alert("This pages can only be visited by client. Redirecting to Home Page");
-                    navigate("/home");
-                }
                 data[cons.clientCollectionName] = await util.getOneUserClient(cons.clientCollectionName, userId);
                 data[cons.documentCollectionName] = await util.getDocumentFromOneCase(case_id);
                 data[cons.lawyerCollectionName] = await util.getLawyerFromUsers();
                 data[cons.case_typeCollectionName] = await util.getCaseTypeStatus(cons.case_typeCollectionName);
                 data[cons.case_statusCollectionName] = await util.getCaseTypeStatus(cons.case_statusCollectionName);
-
+                
                 setCollectionsData(data);
             } catch (error) {
                 setError(error);
@@ -57,50 +57,42 @@ const ViewSpecificCase = ({ userId }) => {
         return <div>No case data available.</div>;
     }
 
-    console.log(collectionsData)
-
-    function displayWithCaseStatus () {
-        const cur_case_status = collectionsData[cons.caseCollectionName].data.case_status;
-        const pendingAcceptID = collectionsData['case_status'].find(status => status.data.case_status_name === 'Pending Accept').id;
-        const rejectID = collectionsData['case_status'].find(status => status.data.case_status_name === 'Rejected').id;
-        if (cur_case_status == pendingAcceptID){
-            return (
-                <div className='client-buttons-container'>
-                    <button className='client-reject-button' onClick={() => setRejectConfirmation(true)}>Reject</button>
-                    <button className='client-accept-button' onClick={() => setAcceptConfirmation(true)}>Accept</button>
-                </div>
-            )
-        }
-        else if (cur_case_status == rejectID){
-            return (
-                <div>
-                    <div className='client-rejected-status-container'>
-                        Rejected
-                    </div>
-                </div>
-            )
-        }
-    }
+    function openURL(url) {
+        window.open(url, '_blank');
+    };
 
     const updateLawyerForCase = async () => {
-        
-        const inProgressStatusId = collectionsData['case_status'].find(status => status.data.case_status_name === 'In Progress').id;
+        if (!selectedLawyer) {
+            alert('Please select a lawyer before proceeding.');
+            return;
+        }
+    
+        // Fetch the ID of the 'In Progress' status
+        const inProgressStatusId = collectionsData['case_status'].find(status => status.data.case_status_name === 'Pending Accept').id;
     
         const caseRef = doc(db, cons.caseCollectionName, case_id);
     
         try {
             await updateDoc(caseRef, {
-                case_status: inProgressStatusId
+                lawyer: selectedLawyer, // this now contains the lawyer's ID
+                case_status: inProgressStatusId // setting the case status to 'In Progress'
             });
-            setAcceptConfirmation(false);
-            window.location.reload()
+            alert('The lawyer has been assigned and the case status has been updated to Pending Accept.');
+            setShowModal(false); // close the modal
+            navigate(`/admin/ViewSpecificCase/${case_id}`);
         } catch (error) {
             console.error("Error updating case: ", error);
             alert('There was an error updating the case.');
         }
     };
+    
+
+    const handleRejectCase = () => {
+        setShowRejectionConfirm(true);
+    };
 
     const confirmRejection = async () => {
+        // Fetch the ID of the 'Rejected' status
         const rejectedStatusId = collectionsData['case_status'].find(status => status.data.case_status_name === 'Rejected').id;
 
         const caseRef = doc(db, cons.caseCollectionName, case_id);
@@ -109,26 +101,20 @@ const ViewSpecificCase = ({ userId }) => {
             await updateDoc(caseRef, {
                 case_status: rejectedStatusId
             });
-            setRejectConfirmation(false);
-            window.location.reload()
+            alert('The case has been marked as Rejected.');
+            setShowRejectionConfirm(false); // close the modal
+            navigate(`/admin/ViewRejectedCases/${case_id}`);
         } catch (error) {
             console.error("Error updating case status: ", error);
             alert('There was an error updating the status of this case.');
         }
     };
 
-    function openURL(url){
-        window.open(url, '_blank');
-    };
-
+    // Main component rendering
     return (
-        <div className='view_specific_case-page'>
-            <div className='header-section-3'>
-                <div className='header-title-3'>
-                    <div>CASE DETAILS</div>
-                </div>
-            </div>
-            <div className='section-container'>
+        <div className='admin_view_specific_rejected_case-page'>
+            <div className='page-header'>CASE APPLICATION DETAILS</div>
+            <div className='apply-section-container'>
                 <div className='form-header'>
                     {collectionsData['case'].data.case_title}
                 </div>
@@ -202,7 +188,7 @@ const ViewSpecificCase = ({ userId }) => {
                         Case Description
                     </div>
                     <div className='content-frame'>
-                    {collectionsData['case'].data.case_description}
+                        {collectionsData[cons.caseCollectionName].data.case_description}
                     </div>
                 </div>
 
@@ -217,67 +203,63 @@ const ViewSpecificCase = ({ userId }) => {
                     </div>
                 </div>
 
-                <div>
-                    <div className='content-label-field'>
-                        Important Dates
-                    </div>
-                    <div className='content-frame'>
-                        <div className='date-section-column'>
-                            <div className='date-section-row'>
-                                <div className='date-header'>Date and Time</div>
-                                <div className='date-header'>Event</div>
-                                <div className='date-header'>Location</div>
-                                <div className='date-header'>Status</div>
-                            </div>
-                            <div className='date-section-row'>
-                                <div className='date-content-value'>Data</div>
-                                <div className='date-content-value'>Data</div>
-                                <div className='date-content-value'>Data</div>
-                                <div className='date-content-value'>Data</div>
-                            </div>
-                        </div>
-                    </div>
+                <div className='buttons-container'>
+                    <button className='reject-button' onClick={handleRejectCase}>
+                        Reject
+                    </button>
+                    <button className='accept-button' onClick={() => setShowModal(true)}>
+                        Accept
+                    </button>
                 </div>
 
-                {displayWithCaseStatus()}
 
-                {acceptConfirmation && (
-                    <div className='client-modal'>
-                        <div className='client-modal-content'>
-                            <div className='client-modal-header'>
-                                <span className='client-close' onClick={() => setAcceptConfirmation(false)}>&times;</span>
+                {showModal && (
+                    <div className='modal'>
+                        <div className='modal-content'>
+                            <div className='modal-header'>
+                                <span className='close' onClick={() => setShowModal(false)}>&times;</span>
                             </div>
-                            <div className='client-modal-body'>
-                                <p>
-                                    {util.getLawyerName(collectionsData[cons.lawyerCollectionName], collectionsData[cons.caseCollectionName].data.lawyer)} will be the lawyer in charge of your case.
-                                    </p>
+                            <div className='modal-body'>
+                                <p>Please assign a paralegal for this case</p>
+                                <select
+                                    value={selectedLawyer}
+                                    onChange={(e) => setSelectedLawyer(e.target.value)}
+                                    className='lawyer-dropdown'
+                                >
+                                    <option value="">Select a Lawyer</option>
+                                    {collectionsData[cons.lawyerCollectionName].map((lawyer) => (
+                                        <option key={lawyer.id} value={lawyer.id}>
+                                            {lawyer.data.fullname}
+                                        </option>
+                                    ))}
+                                </select>
+
                             </div>
-                            <div className='client-modal-footer'>
-                                <button className='client-ok-button' onClick={updateLawyerForCase}>OK</button>
+                            <div className='modal-footer'>
+                            <button className='ok-button' onClick={updateLawyerForCase}>OK</button>
                             </div>
                         </div>
                     </div>
                 )}
 
-                {rejectConfirmation && (
-                    <div className='client-modal'>
-                        <div className='client-modal-content'>
-                            <div className='client-modal-header'>
-                                <span className='client-close' onClick={() => setRejectConfirmation(false)}>&times;</span>
+                {showRejectionConfirm && (
+                    <div className='modal'>
+                        <div className='modal-content'>
+                            <div className='modal-header'>
+                                <span className='close' onClick={() => setShowRejectionConfirm(false)}>&times;</span>
                             </div>
-                            <div className='client-modal-body'>
-                                <p>Are you sure you want to reject this case with the lawyer?</p>
+                            <div className='modal-body'>
+                                <p>Are you sure you want to reject this case?</p>
                             </div>
-                            <div className='client-modal-footer'>
-                                <button className='client-confirm-button' onClick={confirmRejection}>Confirm</button>
+                            <div className='modal-footer'>
+                                <button className='confirm-button' onClick={confirmRejection}>Confirm</button>
                             </div>
                         </div>
                     </div>
                 )}
-
             </div>
         </div>
     );
 }
 
-export default ViewSpecificCase;
+export default AdminCaseApplication;

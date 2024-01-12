@@ -1,27 +1,22 @@
-.client-view_cases-page {
-    font-family: Arial, sans-serif;
+.admin_view_all_cases-page {
+    font-family: Average; 
     color: black;
     background-color: white;
 }
 
-.client-header-section-2{
-  position: relative;
-  text-align: left;
-  padding-left: 2%;
-}
-
-.client-header-title-2{
+.page-header {
     width: 100%; 
     height: 100%; 
     font-size: 45px; 
     font-family: Average; 
-    font-weight: 400; 
+    font-weight: bold; 
     word-wrap: break-word;
     color: black;
+    padding-left: 2%;
     margin-top: 30px;
 }
 
-.client-section-container {
+.admin-section-container {
     width: 96%; 
     height: 100%; 
     background-color: #E6EAF4;
@@ -29,7 +24,7 @@
     margin: 2%;
 }
 
-.client-cases-section {
+.cases-section {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -39,7 +34,7 @@
     padding-left: 2%;
 }
 
-.client-cases-section-even {
+.cases-section-even {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -49,7 +44,7 @@
     padding-left: 2%;
 }
 
-.client-cases-section-odd {
+.cases-section-odd {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -60,7 +55,7 @@
     padding-left: 2%;
 }
 
-.client-cases-header {
+.cases-header {
     flex: 1;
     text-align: center;
     color: white;
@@ -68,7 +63,7 @@
     font-weight: bold;
 }
 
-.client-cases-header-small {
+.cases-header-small {
     flex: 0.5;
     text-align: center;
     color: white;
@@ -76,7 +71,7 @@
     font-weight: bold;
 }
 
-.client-cases-row-content-title {
+.cases-row-content-title {
     flex: 1;
     text-align: left;
     color: #393E68;
@@ -85,24 +80,9 @@
     text-decoration: underline;
 }
 
-.client-cases-row-content-small {
+.cases-row-content {
     flex: 0.5;
     text-align: center;
     color: #393E68;
     font-size: 20px;
-}
-
-.client-no-data-found {
-    text-align: center;
-    padding: 20px;
-    color: #777;  /* Adjust the color as needed */
-    font-size: 18px;
-    font-weight: bold;
-    border: 2px solid #ddd;  /* Add a border for emphasis */
-    border-radius: 4px;
-    background-color: #f9f9f9;  /* Add a background color */
-    min-height: 250px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }

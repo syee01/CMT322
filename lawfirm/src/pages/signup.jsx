@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import { useNavigate } from 'react-router-dom';
-import {  createUserWithEmailAndPassword  } from 'firebase/auth';
+import { useNavigate, NavLink } from 'react-router-dom';
+import {  createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { auth } from '../firebase';
 import "../cssFolder/signup.css"
 import { db } from '../firebase';
@@ -13,52 +13,81 @@ const Signup = () => {
     const [fullname, setName] = useState('');
     const [phoneNumber, setPhoneNum] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
- 
+    const [passMessage, setPassMessage] = useState('');
+    const [emailVerificationMessage, setEmailVerificationMessage] = useState('');
+    const [isVerificationEmailSent, setIsVerificationEmailSent] = useState(false);
     const onSubmit = async (e) => {
       e.preventDefault()
-     
+
+      setErrorMessage('');
+      setPassMessage('');
+
+      // use the email and password input to create an accoutn in the database
       await createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             // Signed in
             const user = userCredential.user;
-            console.log(user);
-            navigate("/login")
+            sendEmailVerification(user)
+            .then(() => {
+                // Email verification sent and navigate to the home page 
+                setEmailVerificationMessage("Verification email sent. Please check your inbox.");
+                setIsVerificationEmailSent(true);
+                navigate("/Login"); 
+            });
          
             // Use the user's UID as the document ID in Firestore
             const userDocRef = doc(db, 'users', user.uid);
             setDoc(userDocRef, {
-                userID: user.uid,
                 fullname: fullname,
                 email: email,
                 phoneNumber: phoneNumber,
                 role: "client",
                 })
                   .then(() => {
-                    alert("Create Account Successfully");
+                    alert("Account created successfully and the verification email sent. Please check your inbox.");
+                    
                   })
                   .catch((error) => {
                     alert(error.message);
             });
+            
         })
+        // validate the input and display error 
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log(errorCode, errorMessage);
             if (error.code === 'auth/email-already-in-use') {
                 setErrorMessage('This email address is already in use.');
-            } else {
+            } else if(error.code ==='auth/invalid-email'){
+                setErrorMessage('This email address is invalid.');
+            }
+            else if(error.code ==='auth/weak-password'){
+                setPassMessage('Password should be at least 6 characters')
+            }else {
                 setErrorMessage('An error occurred. Please try again.');
             }
         });
 
+    };
+
+    if (isVerificationEmailSent) {
+        return (
+            <div className="verification-message">
+                <p>{emailVerificationMessage}</p>
+                <p>Please verify your email and login your account in the login page.</p>
+            </div>
+        );
     }
+
  
   return (
     <div className="signup-container">
     <div className="signuppanel">   
         <div className='form'>   
         <h2 className='h2tag'>Welcome to L.A Law Firm</h2>       
-        <p className='h3tag'>Create your Own Account</p>                                      
+        <p className='h3tag'>Create your Own Account</p>
+        {/* Input the account information  */}
             <form> 
                 <div className="input-container">
                     <label htmlFor="fullname">
@@ -99,8 +128,10 @@ const Signup = () => {
                         type="password"                                    
                         required                                                                                
                         placeholder="Password"
+                        minLength="5" 
                         onChange={(e)=>setPassword(e.target.value)}
                     />
+                    {passMessage && <div className="error-message">{passMessage}</div>}
                 </div>
 
                 <div className="input-container">
@@ -116,11 +147,11 @@ const Signup = () => {
                     onChange={(e) => setPhoneNum(e.target.value)}
                     />
                 </div>
-                    <button className='createbutton'                                    
-                        onClick={onSubmit}                                        
-                    >      
-                        Confirm                                                                
-                    </button>
+                    <button className='createbutton' onClick={onSubmit}>Confirm</button>
+                    {/* If want to move to login page */}
+                    <div className="links-container">
+                       <NavLink to="/Login">Login Here</NavLink>
+                   </div>
             </form>                          
         </div>
     </div>
