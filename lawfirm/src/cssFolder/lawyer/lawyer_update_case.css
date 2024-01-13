@@ -1,0 +1,212 @@
+body {
+    background-color: white;
+}
+
+.client-page {
+    font-family: Arial, sans-serif;
+    color: black;
+    background-color: white;
+}
+
+.header-section-1{
+  position: relative;
+  text-align: left;
+  padding-left: 2%;
+}
+
+.header-title-1{
+    width: 100%; 
+    height: 100%; 
+    font-size: 45px; 
+    font-family: Average; 
+    font-weight: 400; 
+    word-wrap: break-word;
+    color: black;
+}
+
+.section-container {
+    width: 96%; 
+    height: 100%; 
+    /* background: rgba(57.15, 61.80, 103.65, 0.20);  */
+    background-color: rgba(57.15, 61.80, 103.65, 0.20);
+    border-radius: 40px; 
+    border: 3px #393E68 solid;
+    margin: 2%;
+    padding: 2%;
+}
+
+.form-header {
+    text-align: center; 
+    color: #393E68; 
+    font-size: 40px; 
+    font-family: Average; 
+    font-weight: 400; 
+    word-wrap: break-word;
+    margin: 1%;
+}
+
+.form-person-container {
+    display: flex;
+}
+
+.form-person-container-left {
+    flex: 3;
+    display: flex;
+    padding-bottom: 10px;
+}
+
+.form-person-container-middle {
+    flex: 0.1;
+    padding-bottom: 10px;
+}
+
+.form-person-container-right {
+    flex: 2;
+    display: flex;
+    padding-bottom: 10px;
+}
+
+.form-inner-left{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-inner-right{
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.label-field {
+    flex: 1;
+    color: #393E68;
+    font-size: 25px;
+    font-family: Barlow;
+    font-weight: 700;
+    word-wrap: break-word;
+    align-items: center;
+    padding: 10px;
+}
+
+.input-field {
+    flex: 1;
+    width: 100%;  
+    margin: 0.5%;
+    background: white; 
+    border-radius: 40px; 
+    border: 1px #393E68 solid;
+    font-size: 16px;
+    color: #393E68;
+    padding-left: 5%;
+}
+
+.meeting-row-content{
+    text-align: left;
+}
+
+.checkbox-row-content{
+    text-align: right;
+}
+
+/* .input-field:not(:focus):: {
+    color: #888;
+}
+  
+.input-field:focus::value {
+    color: transparent;
+} */
+
+select {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    position: relative; /* Ensure z-index works */
+    appearance: none; /* Remove default appearance */
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+select::after {
+    content: '\25BC'; /* Down arrow character */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none; /* Allow clicking through the arrow */
+}
+
+textarea {
+    width: 100%;  
+    margin: 0.5%;
+    background: white; 
+    border-radius: 40px; 
+    border: 1px #393E68 solid;
+    font-size: 16px;
+    color: #393E68;
+    padding: 1.5%;
+}
+
+.button-section {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.button {
+    background: white; 
+    border-radius: 20px; 
+    border: 1px #393E68 solid;
+    text-align: center;
+    color: #393E68;
+    font-size: 25px;
+    padding: 1%;
+    width: 150px;
+    margin: 20px;
+    cursor: pointer;
+}
+
+.dropzoneStyles {
+    display: flex;
+    flex-direction: column;
+    border: 3px dashed #393E68;
+    border-radius: 40px;
+    padding: 20px;
+    justify-content: center;
+    min-height: 200px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    text-align: center;
+};
+
+/* Add this to your component's stylesheet or use a global stylesheet */
+button {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: #D7D8E1;/* Adjust the color as needed */
+    color: #393E68;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #393E68; /* Adjust the hover color as needed */
+    color: #fff;
+}
+
+.lawyer-meetings-row-content-small {
+    flex: 1;
+    text-align: center;
+    color: #393E68;
+    font-size: 20px;
+    margin: 5px;
+}
+
+.lawyer-document-row-content-small {
+    flex: 1;
+    text-align: left;
+    color: #393E68;
+    font-size: 20px;
+    margin: 5px;
+}

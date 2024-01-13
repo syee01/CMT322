@@ -22,6 +22,9 @@ import AdminViewSpecificRejectedCase from './pages/admin/admin_view_specific_rej
 import AdminCaseApplication from './pages/admin/admin_case_application.jsx';
 import AdminViewSpecificCase from './pages/admin/admin_view_specific_case.jsx';
 import ForgotPassword from './pages/forgotPassword.jsx';
+import LawyerViewCases from './pages/lawyer/lawyer_view_cases.jsx';
+import LawyerViewSpecificCase from './pages/lawyer/lawyer_view_specific_case.jsx';
+import LawyerUpdateCase from './pages/lawyer/lawyer_update_case.jsx';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -153,6 +156,9 @@ function App() {
             {userId && <Route path='/SubmitCase' element={<SubmitCase userId={userId} />}/>}
             {userId && <Route path="/ViewCases" element={<ViewCases userId={userId} />}/>}
             {userId && <Route path="/ViewSpecificCase/:case_id" element={<ViewSpecificCase userId={userId} />}/>}
+            {userId && <Route path="/LawyerViewCases" element={<LawyerViewCases  userId={userId}/>}/>}
+            <Route path="/LawyerViewSpecificCase/:case_id" element={<LawyerViewSpecificCase userId={userId}/>}/>
+            <Route path='/LawyerUpdateCase/:case_id' element={<LawyerUpdateCase userId={userId}/>}/>
           </Routes>
         </section>
       </div>
