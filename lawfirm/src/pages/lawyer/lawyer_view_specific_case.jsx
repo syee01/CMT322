@@ -11,6 +11,7 @@ import * as util from "../utility"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-modal';
+import { apiCalendar, timeZone } from '../../googleapi'
 
 const LawyerViewSpecificCase = ({ userId }) => {
     const { case_id } = useParams();  // Assuming case_id is from URL params
@@ -244,6 +245,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                     console.error('Error uploading document: ', error);
                 }
             }
+            scheduleMeeting();
             const newMeetingId = newMeetingRef.id;
             console.log('Newly added meeting ID:', newMeetingId);
 
@@ -256,6 +258,42 @@ const LawyerViewSpecificCase = ({ userId }) => {
             console.error('Error updating item data:', error);
         }
     };
+
+    const scheduleMeeting = async () => {
+        try{
+            await apiCalendar.handleAuthClick();
+            const eventStartTime = new Date(formData.date);
+            const eventEndTime = new Date(eventStartTime);
+            eventEndTime.setHours(eventEndTime.getHours() + 2);
+            const event = {
+                summary: formData.event,
+                location: formData.location,
+                description: formData.description,
+                start: {
+                    dateTime: eventStartTime.toISOString(),
+                    timeZone: timeZone
+                },
+                end: {
+                    dateTime:eventEndTime.toISOString(),
+                    timeZone: timeZone
+                },
+                attendees: [
+                    { 
+                        email: collectionsData[cons.usersCollectionName].data.email, 
+                        displayName: collectionsData[cons.usersCollectionName].data.fullname 
+                    },
+                ]
+            }
+            apiCalendar.createEvent(event, 'primary').then((result) => {
+                console.log( "result: ",result)
+            }).catch((error) => {
+                console.log("error: ", error)
+            })
+        }catch(e){
+            console.log("API Error: ", e)
+        }
+        
+    }
 
     const handleUpdateSubmit = async (e) => {
         e.preventDefault();
