@@ -1,13 +1,13 @@
 .admin-dashboard {
-  font-family: Average;
+  font-family: 'Spectral',serif;
   padding: 20px;
 }
 
-.page-header {
+.dashboard-header {
     width: 100%; 
     height: 100%; 
-    font-size: 45px; 
-    font-family: Average;
+    font-size: 40px; 
+    font-family: 'Spectral',serif;
     font-weight: bold; 
     word-wrap: break-word;
     color: black;
@@ -20,7 +20,7 @@
 
 .financial-overview {
   flex: 50%;
-  font-family: Average; 
+  font-family: 'Spectral',serif;
   padding: 10px;
 }
 
@@ -96,7 +96,7 @@
   flex-direction: column;
   max-height: 355px; 
   padding: 10px;
-  background-color: #E6EAF4;
+  background-color: #f0f2f7;;
   overflow-y: auto; 
   border-radius: 4px;
 }

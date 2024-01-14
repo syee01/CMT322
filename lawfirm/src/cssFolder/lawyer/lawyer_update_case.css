@@ -3,7 +3,7 @@ body {
 }
 
 .client-page {
-    font-family: Arial, sans-serif;
+    font-family: 'Spectral',serif;
     color: black;
     background-color: white;
 }
@@ -15,34 +15,23 @@ body {
 }
 
 .header-title-1{
-    width: 100%; 
-    height: 100%; 
-    font-size: 45px; 
-    font-family: Average; 
-    font-weight: 400; 
+    font-size: 38px; 
+    font-family: 'Spectral',serif;
+    font-weight: 550; 
     word-wrap: break-word;
     color: black;
+    margin-top: 30px;
+    padding-left: 48px;
 }
 
-.section-container {
-    width: 96%; 
+.client-section-container-2 {
+    width: 90%; 
     height: 100%; 
-    /* background: rgba(57.15, 61.80, 103.65, 0.20);  */
-    background-color: rgba(57.15, 61.80, 103.65, 0.20);
-    border-radius: 40px; 
-    border: 3px #393E68 solid;
-    margin: 2%;
-    padding: 2%;
-}
-
-.form-header {
-    text-align: center; 
-    color: #393E68; 
-    font-size: 40px; 
-    font-family: Average; 
-    font-weight: 400; 
-    word-wrap: break-word;
-    margin: 1%;
+    background: #f0f2f7;
+    border-radius: 2%;
+    margin: 5%;
+    margin-top: 2%;
+    padding: 4%;
 }
 
 .form-person-container {
@@ -52,18 +41,15 @@ body {
 .form-person-container-left {
     flex: 3;
     display: flex;
-    padding-bottom: 10px;
 }
 
 .form-person-container-middle {
-    flex: 0.1;
-    padding-bottom: 10px;
+    flex: 0.25;
 }
 
 .form-person-container-right {
     flex: 2;
     display: flex;
-    padding-bottom: 10px;
 }
 
 .form-inner-left{
@@ -80,49 +66,51 @@ body {
 
 .label-field {
     flex: 1;
-    color: #393E68;
-    font-size: 25px;
-    font-family: Barlow;
-    font-weight: 700;
+    /* color: #393E68; */
+    font-size: 22px;
+    font-family: 'Spectral',serif;
+    font-weight: 500;
     word-wrap: break-word;
     align-items: center;
-    padding: 10px;
+    margin-top: 5%;
+}
+
+.labelfield {
+    flex: 1;
+    /* color: #393E68; */
+    font-size: 22px;
+    font-family: 'Spectral',serif;
+    font-weight: 500;
+    /* word-wrap: break-word; */
+    align-items: center;
+    margin-top: 25px;
 }
 
 .input-field {
     flex: 1;
     width: 100%;  
-    margin: 0.5%;
-    background: white; 
-    border-radius: 40px; 
+    margin: 1%;
     border: 1px #393E68 solid;
-    font-size: 16px;
-    color: #393E68;
+    font-size: 20px;
+    color: 	#5A5A5A;
+    padding: 1.5%;
     padding-left: 5%;
+    font-family: 'Spectral',serif;
+    margin-bottom: 20px;
 }
 
-.meeting-row-content{
-    text-align: left;
+.blank {
+    flex: 1;
+    margin: 10px; /*manual*/
 }
-
-.checkbox-row-content{
-    text-align: right;
-}
-
-/* .input-field:not(:focus):: {
-    color: #888;
-}
-  
-.input-field:focus::value {
-    color: transparent;
-} */
 
 select {
-    width: 100%;
-    padding: 8px;
+    flex: 1;
+    /* width: 100%; */
+    padding: 6px; /*manual*/
     box-sizing: border-box;
-    position: relative; /* Ensure z-index works */
-    appearance: none; /* Remove default appearance */
+    /* position: relative; */
+    /* appearance: none; */
     border: 1px solid #ccc;
     cursor: pointer;
 }
@@ -140,10 +128,10 @@ textarea {
     width: 100%;  
     margin: 0.5%;
     background: white; 
-    border-radius: 40px; 
+    /* background: #e8ebef;  */
     border: 1px #393E68 solid;
     font-size: 16px;
-    color: #393E68;
+    /* color: #393E68; */
     padding: 1.5%;
 }
 
@@ -153,60 +141,37 @@ textarea {
 }
 
 .button {
-    background: white; 
-    border-radius: 20px; 
+    border-radius: 40px; 
     border: 1px #393E68 solid;
-    text-align: center;
-    color: #393E68;
-    font-size: 25px;
-    padding: 1%;
-    width: 150px;
-    margin: 20px;
-    cursor: pointer;
+    background-color: #393E68 ;
+    font-size: 20px;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    padding-left: 2%;
+    padding-right: 2%;
+    width: 120px;
+    margin-left: 1%;
+    margin-top: 30px;
+    color: white;
+    font-family: 'Spectral',serif;
 }
+
+.button:hover {
+    border: 2px solid black;
+    color: black;
+    background-color: #fff;
+  }
 
 .dropzoneStyles {
     display: flex;
     flex-direction: column;
-    border: 3px dashed #393E68;
-    border-radius: 40px;
+    border: 2px dashed #393E68;
     padding: 20px;
     justify-content: center;
     min-height: 200px;
     margin-top: 1%;
     margin-bottom: 1%;
     text-align: center;
+    background: white;
 };
 
-/* Add this to your component's stylesheet or use a global stylesheet */
-button {
-    display: flex;
-    align-items: center;
-    padding: 8px 12px;
-    background-color: #D7D8E1;/* Adjust the color as needed */
-    color: #393E68;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #393E68; /* Adjust the hover color as needed */
-    color: #fff;
-}
-
-.lawyer-meetings-row-content-small {
-    flex: 1;
-    text-align: center;
-    color: #393E68;
-    font-size: 20px;
-    margin: 5px;
-}
-
-.lawyer-document-row-content-small {
-    flex: 1;
-    text-align: left;
-    color: #393E68;
-    font-size: 20px;
-    margin: 5px;
-}

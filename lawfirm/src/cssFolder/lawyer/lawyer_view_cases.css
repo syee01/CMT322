@@ -1,5 +1,5 @@
 .lawyer-view_cases-page {
-    font-family: Arial, sans-serif;
+    font-family: 'Spectral',serif;
     color: black;
     background-color: white;
 }
@@ -11,32 +11,36 @@
 }
 
 .lawyer-header-title-2{
-    width: 100%; 
-    height: 100%; 
-    font-size: 45px; 
-    font-family: Average; 
-    font-weight: 400; 
+    font-size: 38px; 
+    font-family: 'Spectral',serif;
+    font-weight: 550; 
     word-wrap: break-word;
     color: black;
     margin-top: 30px;
+    padding-left: 48px;
 }
 
 .lawyer-section-container {
-    width: 96%; 
+    width: 90%; 
     height: 100%; 
-    background-color: #E6EAF4;
-    border: 3px #393E68 solid;
-    margin: 2%;
+    /* background: #f0f2f7; */
+    border-radius: 2%;
+    margin: 5%;
+    margin-top: 2%;
+    /* padding: 4%; */
 }
 
 .lawyer-cases-section {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #393E68;
-    border-bottom: 3px #393E68 solid;
-    min-height: 70px;
+    background-color: #f0f2f7;;
+    /* border-bottom: 3px #393E68 solid; */
+    min-height: 50px;
     padding-left: 2%;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(78, 77, 77, 0.2);
+    font-family: 'Spectral',serif;
 }
 
 .lawyer-cases-section-even {
@@ -47,70 +51,80 @@
     align-items: space-evenly;
     align-content: center;
     padding-left: 2%;
+    box-shadow: 0 4px 4px rgba(78, 77, 77, 0.2);
+    margin-bottom: 15px;
 }
 
 .lawyer-cases-section-odd {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #c7cfe4;
+    /* background-color: #f0f2f7; */
+    box-shadow: 0 4px 4px rgba(78, 77, 77, 0.2);
     min-height: 70px;
     align-items: space-evenly;
     align-content: center;
     padding-left: 2%;
+    margin-bottom: 20px;
 }
 
 .lawyer-cases-header {
-    flex: 1;
+    flex: 1.2;
     text-align: center;
-    color: white;
+    /* color: white; */
     font-size: 22px;
     font-weight: bold;
+    color: black;
 }
 
 .lawyer-cases-header-small {
     flex: 0.5;
     text-align: center;
-    color: white;
+    /* color: white; */
+    color: black;
     font-size: 22px;
     font-weight: bold;
 }
 
 .lawyer-cases-row-content-title {
-    flex: 1;
+    flex: 1.2;
+    text-align: left;
+    /* color: #393E68; */
+    font-size: 20px;
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: 'Spectral',serif;
+}
+
+.lawyer-cases-row-content-title:hover {
+    flex: 1.2;
     text-align: left;
     color: #393E68;
     font-size: 20px;
     cursor: pointer;
-    text-decoration: underline;
+    text-decoration: none;
+    font-family: 'Spectral',serif;
 }
 
 .lawyer-cases-row-content-small {
     flex: 0.5;
     text-align: center;
-    color: #393E68;
+    /* color: #393E68; */
     font-size: 20px;
+    font-family: 'Spectral',serif;
 }
 
 .lawyer-no-data-found {
     text-align: center;
     padding: 20px;
-    color: #777;  /* Adjust the color as needed */
+    color: #777;  
     font-size: 18px;
     font-weight: bold;
-    border: 2px solid #ddd;  /* Add a border for emphasis */
+    border: 2px solid #ddd; 
     border-radius: 4px;
-    background-color: #f9f9f9;  /* Add a background color */
+    background-color: #f9f9f9;  
     min-height: 250px;
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.cases-row-content {
-    flex: 1;
-    text-align: center;
-    color: #393E68;
-    font-size: 20px;
-    margin: 1%;
 }

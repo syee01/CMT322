@@ -141,13 +141,14 @@ const SubmitCase = ({ userId }) => {
             <div className='client-page'>
             <div className="header-section-1">
                 <div className="header-title-1">
-                    <div>SUBMIT YOUR CASE</div>
+                    {/* <div>SUBMIT YOUR CASE</div> */}
+                    <div>Case Application Form</div>
                 </div>
             </div>
             <div>
                 <div className='client-section-container-2'>
                     <div className='form-header'>
-                        Case Application Form
+                        {/* Case Application Form */}
                     </div>
                     <div className='form-person-container'>
                         <div className='form-person-container-left'>
@@ -216,7 +217,8 @@ const SubmitCase = ({ userId }) => {
                             </div>
                         </div>
                     </div>
-                    <hr className='line' color='black'/>
+                    <hr className='line1' color='black'/>
+                    <br></br>
                     <div className='form-case-container'>
                         <div className='form-person-container'>
                             <div className='form-person-container-left'>
@@ -263,7 +265,7 @@ const SubmitCase = ({ userId }) => {
                         </div>
                         <div>
                             <div>
-                                <div className='label-field'>Case Description</div>
+                                <div className='labelfield'>Case Description</div>
                                 <textarea 
                                     cols="30" 
                                     rows="10"
@@ -275,7 +277,7 @@ const SubmitCase = ({ userId }) => {
                         </div>
                         <div>
                             <div>
-                                <div className='label-field'>Documents</div>
+                                <div className='labelfield'>Documents</div>
                                 <div {...getRootProps()} className='dropzoneStyles'>
                                     <input {...getInputProps()} />
                                     <label>Drag and Drop Some Files Here</label>

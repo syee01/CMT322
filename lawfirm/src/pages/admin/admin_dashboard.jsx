@@ -232,7 +232,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-dashboard">
-      <div className='page-header'>
+      <div className='dashboard-header'>
         DASHBOARD
       </div>
 

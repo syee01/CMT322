@@ -1,5 +1,5 @@
 .background-colour {
-    background-color: #393E68;
+    background-color: #f0f2f7;
     min-height: 100vh;
     display: flex;
     justify-content: center;
@@ -8,22 +8,22 @@
   }
   
 .user-info-container {
-    background-color: #f9f9f9;
+    background-color:white;
     padding: 20px;
     display: flex;
     flex-direction: row; /* Changed from column to row */
     align-items: center;
     border-radius: 8px; /* Optional: to match the design */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: to add some depth */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     max-width: 800px;
     width: 100%;
     height: 400px;
 }
   
   .user-info-header {
-    color: white;
+    color: black;
     font-size: 30px;
-    margin-bottom: 20px; /* Adjust as needed */
+    margin-bottom: 50px; /* Adjust as needed */
     width:100%;
     text-align: center;
   }
