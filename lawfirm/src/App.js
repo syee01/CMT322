@@ -10,7 +10,7 @@ import NavbarAdmin from './components/navigationBarAdmin.js';
 import NavbarLawyer from './components/navigationBarLawyer.js';
 import Signup from './pages/signup';
 import Login from './pages/login';
-import LawyerPage from './pages/lawyer.jsx';
+import LawyerPage from './pages/lawyerPage.jsx';
 import ContactUs from './pages/contactUs.jsx';
 import UserInfoPage from './pages/userInfoPage.jsx';
 import SubmitCase from './pages/client/submit_case.jsx'

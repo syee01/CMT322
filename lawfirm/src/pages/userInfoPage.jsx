@@ -5,7 +5,7 @@ import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage
 import profile from  '../images/profile.png';
 import '../cssFolder/userInfoPage.css'
 import { FaEdit, FaTimes, FaCheck} from 'react-icons/fa';
-import { deleteObject } from 'firebase/storage';
+import { deleteObject } from 'firebase/storage';;
 
 const UserInfoPage = ({ userId }) => {
   const [userInfo, setUserInfo] = useState(null);
@@ -54,12 +54,15 @@ const UserInfoPage = ({ userId }) => {
 
     // check the extension type pf the picture uploaded
    const fileType = selectedFile.type;
+   console.log(fileType)
     let fileExtension = '';
     if (fileType === "image/png") {
       fileExtension = '.png';
-    } else if (fileType === "image/jpeg") {
+    } else if (fileType === "image/jpg") {
       fileExtension = '.jpg';
-    } else {
+    }else if (fileType === "image/jpeg") {
+      fileExtension = '.jpg';
+    }else {
       alert('File type not allowed. Only PNG and JPG files are accepted.');
       return;
     }
@@ -159,7 +162,7 @@ const UserInfoPage = ({ userId }) => {
       {showFileInput ? (
           <div className='filesection'>
             <input type="file" className='file-input'
-              accept=".png, .jpg, .jpeg"
+              accept=".png, .jpg"
               onChange={(e) => setSelectedFile(e.target.files[0])} 
             />
             <FaCheck onClick={handleImageUpload} className='tick' />

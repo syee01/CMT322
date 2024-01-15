@@ -1,0 +1,91 @@
+.lawyerPageHeader{
+    font-size: 38px; 
+    font-family: 'Spectral',serif;
+    font-weight: 550; 
+    color: black;
+    text-align: center;
+}
+
+.lawyer-container {
+    background-color: white; /* Set background color to white */
+    padding-bottom: 80px;
+    padding-left: 80px;
+    padding-right: 80px;
+    font-family:'Spectral',serif;
+  }
+  
+  .lawyer-profile {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(83, 82, 82, 0.5); /* Optional: Adds subtle shadow for depth */
+  }
+  
+  .lawyer-profile:nth-child(odd) {
+    flex-direction: row-reverse; /* Reverses the order for odd items */
+    padding-left: 50px;
+  }
+
+  .lawyer-profile:nth-child(even) {
+    padding-right: 50px;
+  }
+  
+  
+  .lawyer-info {
+    flex-basis: 90%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .lawyer-name {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  .lawyer-specialty{
+    font-size: larger;
+    padding-top: 10px;
+  }
+  
+  .lawyer-description {
+    text-align: justify; /* Justify the text of the description */
+    line-height: 1.6;
+    color: #666; /* Lighter text color for description */
+    padding-right: 20px;
+  }
+  
+  .lawyer-contact {
+    display: flex;
+    align-items: center;
+  }
+  
+  .icon.email-icon {
+    color: #333;
+    font-size: 20px; /* Adjust icon size as needed */
+    margin-right: 0.5rem;
+  }
+  
+  .email {
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .lawyer-image-container {
+    /* flex-basis: 20%; */
+    /* padding: 5px; */
+    /* display: flex; */
+    justify-content: center; /* Center the image in its container */
+    align-items: center; /* Align the image vertically */
+  }
+  
+  .lawyer-image {
+    width: 250px;
+    height: auto;
+    border-radius: 0px; /* Adds rounded corners to the image */
+  }
+  
