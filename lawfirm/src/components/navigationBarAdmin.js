@@ -73,7 +73,7 @@ export default function Navbar() {
         <li><CustomLink to="/admin">DASHBOARD</CustomLink></li>
         <li><CustomLink to="/admin/ViewAllCases">VIEW ALL CASES</CustomLink></li>
         <li onClick={handleSignOut}><CustomLink to="/">SIGN OUT</CustomLink></li>
-        <li><CustomLink to="/about">CONTACT US</CustomLink></li>
+        <li><CustomLink to="/ContactUs">CONTACT US</CustomLink></li>
         <li className="profile-icon">
           <Link to="/profile">
             <img src={imageUrl} alt="Profile" width={50} height={50} />
