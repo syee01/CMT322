@@ -456,8 +456,8 @@ const LawyerUpdateCase = ({ userId }) => {
                             </div>
                         </div>
                         <div className='button-section'>
-                            <button className='button' type='button' onClick={clearData}>Clear</button>
-                            <button className='button' type='submit'>Submit</button>
+                            <button className='btn' type='button' onClick={clearData}>Clear</button>
+                            <button className='btn' type='submit'>Submit</button>
                         </div>
                     </div>
                 </div>

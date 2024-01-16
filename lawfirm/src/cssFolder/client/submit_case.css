@@ -140,8 +140,9 @@ textarea {
     justify-content: flex-end;
 }
 
-.button {
-    border-radius: 40px; 
+
+.btn{
+    border-radius: 15px; 
     border: 1px #393E68 solid;
     background-color: #393E68 ;
     font-size: 20px;
@@ -149,11 +150,10 @@ textarea {
     padding-bottom: 1%;
     padding-left: 2%;
     padding-right: 2%;
-    width: 120px;
-    margin-left: 1%;
     margin-top: 30px;
     color: white;
     font-family: 'Spectral',serif;
+    margin-right: 10px;
 }
 
 .button:hover {

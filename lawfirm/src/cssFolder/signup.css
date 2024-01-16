@@ -63,7 +63,8 @@ input {
   cursor: pointer;  
   position: relative;
   border: 2px solid  #393E68;
-  font-weight: bolder;
+  /* font-weight: bolder; */
+  font-size: 13px;
 }
 
 .createbutton:hover {
