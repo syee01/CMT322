@@ -72,7 +72,7 @@ export default function Navbar() {
       <ul>
         <li><CustomLink to="/ViewCases">VIEW MY CASES</CustomLink></li>
         <li><CustomLink to="/SubmitCase">SUBMIT A CASE</CustomLink></li>
-        <li><CustomLink to="/lawyer">LAWYER</CustomLink></li>
+        <li><CustomLink to="/Lawyer">LAWYER</CustomLink></li>
         <li onClick={handleSignOut}><CustomLink to="/">SIGN OUT</CustomLink></li>
         <li><CustomLink to="/ContactUs">CONTACT US</CustomLink></li>
         <li className="profile-icon">

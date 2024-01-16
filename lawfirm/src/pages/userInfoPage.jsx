@@ -5,7 +5,7 @@ import { ref as storageRef, uploadBytes, getDownloadURL } from 'firebase/storage
 import profile from  '../images/profile.png';
 import '../cssFolder/userInfoPage.css'
 import { FaEdit, FaTimes, FaCheck} from 'react-icons/fa';
-import { deleteObject } from 'firebase/storage';
+import { deleteObject } from 'firebase/storage';;
 
 const UserInfoPage = ({ userId }) => {
   const [userInfo, setUserInfo] = useState(null);
@@ -16,6 +16,7 @@ const UserInfoPage = ({ userId }) => {
   const [editMode, setEditMode] = useState({ name: false, contactNumber: false });
   const [editedName, setEditedName] = useState('');
   const [editedContactNumber, setEditedContactNumber] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
 
   // check the current user by using the userID store in the database 
   useEffect(() => {
@@ -47,6 +48,7 @@ const UserInfoPage = ({ userId }) => {
 
   // check the image is uploaded by the user 
  const handleImageUpload = async () => {
+  console.log('here')
     if (!selectedFile) {
       alert('No file selected');
       return;
@@ -54,15 +56,21 @@ const UserInfoPage = ({ userId }) => {
 
     // check the extension type pf the picture uploaded
    const fileType = selectedFile.type;
+   console.log(fileType)
     let fileExtension = '';
     if (fileType === "image/png") {
       fileExtension = '.png';
-    } else if (fileType === "image/jpeg") {
+    } else if (fileType === "image/jpg") {
       fileExtension = '.jpg';
-    } else {
+    }else if (fileType === "image/jpeg") {
+      fileExtension = '.jpg';
+    }else {
       alert('File type not allowed. Only PNG and JPG files are accepted.');
       return;
     }
+
+    // Start uploading
+    setIsUploading(true);
 
     // upload the picture to the database 
     const imageRef = storageRef(storage, `profileImages/${userId}/profile${fileExtension}`);
@@ -72,6 +80,9 @@ const UserInfoPage = ({ userId }) => {
       await updateProfileImageInFirestore(imageUrl);
     } catch (error) {
       alert('Error uploading image: ', error);
+    }
+    finally {
+      setIsUploading(false); // End uploading
     }
   };
 
@@ -153,21 +164,23 @@ const UserInfoPage = ({ userId }) => {
             <img src={userInfo.profileImageUrl || profile} alt="Profile" className='profileImg' />
           )}
 
-          <div className='filesection'>
-      
-      {/* Only allow the file with png, jpg and jpeg in the user desktop to be uploaded*/}
-      {showFileInput ? (
-          <div className='filesection'>
-            <input type="file" className='file-input'
-              accept=".png, .jpg, .jpeg"
-              onChange={(e) => setSelectedFile(e.target.files[0])} 
-            />
-            <FaCheck onClick={handleImageUpload} className='tick' />
-            <FaTimes onClick={handleCancel} className='cancel'/>
+          {isUploading ? (
+          <div className='uploadtext'>Uploading the image ....</div> // Replace this with your loading spinner or indicator
+        ) : (
+          <div className="filesection">
+            {/* Only allow the file with png, jpg and jpeg in the user desktop to be uploaded*/}
+              {showFileInput ? (
+                  <div className='filesection'>
+                    <input type="file" className='file-input'
+                      accept=".png, .jpg"
+                      onChange={(e) => setSelectedFile(e.target.files[0])} 
+                    />
+                    <FaCheck onClick={handleImageUpload} className='tick' />
+                    <FaTimes onClick={handleCancel} className='cancel'/>
+                  </div>
+                  ):( <button onClick={handleEditClick} className='editbtn'>Edit Profile</button>)}
           </div>
-          ):( <button onClick={handleEditClick} className='editbtn'>Edit Profile</button>)}
-      </div>
-      
+        )}
         </div>
         {userInfo && (
         <div className="user-info-details">

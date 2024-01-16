@@ -1,13 +1,13 @@
 .law-firm-page {
-      font-family: 'Arial', sans-serif;
-      color: #333;
+  font-family: 'Spectral',serif;
+  color: #333;
 }
     
 .header-section {
   position: relative;
   text-align: center;
   color: white;
-  font-family: Arial, sans-serif;
+  font-family:'Spectral',serif;
   padding-bottom: 30px;
 }
 
@@ -87,7 +87,7 @@
   font-family: 'Spectral',serif;
 }
 
-.lawyer h2,
+.lawyerPage h2,
 .services h2{
   margin-bottom: 30px;
   font-size: 2em; 
@@ -118,18 +118,78 @@
   font-size: larger;
 }
 
+.lawyerPage {
+  font-family: 'Spectral', serif;
+  color: #333;
+  padding: 20px;
+  padding-bottom: 60px;
+  text-align: center;
+}
+
+.lawyerContainer {
+  display: flex;
+  flex-wrap: wrap;
+  /* grid-template-columns: repeat(4, minmax(250px, 300px)); */
+  gap: 8px;
+  justify-content: center; 
+}
+
+.lawyerProfile {
+  background: #fff;
+  text-align: center; /* Centering text content */
+  padding: 20px;
+}
+
+.imageContainer {
+  margin: auto; /* This will center the image container */
+}
+
+.lawyerImage {
+  object-fit: cover;
+  width: 250px;
+  height: 300px;
+  display: block;
+  margin-bottom: 10px; /* Space between image and text */
+}
+
+.lawyerName {
+  font-size: 1.2em;
+  margin-top: 10px;
+  margin-bottom: 5px; /* Space between name and email */
+}
+
+.lawyerContact {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row; /* Change direction to row */
+  gap: 10px; /* Adds space between icon and text */
+}
+
+.emailIcon {
+  color: #333;
+  font-size: 20px; /* Adjust icon size as needed */
+}
+
+/* Add a class for the email text to align it with the icon */
+.emailText {
+  display: flex;
+  align-items: center;
+}
+
 
 .footer {
   display: flex;
-  /* justify-content: space-between; */
-  padding: 20px;
+  justify-content: space-between;
+  /* padding: 15px; */
   background-color: #333;
   color: white;
   font-family: 'Spectral',serif;
-  font-size: large;
+  font-size: 18px;
+  padding-bottom: 5px;
 }
 
 .footer > div {
-  flex: 1;
+  flex:1;
   text-align: center;
 }

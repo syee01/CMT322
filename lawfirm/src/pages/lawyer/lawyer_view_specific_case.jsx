@@ -475,9 +475,9 @@ const LawyerViewSpecificCase = ({ userId }) => {
                 </div>
 
                 <div>
-                    <div className='section-small-header'>
+                    <div className='section-Small-Header'>
                         Case Information
-                        <button onClick={() => directToCase(collectionsData['case'].id)} className="update-button">
+                        <button onClick={() => directToCase(collectionsData['case'].id)} className="update-btn">
                             <FontAwesomeIcon icon={faEdit} className="fa-icon" /> Edit
                         </button>
                     </div>
@@ -545,9 +545,9 @@ const LawyerViewSpecificCase = ({ userId }) => {
                     </form>
                 </div>
                 <div>
-                    <div className='content-label-field'>
+                    <div className='content-Label-Field'>
                         Important Dates
-                        <button onClick={openAddModal}  className="update-button">
+                        <button onClick={openAddModal}  className="update-btn">
                             <FontAwesomeIcon icon={faEdit} className="fa-icon" /> Add
                         </button>
                     </div>
