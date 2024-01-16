@@ -48,7 +48,7 @@ const useLoadLawyers = () => {
             name: userData.fullname,
             email: userData.email,
             gender: lawyerData.gender,
-            specialty: caseTypeData.case_type_name, // Assuming 'name' is the field in the case_type document
+            speciality: caseTypeData.case_type_name, // Assuming 'name' is the field in the case_type document
             imageUrl: userData.profileImageUrl,
             description: lawyerData.description
           };
@@ -75,7 +75,7 @@ const LawyerPage = () => {
   if (loading) return <div></div>;
 
   return (
-    <div>
+    <div className='lawyerInfoPage'>
     <h1 className='lawyerPageHeader'>LA Law Firm Lawyers</h1>
     <div className="lawyer-container">
       {lawyers.map((lawyer) => (
@@ -86,7 +86,7 @@ const LawyerPage = () => {
             <FaEnvelope className="icon email-icon" />
             <span className="email">{lawyer.email}</span>
           </div>
-            <p className='lawyer-specialty'>Specialty: {lawyer.specialty}</p>
+            <p className='lawyer-speciality'>Speciality: {lawyer.speciality}</p>
             <p className="lawyer-description">{lawyer.description}</p>
         </div>
         <div className="lawyer-image-container">

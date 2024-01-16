@@ -8,7 +8,7 @@
 
 .lawyer-container {
     background-color: white; /* Set background color to white */
-    padding-bottom: 80px;
+    /* padding-bottom: 80px; */
     padding-left: 80px;
     padding-right: 80px;
     font-family:'Spectral',serif;
@@ -47,7 +47,7 @@
     margin-bottom: 0.5rem;
   }
 
-  .lawyer-specialty{
+  .lawyer-speciality{
     font-size: larger;
     padding-top: 10px;
   }
@@ -84,8 +84,10 @@
   }
   
   .lawyer-image {
-    width: 250px;
-    height: auto;
+    object-fit: cover;
+    width: 300px;
+    height: 400px;
+    display: block;
     border-radius: 0px; /* Adds rounded corners to the image */
   }
   

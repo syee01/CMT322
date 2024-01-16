@@ -6,8 +6,54 @@ import criminallaw from "../images/criminallaw.png"
 import familylaw from "../images/familylaw.png"
 import businesslaw from "../images/businesslaw.png"
 import insurancelaw from "../images/insurancelaw.png"
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { db } from '../firebase';
+import { FaEnvelope} from 'react-icons/fa';
+
+const useLoadLawyers = () => {
+  const [lawyers, setLawyers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const loadLawyers = async () => {
+      try {
+        // Query users with the role 'lawyer'
+        const usersRef = collection(db, 'users');
+        const usersQuery = query(usersRef, where('role', '==', 'lawyer'));
+        const usersSnapshot = await getDocs(usersQuery);
+
+        // Map through the snapshot to get individual lawyer details
+        const lawyersDataPromises = usersSnapshot.docs.map(async (userDoc) => {
+          const userId = userDoc.id; // Firestore generated ID
+          const userData = userDoc.data();
+      
+          return {
+            userId,
+            name: userData.fullname,
+            email: userData.email,
+            imageUrl: userData.profileImageUrl,
+          };
+        });
+
+        // Resolve all promises and set lawyers state
+        const lawyersData = (await Promise.all(lawyersDataPromises)).filter(Boolean);
+        setLawyers(lawyersData);
+      } catch (error) {
+        console.error("Failed to load lawyers:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadLawyers();
+  }, []);
+
+  return { lawyers, loading };
+};
 
 const Home = () => {
+  const { lawyers, loading } = useLoadLawyers();
   return (
     <div className="law-firm-page">
       <div class="header-section">
@@ -57,10 +103,26 @@ const Home = () => {
            
           </div>
         </section>
-
-        <section className='lawyer'>
-        <h2>LAWYER</h2>
-        </section>
+        
+        <div className="lawyerPage">
+      <h2>LAWYER</h2>
+      <div className="lawyerContainer">
+        {lawyers.map((lawyer) => (
+          <div key={lawyer.userId} className="lawyerProfile">
+            <div className="imageContainer">
+              <img src={lawyer.imageUrl} alt={`Profile of ${lawyer.name}`} className="lawyerImage" />
+            </div>
+            <div className="lawyerInfo">
+              <h1 className="lawyerName">{lawyer.name}</h1>
+              <div className="lawyerContact">
+                <FaEnvelope className="icon emailIcon" />
+                <span className="emailText">{lawyer.email}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      </div>
       
       <footer className="footer">
         <div className="address">
@@ -71,9 +133,9 @@ const Home = () => {
           <p>CONTACT</p>
           <p>04-1234567</p>
         </div>
-        <div className="email">
+        <div className="firm-email">
           <p>EMAIL</p>
-          <p>LAlawfirm@mail.com</p>
+          <p>LAlawfirm@gmail.com</p>
         </div>
       </footer>
     </div>
