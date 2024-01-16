@@ -16,6 +16,7 @@ const UserInfoPage = ({ userId }) => {
   const [editMode, setEditMode] = useState({ name: false, contactNumber: false });
   const [editedName, setEditedName] = useState('');
   const [editedContactNumber, setEditedContactNumber] = useState('');
+  const [isUploading, setIsUploading] = useState(false);
 
   // check the current user by using the userID store in the database 
   useEffect(() => {
@@ -47,6 +48,7 @@ const UserInfoPage = ({ userId }) => {
 
   // check the image is uploaded by the user 
  const handleImageUpload = async () => {
+  console.log('here')
     if (!selectedFile) {
       alert('No file selected');
       return;
@@ -67,6 +69,9 @@ const UserInfoPage = ({ userId }) => {
       return;
     }
 
+    // Start uploading
+    setIsUploading(true);
+
     // upload the picture to the database 
     const imageRef = storageRef(storage, `profileImages/${userId}/profile${fileExtension}`);
     try {
@@ -75,6 +80,9 @@ const UserInfoPage = ({ userId }) => {
       await updateProfileImageInFirestore(imageUrl);
     } catch (error) {
       alert('Error uploading image: ', error);
+    }
+    finally {
+      setIsUploading(false); // End uploading
     }
   };
 
@@ -156,21 +164,23 @@ const UserInfoPage = ({ userId }) => {
             <img src={userInfo.profileImageUrl || profile} alt="Profile" className='profileImg' />
           )}
 
-          <div className='filesection'>
-      
-      {/* Only allow the file with png, jpg and jpeg in the user desktop to be uploaded*/}
-      {showFileInput ? (
-          <div className='filesection'>
-            <input type="file" className='file-input'
-              accept=".png, .jpg"
-              onChange={(e) => setSelectedFile(e.target.files[0])} 
-            />
-            <FaCheck onClick={handleImageUpload} className='tick' />
-            <FaTimes onClick={handleCancel} className='cancel'/>
+          {isUploading ? (
+          <div className='uploadtext'>Uploading the image ....</div> // Replace this with your loading spinner or indicator
+        ) : (
+          <div className="filesection">
+            {/* Only allow the file with png, jpg and jpeg in the user desktop to be uploaded*/}
+              {showFileInput ? (
+                  <div className='filesection'>
+                    <input type="file" className='file-input'
+                      accept=".png, .jpg"
+                      onChange={(e) => setSelectedFile(e.target.files[0])} 
+                    />
+                    <FaCheck onClick={handleImageUpload} className='tick' />
+                    <FaTimes onClick={handleCancel} className='cancel'/>
+                  </div>
+                  ):( <button onClick={handleEditClick} className='editbtn'>Edit Profile</button>)}
           </div>
-          ):( <button onClick={handleEditClick} className='editbtn'>Edit Profile</button>)}
-      </div>
-      
+        )}
         </div>
         {userInfo && (
         <div className="user-info-details">
