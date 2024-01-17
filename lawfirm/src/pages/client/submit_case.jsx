@@ -92,11 +92,14 @@ const SubmitCase = ({ userId }) => {
                 case_title: formData.case_title,
                 case_description: formData.case_description,
                 case_created_date: serverTimestamp(),
-                case_finished_date: null
+                case_finished_date: null,
+                case_price: "To be determined"
             });
 
             for (const uploadedFile of uploadedFiles) {
-                const temp_case_id =  newCaseRef.split('/').pop();
+                // console.log( "wht: ",newCaseRef._key.path.segments[1]);
+                // const temp_case_id =  newCaseRef.split('/').pop();
+                const temp_case_id = newCaseRef._key.path.segments[1];
                 const documentRef = storageRef(storage, `case_document/${temp_case_id}/${uploadedFile.name}`);
                 const docRef = collection(db, 'document');
                 const newDocRef = doc(docRef);
