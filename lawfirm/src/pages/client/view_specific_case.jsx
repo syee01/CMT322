@@ -6,6 +6,8 @@ import { db } from '../../firebase';
 import { doc, updateDoc } from 'firebase/firestore';
 import * as cons from "../constant"
 import * as util from "../utility"
+import Modal from 'react-modal';
+
 
 const ViewSpecificCase = ({ userId }) => {
     const { case_id } = useParams();  // Assuming case_id is from URL params
@@ -15,6 +17,21 @@ const ViewSpecificCase = ({ userId }) => {
     const [acceptConfirmation, setAcceptConfirmation] = useState(false);
     const [rejectConfirmation, setRejectConfirmation] = useState(false);
     const navigate = useNavigate();
+
+    const [meetingID, setMeetingID] = useState(null);
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+    const [selectedMeeting, setSelectedMeeting] = useState({
+        meeting:{
+            data:{
+                event: '',
+                date: '',
+                case: '',
+                description: '',
+                location: '',
+                status: ''
+            }
+        }
+    });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -33,6 +50,11 @@ const ViewSpecificCase = ({ userId }) => {
                 data[cons.lawyerCollectionName] = await util.getLawyerFromUsers();
                 data[cons.case_typeCollectionName] = await util.getCaseTypeStatus(cons.case_typeCollectionName);
                 data[cons.case_statusCollectionName] = await util.getCaseTypeStatus(cons.case_statusCollectionName);
+                data[cons.meetingCollectionName] = await util.getAllMeetingsUnderOneCase(case_id);
+                data[cons.case_typeCollectionName] = await util.getCaseTypeStatus(cons.case_typeCollectionName);
+                data[cons.case_statusCollectionName] = await util.getCaseTypeStatus(cons.case_statusCollectionName);
+                data[cons.meeting_locationCollectionName] = await util.getCaseTypeStatus(cons.meeting_locationCollectionName);
+                data[cons.meeting_statusCollectionName] = await util.getCaseTypeStatus(cons.meeting_statusCollectionName);
 
                 setCollectionsData(data);
             } catch (error) {
@@ -98,6 +120,28 @@ const ViewSpecificCase = ({ userId }) => {
             console.error("Error updating case: ", error);
             alert('There was an error updating the case.');
         }
+    };
+
+    const openInfoModal = async(meeting_id) => {
+        try {
+            console.log("HI", meeting_id)
+            const data = {};
+            data[cons.meetingCollectionName] = await util.getOneMeeting(meeting_id);
+            collectionsData['meeting_document'] = await util.getDocumentFromOneMeeting(meeting_id);
+
+            setSelectedMeeting(data);
+            setMeetingID(meeting_id);
+            setIsInfoModalOpen(true);
+
+        } catch (error) {
+            console.error('Error retrieving specific meeting:', error);
+        }
+    };
+
+    const closeInfoModal = () => {
+        collectionsData['meeting_document'] = [];
+        setIsInfoModalOpen(false);
+        navigate(`/ViewSpecificCase/${case_id}`)
     };
 
     const confirmRejection = async () => {
@@ -229,15 +273,85 @@ const ViewSpecificCase = ({ userId }) => {
                                 <div className='date-header'>Location</div>
                                 <div className='date-header'>Status</div>
                             </div>
-                            <div className='date-section-row'>
-                                <div className='date-content-value'>Data</div>
-                                <div className='date-content-value'>Data</div>
-                                <div className='date-content-value'>Data</div>
-                                <div className='date-content-value'>Data</div>
-                            </div>
+                            {collectionsData[cons.meetingCollectionName]?.map((item) => (
+                                <React.Fragment key={item.id}>
+                                    <div className='date-section-row'>
+                                        <div className='lawyer-meetings-row-content-small'>
+                                            {item.data.date}
+                                        </div>
+                                        <div className='lawyer-meetings-row-content-title' onClick={() => openInfoModal(item.id)}>
+                                            {item.data.event}
+                                        </div> 
+                                        <div className='lawyer-meetings-row-content-small'>
+                                            {util.getLocationName(collectionsData[cons.meeting_locationCollectionName], item.data.location)}
+                                        </div>
+                                        <div className='lawyer-meetings-row-content-small'>
+                                            {util.getStatusName(collectionsData[cons.meeting_statusCollectionName], item.data.status)}
+                                        </div>
+                                    </div>
+                                </React.Fragment>
+                            ))}
                         </div>
                     </div>
                 </div>
+
+                {/* Info Modal */}
+                <Modal
+                    isOpen={isInfoModalOpen}
+                    onRequestClose={closeInfoModal}
+                    contentLabel="Info Modal"
+                >
+                    <div></div>
+                    <button class="move-right" onClick={closeInfoModal}>Close</button>
+                    <div>
+                        <div className='modal-section-small-header'>
+                            Meeting Information
+                        </div>
+                        <div className='section-divider'>
+                            <div className='divider-left'>
+                                <div className='inner-left-part'>
+                                    <div className='content-label-field'>Event</div>
+                                    <div className='content-label-field'>Date</div>
+                                </div>
+                                <div className='inner-right-part'>
+                                    <div className='content-data-field'>{selectedMeeting[cons.meetingCollectionName].data.event}</div>
+                                    <div className='content-data-field'>{selectedMeeting[cons.meetingCollectionName].data.date}</div>
+                                </div>
+                            </div>
+                            <div className='divider-right'>
+                                <div className='inner-left-part'>
+                                    <div className='content-label-field'>Status</div>
+                                    <div className='content-label-field'>Location</div>
+                                </div>
+                                <div className='inner-right-part'>
+                                    <div className='content-data-field'>{util.getStatusName(collectionsData[cons.meeting_statusCollectionName], selectedMeeting[cons.meetingCollectionName].data.status)}</div>
+                                    <div className='content-data-field'>{util.getLocationName(collectionsData[cons.meeting_locationCollectionName], selectedMeeting[cons.meetingCollectionName].data.location)}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div className='content-label-field'>
+                            Description
+                        </div>
+                        <div className='content-frame'>
+                        {selectedMeeting[cons.meetingCollectionName].data.description}
+                        </div>
+                    </div>
+
+                    <div>
+                        <div className='content-label-field'>
+                            Related Documents
+                        </div>
+                        <div className='content-frame'>
+                            {collectionsData['meeting_document']?.map((item) => (
+                                <li key={item.id} onClick={() => openURL(item.data.url)}>{item.data.document_name}</li>
+                            ))}
+                        </div>
+                    </div>
+                                     
+                </Modal>
 
                 {displayWithCaseStatus()}
 
