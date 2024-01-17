@@ -34,7 +34,7 @@
 
 .case-assignment {
   flex: 40%;
-  font-family: Average; 
+  font-family:  'Spectral',serif;
   padding: 10px;
 }
 
@@ -138,7 +138,7 @@
   cursor: pointer;
   float: right;
   font-size: 0.9em;
-  font-family: Average;
+  font-family:  'Spectral',serif;
 }
 
 .case-types-chart {
@@ -150,7 +150,7 @@
 .chart-container {
   height: 320px; 
   background-color: #ffffff;
-  font-family: Average;
+  font-family: 'Spectral',serif;
   border-radius: 5px;
   border: 3px #E6EAF4 solid;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -160,7 +160,7 @@
 .case-status-charts {
   flex: 0 0 60%;
   max-width: 60%;
-  font-family: Average;
+  font-family: 'Spectral',serif;
   padding: 10px;
 }
 

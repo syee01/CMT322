@@ -286,5 +286,6 @@
 }
 
 .form-header{
-    font-size:larger;
+    font-size:30px;
+    font-family: 'Spectral',serif;
 }

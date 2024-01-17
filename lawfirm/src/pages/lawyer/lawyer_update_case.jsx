@@ -250,8 +250,8 @@ const LawyerUpdateCase = ({ userId }) => {
         <form onSubmit={handleSubmit}>
             <div className='client-page'>
             <div className="header-section-1">
-                <div className="header-title-1">
-                    <h1>SUBMIT YOUR CASE</h1>
+                <div>
+                    <h1 className='headertitle-1'>SUBMIT YOUR CASE</h1>
                 </div>
             </div>
             <div>
