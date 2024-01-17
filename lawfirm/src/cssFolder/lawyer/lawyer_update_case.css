@@ -99,6 +99,32 @@ body {
     margin-bottom: 20px;
 }
 
+.display-field {
+    flex: 1;
+    width: 100%;  
+    margin: 1%;
+    font-size: 20px;
+    color: 	#5A5A5A;
+    padding: 1.5%;
+    padding-left: 5%;
+    font-family: 'Spectral',serif;
+    margin-top: 5px;
+    margin-bottom: 28px;
+}
+
+.submit-date-display-field {
+    flex: 1;
+    width: 100%;  
+    margin: 1%;
+    font-size: 20px;
+    color: 	#5A5A5A;
+    padding: 1.5%;
+    padding-left: 5%;
+    font-family: 'Spectral',serif;
+    margin-top: 20px;
+    margin-bottom: 25px;
+}
+
 .blank {
     flex: 1;
     margin: 10px; /*manual*/
