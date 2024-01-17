@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-modal';
 import { apiCalendar, timeZone } from '../../googleapi'
+import { Timestamp } from 'firebase/firestore';
 
 const LawyerViewSpecificCase = ({ userId }) => {
     const { case_id } = useParams();  // Assuming case_id is from URL params
@@ -19,6 +20,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [meetingID, setMeetingID] = useState(null);
+    const [eventID, setEventID] = useState(null)
     const [selectedItems, setSelectedItems] = useState([]);
     const [uploadedFiles, setUploadedFiles] = useState([]);
     const navigate = useNavigate();
@@ -27,21 +29,20 @@ const LawyerViewSpecificCase = ({ userId }) => {
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedMeeting, setSelectedMeeting] = useState({
-        meeting:{
             data:{
                 event: '',
-                date: '',
+                date: Timestamp.fromDate(new Date(2023, 0, 1)),
                 case: '',
                 description: '',
                 location: '',
                 status: ''
             }
-        }
     });
+
 
     const [formData, setFormData] = useState({
         event: '',
-        date: '',
+        date: new Date(2023, 0, 1),
         case: '',
         description: '',
         location: '',
@@ -87,6 +88,9 @@ const LawyerViewSpecificCase = ({ userId }) => {
                 data[cons.meeting_statusCollectionName] = await util.getCaseTypeStatus(cons.meeting_statusCollectionName);
 
                 setCollectionsData(data);
+                console.log(selectedMeeting);
+                // console.log("Hehe", collectionsData[cons.meetingCollectionName]);
+                // console.log("Hehe", collectionsData[cons.caseCollectionName]);
 
             } catch (error) {
                 setError(error);
@@ -127,13 +131,13 @@ const LawyerViewSpecificCase = ({ userId }) => {
     const openInfoModal = async(meeting_id) => {
         try {
             console.log("HI", meeting_id)
-            const data = {};
-            data[cons.meetingCollectionName] = await util.getOneMeeting(meeting_id);
+            const data = await util.getOneMeeting(meeting_id);
             collectionsData['meeting_document'] = await util.getDocumentFromOneMeeting(meeting_id);
 
             setSelectedMeeting(data);
             setMeetingID(meeting_id);
             setIsInfoModalOpen(true);
+            console.log("", selectedMeeting);
 
         } catch (error) {
             console.error('Error retrieving specific meeting:', error);
@@ -194,6 +198,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
 
     const clearData = async () => {
         setFormData(formData);
+        // setSelectedMeeting(selectedMeeting);
         setUploadedFiles([]);
         console.log("clear")
     }
@@ -215,16 +220,49 @@ const LawyerViewSpecificCase = ({ userId }) => {
         e.preventDefault();
 
         try {
+            const eventLocation = await util.getLocationName(collectionsData[cons.meeting_locationCollectionName], formData.location);
+
+            await apiCalendar.handleAuthClick();
+            const eventStartTime = new Date(formData.date);
+            const eventEndTime = new Date(eventStartTime);
+            eventEndTime.setHours(eventEndTime.getHours() + 2);
+            const event = {
+                summary: formData.event,
+                location: eventLocation,
+                description: formData.description,
+                start: {
+                    dateTime: eventStartTime.toISOString(),
+                    timeZone: timeZone
+                },
+                end: {
+                    dateTime:eventEndTime.toISOString(),
+                    timeZone: timeZone
+                },
+                attendees: [
+                    { 
+                        email: collectionsData[cons.usersCollectionName].data.email, 
+                        displayName: collectionsData[cons.usersCollectionName].data.fullname,
+                    },
+                ]
+            }
+            
+            
+            const result = await apiCalendar.createEvent(event, 'primary', {sendUpdates: 'all'});  //.events.insert
+            // const result = await apiCalendar.createCalendar(event, 'primary');
+            console.log( "result: ",result);
+            console.log( "event id 1: ", result.result.id);
+
             // setIsSubmitting(true);
             const meetingDocRef = collection(db, 'meeting');
             const newMeetingRef = doc(meetingDocRef);
             await setDoc(newMeetingRef, {
                 case: case_id,
                 event: formData.event,
-                date: formData.date,
+                date: Timestamp.fromDate(new Date(formData.date)),
                 location: formData.location,
                 status: formData.status,
-                description: formData.description
+                description: formData.description,
+                event_id: result.result.id
             });
             
             for (const uploadedFile of uploadedFiles) {
@@ -245,7 +283,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                     console.error('Error uploading document: ', error);
                 }
             }
-            scheduleMeeting();
+
             const newMeetingId = newMeetingRef.id;
             console.log('Newly added meeting ID:', newMeetingId);
 
@@ -259,9 +297,8 @@ const LawyerViewSpecificCase = ({ userId }) => {
         }
     };
 
-    const scheduleMeeting = async () => {
+    function scheduleMeeting() {
         try{
-            await apiCalendar.handleAuthClick();
             const eventStartTime = new Date(formData.date);
             const eventEndTime = new Date(eventStartTime);
             eventEndTime.setHours(eventEndTime.getHours() + 2);
@@ -282,13 +319,19 @@ const LawyerViewSpecificCase = ({ userId }) => {
                         email: collectionsData[cons.usersCollectionName].data.email, 
                         displayName: collectionsData[cons.usersCollectionName].data.fullname 
                     },
-                ]
+                ],
+                sendUpdates: 'all'
             }
             apiCalendar.createEvent(event, 'primary').then((result) => {
                 console.log( "result: ",result)
+                console.log( "event id 1: ", result.result.id)
+                // setEventID(result.result.id);
             }).catch((error) => {
                 console.log("error: ", error)
             })
+            // console.log( "result 1: ",result)
+            // console.log( "event id 1: ", result.result.id)
+            // setEventID(result.result.id);
         }catch(e){
             console.log("API Error: ", e)
         }
@@ -300,15 +343,54 @@ const LawyerViewSpecificCase = ({ userId }) => {
 
         try {
             // setIsSubmitting(true);
+            const eventLocation = await util.getLocationName(collectionsData[cons.meeting_locationCollectionName], formData.location);
+
             const itemRef = doc(db, 'meeting', meetingID);
-            console.log(itemRef)
-            console.log("Testing: ", formData.description)
+            const getItemValue = await getDoc(itemRef);
+            await apiCalendar.handleAuthClick();
+            const existingEventId = getItemValue.data().event_id;
+            if (existingEventId) {
+                apiCalendar.deleteEvent(existingEventId, 'primary').then((result) => {
+                  console.log('Previous event deleted:', result);
+                }).catch((error) => {
+                  console.log('Error deleting previous event:', error);
+                });
+            }
+ 
+            const eventStartTime = new Date(formData.date);
+            const eventEndTime = new Date(eventStartTime);
+            eventEndTime.setHours(eventEndTime.getHours() + 2);
+            const event = {
+                summary: formData.event,
+                location: eventLocation,
+                description: formData.description,
+                start: {
+                    dateTime: eventStartTime.toISOString(),
+                    timeZone: timeZone
+                },
+                end: {
+                    dateTime:eventEndTime.toISOString(),
+                    timeZone: timeZone
+                },
+                attendees: [
+                    { 
+                        email: collectionsData[cons.usersCollectionName].data.email, 
+                        displayName: collectionsData[cons.usersCollectionName].data.fullname 
+                    },
+                ],
+                sendUpdates: 'all'
+            }
+            const result = await apiCalendar.createEvent(event, 'primary', {sendUpdates: 'all'});  //.events.insert
+            console.log( "result: ",result);
+            console.log( "event id 1: ", result.result.id);
+
             await updateDoc(itemRef, {
                 event: formData.event,
-                date: formData.date,
+                date: Timestamp.fromDate(new Date(formData.date)),
                 location: formData.location,
                 status: formData.status,
-                description: formData.description
+                description: formData.description,
+                event_id: result.result.id
             });
 
             console.log('Item data updated successfully!');
@@ -477,7 +559,14 @@ const LawyerViewSpecificCase = ({ userId }) => {
                 <div>
                     <div className='section-Small-Header'>
                         Case Information
-                        <button onClick={() => directToCase(collectionsData['case'].id)} className="update-btn">
+                        <button onClick={() => directToCase(collectionsData['case'].id)} className="update-btn"
+                        style={{ 
+                            display: 
+                                ((util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Finished') 
+                                ? 'none' 
+                                : 'inline-block'
+                          }}
+                        >
                             <FontAwesomeIcon icon={faEdit} className="fa-icon" /> Edit
                         </button>
                     </div>
@@ -503,7 +592,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                             <div className='inner-right-part'>
                                 <div className='content-data-field'>{util.getLawyerName(collectionsData[cons.lawyerCollectionName], collectionsData[cons.caseCollectionName].data.lawyer)}</div>
                                 <div className='content-data-field'>{collectionsData[cons.caseCollectionName].data.case_price}</div>
-                                <div className='content-data-field'>{collectionsData[cons.caseCollectionName].data.case_created_date.toDate().toLocaleString()}</div>
+                                <div className='content-data-field'>{collectionsData[cons.caseCollectionName].data.case_created_date.toDate().toLocaleTimeString([], { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase()}</div>
                             </div>
                         </div>
                     </div>
@@ -528,26 +617,40 @@ const LawyerViewSpecificCase = ({ userId }) => {
                         ))}
                     </div>
                 </div>
-                <div>
+                <div
+                style={{ 
+                    display: 
+                        ((util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Finished') 
+                        ? 'none' 
+                        : 'block'
+                  }}
+                >
                     <form onSubmit={handleCaseFileUpload}>
                         <div>
-                            <div className='label-field'>Documents</div>
+                            <div className='labelfield'>Documents</div>
                             <div {...getRootProps()} className='dropzoneStyles'>
                                 <input {...getInputProps()} />
                                 <label>Drag and Drop Some Files Here</label>
                                 {uploadedFiles.length > 0 && displayDroppedFiles()}
                             </div>
                         </div>
-                        <div class="button-row">
-                            <button type='button' onClick={clearData}>Clear</button>
-                            <button class="move-right"type="submit">Save</button>
+                        <div class="button-section">
+                            <button type="button" onClick={clearData}>Clear</button>
+                            <button type="submit">Save</button>
                         </div>
                     </form>
                 </div>
                 <div>
                     <div className='content-Label-Field'>
                         Important Dates
-                        <button onClick={openAddModal}  className="update-btn">
+                        <button onClick={openAddModal}  className="update-btn"
+                        style={{ 
+                            display: 
+                                ((util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Finished') 
+                                ? 'none' 
+                                : 'inline-block'
+                        }}
+                        >
                             <FontAwesomeIcon icon={faEdit} className="fa-icon" /> Add
                         </button>
                     </div>
@@ -559,13 +662,13 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                 <div className='date-header'>Location</div>
                                 <div className='date-header'>Status</div>
                             </div>
-                            {collectionsData[cons.meetingCollectionName]?.map((item) => (
+                            {collectionsData[cons.meetingCollectionName]?.sort((a, b) => b.data.date.toMillis() - a.data.date.toMillis()).map((item) => (
                                 <React.Fragment key={item.id}>
                                     <div className='date-section-row'>
                                         <div className='lawyer-meetings-row-content-small'>
-                                            {item.data.date}
+                                            {item.data.date.toDate().toLocaleTimeString([], { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase()}
                                         </div>
-                                        <div className='lawyer-meetings-row-content-title' onClick={() => openInfoModal(item.id)}>
+                                        <div className='lawyer-meetings-row-content-title' type="button" onClick={() => openInfoModal(item.id)}>
                                             {item.data.event}
                                         </div> 
                                         <div className='lawyer-meetings-row-content-small'>
@@ -590,7 +693,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                 >
                 <button class="move-right" onClick={closeAddModal}>Close</button>
                 <form onSubmit={handleAddSubmit}>
-                    <div className='modal-section-small-header'>
+                    <div className='section-Small-Header'>
                         Meeting Information
                     </div>
                     <div className='form-case-container'>
@@ -610,7 +713,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                         />
                                         <input 
                                             className='input-field' 
-                                            type="date"
+                                            type="datetime-local"
                                             name="date" 
                                             onChange={handleChange}
                                             // onBlur={() => handleBlur('date')} 
@@ -629,9 +732,11 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                         onChange={handleChange} req>
                                             <option value="Select an option..." disabled selected>Select an option...</option>
                                             {collectionsData[cons.meeting_statusCollectionName]?.map((item) => (
+                                                item.data.name !== "Finished" && (
                                                 <option key={item.id} value={item.id}>
                                                     {item.data.name}
                                                 </option>
+                                                )
                                             ))}
                                         </select>
                                         <select className='input-field' name="location"
@@ -653,7 +758,6 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                         cols="30" 
                                         rows="10"
                                         name="description" 
-                                        value={formData.description}
                                         // onBlur={() => handleBlur('description')} 
                                         onChange={handleChange}
                                         required
@@ -671,9 +775,13 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                 </div>
                             </div>
                         </div>
-                    <div class="button-row">
+                    {/* <div class="button-row">
                         <button type='button' onClick={clearData}>Clear</button>
                         <button class="move-right"type="submit">Save</button>
+                    </div> */}
+                    <div className='button-section'>
+                        {/* <button className='button' type='button' onClick={clearData}>Clear</button> */}
+                        <button className='button' type='submit'>Submit</button>
                     </div>
                 </form>
                 </Modal>
@@ -686,9 +794,16 @@ const LawyerViewSpecificCase = ({ userId }) => {
                 >
                 <button class="move-right" onClick={closeInfoModal}>Close</button>
                 <div>
-                    <div className='modal-section-small-header'>
+                    <div className='section-Small-Header'>
                         Meeting Information
-                        <button onClick={() => openEditModal(selectedMeeting['meeting'].id)} className="update-button">
+                        <button onClick={() => openEditModal(selectedMeeting.id)} className="update-btn"
+                        style={{ 
+                            display: 
+                                ((util.getStatusName(collectionsData[cons.meeting_statusCollectionName], selectedMeeting.data.status)) === 'Finished') 
+                                ? 'none' 
+                                : 'inline-block'
+                          }}
+                        >
                             <FontAwesomeIcon icon={faEdit} className="fa-icon" /> Edit
                         </button>
                     </div>
@@ -699,8 +814,8 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                 <div className='content-label-field'>Date</div>
                             </div>
                             <div className='inner-right-part'>
-                                <div className='content-data-field'>{selectedMeeting[cons.meetingCollectionName].data.event}</div>
-                                <div className='content-data-field'>{selectedMeeting[cons.meetingCollectionName].data.date}</div>
+                                <div className='content-data-field'>{selectedMeeting.data.event}</div>
+                                <div className='content-data-field'>{selectedMeeting.data.date.toDate().toLocaleTimeString([], { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase()}</div>
                             </div>
                         </div>
                         <div className='divider-right'>
@@ -709,8 +824,8 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                 <div className='content-label-field'>Location</div>
                             </div>
                             <div className='inner-right-part'>
-                                <div className='content-data-field'>{util.getStatusName(collectionsData[cons.meeting_statusCollectionName], selectedMeeting[cons.meetingCollectionName].data.status)}</div>
-                                <div className='content-data-field'>{util.getLocationName(collectionsData[cons.meeting_locationCollectionName], selectedMeeting[cons.meetingCollectionName].data.location)}</div>
+                                <div className='content-data-field'>{util.getStatusName(collectionsData[cons.meeting_statusCollectionName], selectedMeeting.data.status)}</div>
+                                <div className='content-data-field'>{util.getLocationName(collectionsData[cons.meeting_locationCollectionName], selectedMeeting.data.location)}</div>
                             </div>
                         </div>
                     </div>
@@ -721,7 +836,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                         Description
                     </div>
                     <div className='content-frame'>
-                    {selectedMeeting[cons.meetingCollectionName].data.description}
+                    {selectedMeeting.data.description}
                     </div>
                 </div>
 
@@ -736,7 +851,14 @@ const LawyerViewSpecificCase = ({ userId }) => {
                     </div>
                 </div>
 
-                <div>
+                <div
+                style={{ 
+                    display: 
+                        ((util.getStatusName(collectionsData[cons.meeting_statusCollectionName], selectedMeeting.data.status)) === 'Finished') 
+                        ? 'none' 
+                        : 'block'
+                }}
+                >
                     <form onSubmit={handleMeetingFileUpload}>
                         <div>
                             <div className='label-field'>Documents</div>
@@ -746,9 +868,9 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                 {uploadedFiles.length > 0 && displayDroppedFiles()}
                             </div>
                         </div>
-                        <div class="button-row">
-                            <button type='button' onClick={clearData}>Clear</button>
-                            <button class="move-right"type="submit">Save</button>
+                        <div class="button-section">
+                            <button type="button" onClick={clearData}>Clear</button>
+                            <button type="submit">Save</button>
                         </div>
                     </form>
                 </div>                   
@@ -762,7 +884,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                 >
                 <button class="move-right" onClick={closeEditModal}>Close</button>
                 <form onSubmit={handleUpdateSubmit}>
-                    <div className='modal-section-small-header'>
+                    <div className='section-Small-Header'>
                         Meeting Information
                     </div>
                         <div className='form-case-container'>
@@ -783,7 +905,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                         />
                                         <input 
                                             className='input-field' 
-                                            type="date"
+                                            type="datetime-local"
                                             name="date" 
                                             value={formData.date}
                                             onChange={handleChange}
@@ -836,9 +958,11 @@ const LawyerViewSpecificCase = ({ userId }) => {
                             </div>
                             <div>
                                 <div>
-                                    <div className='content-label-field'>
+                                    <div className='content-Label-Field'>
                                         Related Documents
-                                        <button onClick={handleDelete}>Delete</button>
+                                        {/* <div className="update-btn" > */}
+                                        <button className="update-btn" type="button" onClick={handleDelete}>Delete</button>
+                                        {/* </div> */}
                                     </div>                              
 
                                     <div className='content-frame'>
@@ -869,9 +993,13 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                 </div>
                             </div>
                         </div>
-                    <div class="button-row">
+                    {/* <div class="button-row">
                         <button type='button' onClick={clearData}>Clear</button>
                         <button class="move-right"type="submit">Save</button>
+                    </div> */}
+                    <div className='button-section'>
+                        {/* <button className='button' type='button' onClick={clearData}>Clear</button> */}
+                        <button className='button' type='submit'>Save</button>
                     </div>
                 </form>
                 </Modal>

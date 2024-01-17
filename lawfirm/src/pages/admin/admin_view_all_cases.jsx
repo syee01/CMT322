@@ -34,11 +34,7 @@ const AdminViewAllCases = () => {
             navigate(`/admin/ViewCaseApplication/${case_id}`);
         } else if (case_status_id === collectionsData[cons.case_statusCollectionName][1].id) {
             navigate(`/admin/ViewRejectedCases/${case_id}`)
-        } else if (case_status_id === collectionsData[cons.case_statusCollectionName][3].id) {
-            // navigate(`/admin/ViewRejectedCases/${case_id}`)
-            //view report
-        }else {
-            // in progress
+        } else { //in progress finished pending accept
             navigate(`/admin/ViewSpecificCase/${case_id}`);
         }
     }

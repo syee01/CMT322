@@ -8,6 +8,7 @@ import { getStorage, ref as storageRef, deleteObject, getDownloadURL } from 'fir
 import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import * as cons from "../constant"
 import * as util from "../utility.js"
+import { apiCalendar } from '../../googleapi'
 
 const LawyerUpdateCase = ({ userId }) => {
     const { case_id } = useParams(); 
@@ -140,6 +141,9 @@ const LawyerUpdateCase = ({ userId }) => {
     //     }
     // };
 
+    const handleBack = async (e) => {
+        navigate(`/LawyerViewSpecificCase/${case_id}`)      
+    };
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -162,14 +166,20 @@ const LawyerUpdateCase = ({ userId }) => {
         }
     };
 
-    const CheckboxItem = ({ id, label, isSelected, onSelect }) => {
+    const CheckboxItem = ({ id, label, isSelected, onSelect, meetingStatus }) => {
         return (
           <div>
             <input
-              type="checkbox"
-              id={id}
-              checked={isSelected}
-              onChange={() => onSelect(id)}
+                style={{ 
+                    display: 
+                        ((util.getStatusName(collectionsData[cons.meeting_statusCollectionName], meetingStatus)) === 'Finished') 
+                        ? 'none' 
+                        : 'inline-block' 
+                }}
+                type="checkbox"
+                id={id}
+                checked={isSelected}
+                onChange={() => onSelect(id)}
             />
             <label htmlFor={id}>{label}</label>
           </div>
@@ -213,6 +223,17 @@ const LawyerUpdateCase = ({ userId }) => {
                 // const item = meetingDocList[key];
                 // Now 'item' contains the value of the current property
                 // console.log(key, item);
+                const eventIdRef = doc(db, 'meeting', item.id);
+                const getEvent = await getDoc(eventIdRef);
+                await apiCalendar.handleAuthClick();
+                const existingEventId = getEvent.data().event_id;
+                if (existingEventId) {
+                    apiCalendar.deleteEvent(existingEventId, 'primary').then((result) => {
+                    console.log('Previous event deleted:', result);
+                    }).catch((error) => {
+                    console.log('Error deleting previous event:', error);
+                    });
+                }
                 console.log("Testing Delete again: ", item.id);
                 const itemRef = doc(db, cons.documentCollectionName, item.id);
                 const itemDataRef = await getDoc(itemRef);
@@ -341,15 +362,14 @@ const LawyerUpdateCase = ({ userId }) => {
                                         <div className='label-field'>Submitted Date</div>
                                     </div>
                                     <div className='form-inner-right'>
-                                        <div className='content-data-field'>{util.getLawyerName(collectionsData[cons.lawyerCollectionName], collectionsData[cons.caseCollectionName].data.lawyer)}</div>
+                                        <div className='display-field'>{util.getLawyerName(collectionsData[cons.lawyerCollectionName], collectionsData[cons.caseCollectionName].data.lawyer)}</div>
                                         <input 
                                             className='input-field' 
                                             type="text"
                                             name="case_price" 
                                             value={formData.case_price}
-                                            required
                                         />
-                                        <div className='content-data-field'>{collectionsData[cons.caseCollectionName].data.case_created_date.toDate().toLocaleString()}</div>
+                                        <div className='submit-date-display-field'>{collectionsData[cons.caseCollectionName].data.case_created_date.toDate().toLocaleTimeString([], { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase()}</div>
                                         {/* <input
                                             className='input-field' 
                                             type="date"
@@ -377,7 +397,7 @@ const LawyerUpdateCase = ({ userId }) => {
                             </div>
                             <div>
                                 <div>
-                                    <div className='content-label-field'>
+                                    <div className='content-Label-Field'>
                                         Related Documents
                                         <button onClick={handleDocumentsDelete}>Delete</button>
                                     </div>                              
@@ -412,9 +432,9 @@ const LawyerUpdateCase = ({ userId }) => {
                             </div>
                         </div>
                         <div>
-                            <div className='content-label-field'>
+                            <div className='content-Label-Field'>
                                 Important Dates
-                                <button onClick={handleMeetingsDelete}>Delete</button>
+                                <button className="update-btn" onClick={handleMeetingsDelete}>Delete</button>
                             </div>
                             <div className='content-frame'>
                                 <div className='date-section-column'>
@@ -422,14 +442,19 @@ const LawyerUpdateCase = ({ userId }) => {
                                         <div className='date-header'>Date and Time</div>
                                         <div className='date-header'>Event</div>
                                         <div className='date-header'>Location</div>
-                                        <div className='date-header'>Status</div>
+                                        <div className='date-header'
+                                        style={{
+                                            marginRight: '10.5px'  // Set your desired right margin value
+                                        }}
+                                        >
+                                        Status</div>
                                     </div>
                                     <div>
                                         {collectionsData[cons.meetingCollectionName]?.map((item) => (
                                             <React.Fragment key={item.id}>
                                                 <div className='date-section-row'>
                                                     <div className='lawyer-meetings-row-content-small'>
-                                                    {item.data.date}
+                                                    {item.data.date.toDate().toLocaleTimeString([], { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase()}
                                                     </div>
                                                     <div className='lawyer-meetings-row-content-small'>
                                                         {item.data.event}
@@ -437,15 +462,29 @@ const LawyerUpdateCase = ({ userId }) => {
                                                     <div className='lawyer-meetings-row-content-small'>
                                                         {util.getLocationName(collectionsData[cons.meeting_locationCollectionName], item.data.location)}
                                                     </div>
-                                                    <div className='lawyer-meetings-row-content-small'>
+                                                    <div className='lawyer-meetings-row-content-small'
+                                                    style={{
+                                                        marginRight: 
+                                                          ((util.getStatusName(collectionsData[cons.meeting_statusCollectionName], item.data.status)) === 'Finished') 
+                                                            ? '15px'  // Set your desired right margin value
+                                                            : '0'    // Set the default right margin value when display is 'inline-block'
+                                                    }}
+                                                    >
                                                         {util.getStatusName(collectionsData[cons.meeting_statusCollectionName], item.data.status)}
                                                     </div>
                                                     <CheckboxItem
+                                                    style={{ 
+                                                        display: 
+                                                            ((util.getStatusName(collectionsData[cons.meeting_statusCollectionName], item.data.status)) === 'Finished') 
+                                                            ? 'none' 
+                                                            : 'inline-block'
+                                                    }}
                                                     key={item.id}
                                                     id={item.id}
                                                     label={item.label} // Replace with the actual property you want to display
                                                     isSelected={selectedItems.includes(item.id, cons.meetingCollectionName)}
                                                     onSelect={handleSelect}
+                                                    meetingStatus={item.data.status}
                                                     />
                                                 </div>
                                             </React.Fragment>
@@ -456,8 +495,8 @@ const LawyerUpdateCase = ({ userId }) => {
                             </div>
                         </div>
                         <div className='button-section'>
-                            <button className='btn' type='button' onClick={clearData}>Clear</button>
-                            <button className='btn' type='submit'>Submit</button>
+                            <button className='btn' type='button' onClick={handleBack}>Back</button>
+                            <button className='btn' type='submit'>Save</button>
                         </div>
                     </div>
                 </div>

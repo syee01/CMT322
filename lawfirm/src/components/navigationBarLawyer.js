@@ -70,8 +70,7 @@ export default function Navbar() {
         </div>
       </Link>
       <ul>
-        <li><CustomLink to="/LawyerViewCases">VIEW MY CASES</CustomLink></li>
-        <li><CustomLink to="/SubmitCase">SUBMIT A CASE</CustomLink></li>
+        <li><CustomLink to="/LawyerViewCases">VIEW CASES</CustomLink></li>
         <li><CustomLink to="/lawyer">LAWYER</CustomLink></li>
         <li onClick={handleSignOut}><CustomLink to="/">SIGN OUT</CustomLink></li>
         <li><CustomLink to="/ContactUs">CONTACT US</CustomLink></li>

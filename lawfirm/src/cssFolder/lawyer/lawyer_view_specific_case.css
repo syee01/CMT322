@@ -167,6 +167,7 @@ button {
     padding: 8px 12px;
     background-color: #393E68;/* Adjust the color as needed */
     color: #fff;
+    margin: 6px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -198,6 +199,11 @@ button:hover {
     margin-right: 8px;
     width: 16px; /* Adjust the width as needed */
     height: 16px; /* Adjust the height as needed */
+}
+
+.button-section {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .button-row {
@@ -236,4 +242,40 @@ button:hover {
     font-size: 20px;
     margin: 5px;
     font-family: 'Spectral',serif;
+}
+
+.labelfield {
+    flex: 1;
+    /* color: #393E68; */
+    font-size: 22px;
+    font-family: 'Spectral',serif;
+    font-weight: 500;
+    /* word-wrap: break-word; */
+    align-items: center;
+    margin-top: 25px;
+}
+
+.dropzoneStyles {
+    display: flex;
+    flex-direction: column;
+    border: 2px dashed #393E68;
+    padding: 20px;
+    justify-content: center;
+    min-height: 200px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    text-align: center;
+    background: white;
+};
+
+.window-section-container {
+    width: 90%; 
+    height: 100%; 
+    background-color:  #f0f2f7;
+    /* border: 3px #393E68 solid; */
+    margin: 1%;
+    margin-top: 2%;
+    border-radius: 2%;
+    padding: 2%;
+    padding-top: 1%;
 }
