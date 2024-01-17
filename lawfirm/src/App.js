@@ -105,7 +105,6 @@ function App() {
     }
     else {
       if (userRole === "client"){
-        console.log("okay")
         return (
           <NavbarAfter />
         )
