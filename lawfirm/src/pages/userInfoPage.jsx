@@ -69,7 +69,7 @@ const UserInfoPage = ({ userId }) => {
       return;
     }
 
-    // Start uploading
+    // start uploading
     setIsUploading(true);
 
     // upload the picture to the database 
@@ -89,7 +89,7 @@ const UserInfoPage = ({ userId }) => {
   const updateProfileImageInFirestore = async (imageUrl) => {
     const userDocRef = doc(db, 'users', userId);
   
-    // Function to delete existing profile image in the database
+    // function to delete existing profile image in the database
     const deleteExistingImage = async () => {
       try {
         const existingImageUrl = userInfo.profileImageUrl;
@@ -170,7 +170,7 @@ const UserInfoPage = ({ userId }) => {
           <div className="filesection">
             {/* Only allow the file with png, jpg and jpeg in the user desktop to be uploaded*/}
               {showFileInput ? (
-                  <div className='filesection'>
+                  <div className='filesection1'>
                     <input type="file" className='file-input'
                       accept=".png, .jpg"
                       onChange={(e) => setSelectedFile(e.target.files[0])} 
@@ -197,7 +197,7 @@ const UserInfoPage = ({ userId }) => {
                 <>
                 <div className='edit-box'>
                 <div className='left'>
-                  <input type="text" value={editedName} onChange={(e) => setEditedName(e.target.value)} />
+                  <input type="text"  className='input' value={editedName} onChange={(e) => setEditedName(e.target.value)} />
                   </div>
                   <div className='right'>
                   <FaCheck onClick={() => handleUpdate('name')} className='tick' />
@@ -219,7 +219,7 @@ const UserInfoPage = ({ userId }) => {
                 <div>
                 <div className='edit-box'>
                 <div className='left'>
-                  <input type="text" value={editedContactNumber} onChange={(e) => setEditedContactNumber(e.target.value)} />
+                  <input type="text" className='input' value={editedContactNumber} onChange={(e) => setEditedContactNumber(e.target.value)} />
                   </div>
                   <div className='right'>
                   <FaCheck onClick={() => handleUpdate('contactNumber')} className='tick'/>

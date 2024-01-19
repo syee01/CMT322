@@ -32,8 +32,6 @@ function App() {
   const [userId, setUserId] = useState(null); // Now stateful
   const [userRole, setUserRole] = useState(null);
   const [isEmailVerified, setIsEmailVerified] = useState(false);
-  // to be deleted for mohtest@gmail.com 
-  const [userEmail,setUserEmail] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,8 +54,6 @@ function App() {
           const docRef = doc(db, 'users', userId);
           const docSnap = await getDoc(docRef);
           setUserRole(docSnap.data().role);
-          //  to be deleted for moh test 
-          setUserEmail(doc.docSnap.date().email);
         } catch (error) {
           console.error("Error fetching user data: ", error);
         } finally {
@@ -97,8 +93,7 @@ function App() {
   }, [isLoggedIn, userId]); // Dependencies: isLoggedIn and userId
 
   function SetNavBarBasedOnRole(){
-    //  to be deleted the &&userEmaail ==='mohtest@gmail.com'
-    if (!isLoggedIn||!isEmailVerified && userRole==='client' &&userEmail==='mohtest@gmail.com') {
+    if (!isLoggedIn||!isEmailVerified && userRole==='client') {
       return (
         <NavbarBefore />
       )

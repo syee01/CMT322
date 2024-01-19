@@ -34,9 +34,6 @@ const Login = () => {
             if(userRole==='client' && user.emailVerified ){
                 navigate("/home");
             }
-            else if(userEmail==='mohtest@gmail.com'){
-                navigate("/home");
-            }
             // Check the user role, if it is not client
             else if (userRole!=='client') {
                 navigate("/home"); 
