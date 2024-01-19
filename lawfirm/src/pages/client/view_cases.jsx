@@ -10,6 +10,7 @@ const ViewCases = ({ userId }) => {
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
+    // retrieve user details, lawyers, case_type, case_status from firestore and save in collectionsData
     useEffect(() => {
         const fetchOptions = async () => {
             const data = {};
@@ -24,8 +25,7 @@ const ViewCases = ({ userId }) => {
 
     }, []);
 
-    console.log("CollectionData: ",collectionsData)
-
+    // if the user has not submitted any file, it will show no data found, else show the list of cases
     function checkNumberOfCases() {
         const numberCases = collectionsData[cons.caseCollectionName].length;
         if (numberCases == 0) {
@@ -43,10 +43,12 @@ const ViewCases = ({ userId }) => {
         }
     }
 
+    // on clicking the title of the case, direct the page to view that particular page
     function directToCase(case_id) {
         navigate(`/ViewSpecificCase/${case_id}`)
     }
 
+    // if collectionsData is not done retrieving, wait until it is done before rendering the actual page
     if (isLoading) {
         return <div></div>;
     }

@@ -10,10 +10,9 @@ import Modal from 'react-modal';
 
 
 const ViewSpecificCase = ({ userId }) => {
-    const { case_id } = useParams();  // Assuming case_id is from URL params
+    const { case_id } = useParams();
     const [collectionsData, setCollectionsData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [acceptConfirmation, setAcceptConfirmation] = useState(false);
     const [rejectConfirmation, setRejectConfirmation] = useState(false);
     const navigate = useNavigate();
@@ -33,6 +32,9 @@ const ViewSpecificCase = ({ userId }) => {
         }
     });
 
+    // retrieve user details, lawyers, case_type, case_status from firestore and save in collectionsData
+    // also retrieve all the meetings details under this specific case
+    // if the user that views this page is not client, redirect them back to home page
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
@@ -58,29 +60,20 @@ const ViewSpecificCase = ({ userId }) => {
 
                 setCollectionsData(data);
             } catch (error) {
-                setError(error);
                 console.error("Error fetching data: ", error);
             }
             setIsLoading(false);
         };
 
         fetchData();
-    }, [case_id]); // Dependency array ensures useEffect runs when case_id changes
+    }, [case_id]);
 
+    // if collectionsData is not done retrieving, wait until it is done before rendering the actual page
     if (isLoading) {
         return <div></div>;
     }
 
-    if (error) {
-        return <div>Error loading data: {error.message}</div>;
-    }
-
-    if (!collectionsData) {
-        return <div>No case data available.</div>;
-    }
-
-    console.log(collectionsData)
-
+    // if the case is in "Pending Accept", show "accept" "reject" button for client to make choice
     function displayWithCaseStatus () {
         const cur_case_status = collectionsData[cons.caseCollectionName].data.case_status;
         const pendingAcceptID = collectionsData['case_status'].find(status => status.data.case_status_name === 'Pending Accept').id;
@@ -104,10 +97,9 @@ const ViewSpecificCase = ({ userId }) => {
         }
     }
 
+    // update the case status from "Pending Accept" to "In Progress" to be handled by the lawyer
     const updateLawyerForCase = async () => {
-        
         const inProgressStatusId = collectionsData['case_status'].find(status => status.data.case_status_name === 'In Progress').id;
-    
         const caseRef = doc(db, cons.caseCollectionName, case_id);
     
         try {
@@ -122,9 +114,9 @@ const ViewSpecificCase = ({ userId }) => {
         }
     };
 
+    // get the details of a specific meeting under this case and show it to the client
     const openInfoModal = async(meeting_id) => {
         try {
-            console.log("HI", meeting_id)
             const data = {};
             data[cons.meetingCollectionName] = await util.getOneMeeting(meeting_id);
             collectionsData['meeting_document'] = await util.getDocumentFromOneMeeting(meeting_id);
@@ -138,12 +130,14 @@ const ViewSpecificCase = ({ userId }) => {
         }
     };
 
+    // close the meeting details when client finishes reviewing it
     const closeInfoModal = () => {
         collectionsData['meeting_document'] = [];
         setIsInfoModalOpen(false);
         navigate(`/ViewSpecificCase/${case_id}`)
     };
 
+    // update the case status from "Pending Accept" to "Rejected" when client is not satisfied with the assigned lawyer
     const confirmRejection = async () => {
         const rejectedStatusId = collectionsData['case_status'].find(status => status.data.case_status_name === 'Rejected').id;
 
@@ -161,6 +155,7 @@ const ViewSpecificCase = ({ userId }) => {
         }
     };
 
+    // on clicking the document, it will open a new window to display the document, from firebase storage
     function openURL(url){
         window.open(url, '_blank');
     };

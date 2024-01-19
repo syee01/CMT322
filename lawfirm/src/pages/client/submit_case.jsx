@@ -13,7 +13,9 @@ const SubmitCase = ({ userId }) => {
     const navigate = useNavigate();
     const [collectionsData, setCollectionsData] = useState({});
     const [uploadedFiles, setUploadedFiles] = useState([]);
+    const [formData, setFormData] = useState(initialFormData);
 
+    // retrieve user details, lawyers, case_type, case_status from firestore and save in collectionsData
     useEffect(() => {
         const fetchOptions = async () => {
             const data = {};
@@ -29,7 +31,6 @@ const SubmitCase = ({ userId }) => {
         fetchOptions();
 
     }, []);
-    console.log(collectionsData)
 
     const initialFormData = {
         name: '',
@@ -46,8 +47,6 @@ const SubmitCase = ({ userId }) => {
         case_created_date: '',
         case_finished_date: ''
     };
-
-    const [formData, setFormData] = useState(initialFormData);
 
     const onDrop = (acceptedFiles) => {
         setUploadedFiles(acceptedFiles);
@@ -67,6 +66,7 @@ const SubmitCase = ({ userId }) => {
         );
     };
 
+    // update formData when user inputs value in the form
     const handleChange = (e) => {
         setFormData(prevFormData => {
           const updatedFormData = {
@@ -79,9 +79,11 @@ const SubmitCase = ({ userId }) => {
         });
     };
 
+    // upon submiting, update firestore to create new case that can be viewed by client, admin, lawyer
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            // create new case in firestore
             const caseDocRef = collection(db, 'case');
             const newCaseRef = doc(caseDocRef);
             await setDoc(newCaseRef, {
@@ -96,9 +98,8 @@ const SubmitCase = ({ userId }) => {
                 case_price: "To be determined"
             });
 
+            // upload dropped files to storage and create new document for each uploaded document
             for (const uploadedFile of uploadedFiles) {
-                // console.log( "wht: ",newCaseRef._key.path.segments[1]);
-                // const temp_case_id =  newCaseRef.split('/').pop();
                 const temp_case_id = newCaseRef._key.path.segments[1];
                 const documentRef = storageRef(storage, `case_document/${temp_case_id}/${uploadedFile.name}`);
                 const docRef = collection(db, 'document');
@@ -116,14 +117,13 @@ const SubmitCase = ({ userId }) => {
                 }
             }
 
+            // create or update client data
             const clientDocRef = collection(db, 'client');
             const newClientRef = doc(clientDocRef, userId);
             await setDoc(newClientRef, {
                 client_ic: formData.ic,
                 dob: formData.dob,
                 gender: formData.gender,
-                // contact: formData.contact,
-                // email: formData.email
             });
             alert("Case Submitted Successfully");
             console.log("Case Submitted Successfully");
@@ -133,6 +133,7 @@ const SubmitCase = ({ userId }) => {
         }
     };
 
+    // if collectionsData is not done retrieving, wait until it is done before rendering the actual page
     if (isLoading){
         return (
             <div></div>
@@ -144,14 +145,12 @@ const SubmitCase = ({ userId }) => {
             <div className='client-page'>
             <div className="header-section-1">
                 <div className="header-title-1">
-                    {/* <div>SUBMIT YOUR CASE</div> */}
                     <div>Case Application Form</div>
                 </div>
             </div>
             <div>
                 <div className='client-section-container-2'>
                     <div className='form-header'>
-                        {/* Case Application Form */}
                     </div>
                     <div className='form-person-container'>
                         <div className='form-person-container-left'>
@@ -251,7 +250,6 @@ const SubmitCase = ({ userId }) => {
                             <div className='form-person-container-right'>
                                 <div className='form-inner-left'>
                                     <div className='label-field'>Lawyer Preferred</div>
-                                    {/* <div className='label-field'>Event Date</div> */}
                                 </div>
                                 <div className='form-inner-right'>
                                     <select className='input-field'  name="lawyer" onChange={handleChange} required>
@@ -290,7 +288,6 @@ const SubmitCase = ({ userId }) => {
                         </div>
                     </div>
                     <div className='button-section'>
-                        {/* <button className='button' type='button' onClick={clearData}>Clear</button> */}
                         <button className='button' type='submit'>Submit</button>
                     </div>
                 </div>
