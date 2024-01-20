@@ -320,10 +320,9 @@ const LawyerViewSpecificCase = ({ userId }) => {
                         email: collectionsData[cons.usersCollectionName].data.email, 
                         displayName: collectionsData[cons.usersCollectionName].data.fullname 
                     },
-                ],
-                sendUpdates: 'all'
+                ]
             }
-            const result = await apiCalendar.createEvent(event, 'primary', {sendUpdates: 'all'});  //.events.insert
+            const result = await apiCalendar.createEvent(event, 'primary');  //.events.insert
             console.log( "result: ",result);
             console.log( "event id 1: ", result.result.id);
 
