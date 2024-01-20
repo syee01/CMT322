@@ -63,7 +63,7 @@ const LawyerViewCases = ({ userId }) => {
                 <div className='lawyer-cases-section'>
                     <div className='lawyer-cases-header'>Title</div>
                     <div className='lawyer-cases-header-small'>Type</div>
-                    <div className='lawyer-cases-header-small'>Lawyer</div>
+                    <div className='lawyer-cases-header-small'>Client</div>
                     <div className='lawyer-cases-header-small'>Status</div>
                 </div>
 

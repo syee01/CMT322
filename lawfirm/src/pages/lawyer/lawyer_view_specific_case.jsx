@@ -243,11 +243,18 @@ const LawyerViewSpecificCase = ({ userId }) => {
                         email: collectionsData[cons.usersCollectionName].data.email, 
                         displayName: collectionsData[cons.usersCollectionName].data.fullname,
                     },
-                ]
+                ],
+                reminders: {
+                    useDefault: false,
+                    overrides: [
+                        { method: 'popup', minutes: 40320 },
+                        { method: 'email', minutes: 40320 }
+                    ]
+                }
             }
             
             
-            const result = await apiCalendar.createEvent(event, 'primary', {sendUpdates: 'all'});  //.events.insert
+            const result = await apiCalendar.createEvent(event, 'primary');  //.events.insert
             // const result = await apiCalendar.createCalendar(event, 'primary');
             console.log( "result: ",result);
             console.log( "event id 1: ", result.result.id);
@@ -562,7 +569,10 @@ const LawyerViewSpecificCase = ({ userId }) => {
                         <button onClick={() => directToCase(collectionsData['case'].id)} className="update-btn"
                         style={{ 
                             display: 
-                                ((util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Finished') 
+                                ((util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Finished' ||
+                                (util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Rejected' ||
+                                (util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Pending' ||
+                                (util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Pending Accept') 
                                 ? 'none' 
                                 : 'inline-block'
                           }}
@@ -620,7 +630,10 @@ const LawyerViewSpecificCase = ({ userId }) => {
                 <div
                 style={{ 
                     display: 
-                        ((util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Finished') 
+                        ((util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Finished' ||
+                        (util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Rejected' ||
+                        (util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Pending' ||
+                        (util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Pending Accept') 
                         ? 'none' 
                         : 'block'
                   }}
@@ -646,7 +659,10 @@ const LawyerViewSpecificCase = ({ userId }) => {
                         <button onClick={openAddModal}  className="update-btn"
                         style={{ 
                             display: 
-                                ((util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Finished') 
+                                ((util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Finished' ||
+                                (util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Rejected' ||
+                                (util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Pending' ||
+                                (util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], collectionsData[cons.caseCollectionName].data.case_status)) === 'Pending Accept') 
                                 ? 'none' 
                                 : 'inline-block'
                         }}
@@ -693,6 +709,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                 >
                 <button class="move-right" onClick={closeAddModal}>Close</button>
                 <form onSubmit={handleAddSubmit}>
+                <div className='section-container'>
                     <div className='section-Small-Header'>
                         Meeting Information
                     </div>
@@ -783,6 +800,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                         {/* <button className='button' type='button' onClick={clearData}>Clear</button> */}
                         <button className='button' type='submit'>Submit</button>
                     </div>
+                </div>
                 </form>
                 </Modal>
 
@@ -793,54 +811,50 @@ const LawyerViewSpecificCase = ({ userId }) => {
                     contentLabel="Info Modal"
                 >
                 <button class="move-right" onClick={closeInfoModal}>Close</button>
-                <div>
-                    <div className='section-Small-Header'>
-                        Meeting Information
-                        <button onClick={() => openEditModal(selectedMeeting.id)} className="update-btn"
-                        style={{ 
-                            display: 
-                                ((util.getStatusName(collectionsData[cons.meeting_statusCollectionName], selectedMeeting.data.status)) === 'Finished') 
-                                ? 'none' 
-                                : 'inline-block'
-                          }}
-                        >
-                            <FontAwesomeIcon icon={faEdit} className="fa-icon" /> Edit
-                        </button>
-                    </div>
-                    <div className='section-divider'>
-                        <div className='divider-left'>
-                            <div className='inner-left-part'>
-                                <div className='content-label-field'>Event</div>
-                                <div className='content-label-field'>Date</div>
+                <div className='section-container'>
+    
+                        <div className='section-Small-Header'>
+                            Meeting Information
+                            <button onClick={() => openEditModal(selectedMeeting.id)} className="update-btn"
+                            style={{ 
+                                display: 
+                                    ((util.getStatusName(collectionsData[cons.meeting_statusCollectionName], selectedMeeting.data.status)) === 'Finished') 
+                                    ? 'none' 
+                                    : 'inline-block'
+                            }}
+                            >
+                                <FontAwesomeIcon icon={faEdit} className="fa-icon" /> Edit
+                            </button>
+                        </div>
+                        <div className='section-divider'>
+                            <div className='divider-left'>
+                                <div className='inner-left-part'>
+                                    <div className='content-label-field'>Event</div>
+                                    <div className='content-label-field'>Date</div>
+                                </div>
+                                <div className='inner-right-part'>
+                                    <div className='content-data-field'>{selectedMeeting.data.event}</div>
+                                    <div className='content-data-field'>{selectedMeeting.data.date.toDate().toLocaleTimeString([], { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase()}</div>
+                                </div>
                             </div>
-                            <div className='inner-right-part'>
-                                <div className='content-data-field'>{selectedMeeting.data.event}</div>
-                                <div className='content-data-field'>{selectedMeeting.data.date.toDate().toLocaleTimeString([], { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase()}</div>
+                            <div className='divider-right'>
+                                <div className='inner-left-part'>
+                                    <div className='content-label-field'>Status</div>
+                                    <div className='content-label-field'>Location</div>
+                                </div>
+                                <div className='inner-right-part'>
+                                    <div className='content-data-field'>{util.getStatusName(collectionsData[cons.meeting_statusCollectionName], selectedMeeting.data.status)}</div>
+                                    <div className='content-data-field'>{util.getLocationName(collectionsData[cons.meeting_locationCollectionName], selectedMeeting.data.location)}</div>
+                                </div>
                             </div>
                         </div>
-                        <div className='divider-right'>
-                            <div className='inner-left-part'>
-                                <div className='content-label-field'>Status</div>
-                                <div className='content-label-field'>Location</div>
-                            </div>
-                            <div className='inner-right-part'>
-                                <div className='content-data-field'>{util.getStatusName(collectionsData[cons.meeting_statusCollectionName], selectedMeeting.data.status)}</div>
-                                <div className='content-data-field'>{util.getLocationName(collectionsData[cons.meeting_locationCollectionName], selectedMeeting.data.location)}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
+        
                     <div className='content-label-field'>
                         Description
                     </div>
                     <div className='content-frame'>
                     {selectedMeeting.data.description}
                     </div>
-                </div>
-
-                <div>
                     <div className='content-label-field'>
                         Related Documents
                     </div>
@@ -849,31 +863,32 @@ const LawyerViewSpecificCase = ({ userId }) => {
                             <li key={item.id} onClick={() => openURL(item.data.url)}>{item.data.document_name}</li>
                         ))}
                     </div>
-                </div>
 
-                <div
-                style={{ 
-                    display: 
-                        ((util.getStatusName(collectionsData[cons.meeting_statusCollectionName], selectedMeeting.data.status)) === 'Finished') 
-                        ? 'none' 
-                        : 'block'
-                }}
-                >
-                    <form onSubmit={handleMeetingFileUpload}>
-                        <div>
-                            <div className='label-field'>Documents</div>
-                            <div {...getRootProps()} className='dropzoneStyles'>
-                                <input {...getInputProps()} />
-                                <label>Drag and Drop Some Files Here</label>
-                                {uploadedFiles.length > 0 && displayDroppedFiles()}
+
+                    <div
+                    style={{ 
+                        display: 
+                            ((util.getStatusName(collectionsData[cons.meeting_statusCollectionName], selectedMeeting.data.status)) === 'Finished') 
+                            ? 'none' 
+                            : 'block'
+                    }}
+                    >
+                        <form onSubmit={handleMeetingFileUpload}>
+                            <div>
+                                <div className='label-field'>Documents</div>
+                                <div {...getRootProps()} className='dropzoneStyles'>
+                                    <input {...getInputProps()} />
+                                    <label>Drag and Drop Some Files Here</label>
+                                    {uploadedFiles.length > 0 && displayDroppedFiles()}
+                                </div>
                             </div>
-                        </div>
-                        <div class="button-section">
-                            <button type="button" onClick={clearData}>Clear</button>
-                            <button type="submit">Save</button>
-                        </div>
-                    </form>
-                </div>                   
+                            <div class="button-section">
+                                <button type="button" onClick={clearData}>Clear</button>
+                                <button type="submit">Save</button>
+                            </div>
+                        </form>
+                    </div> 
+                </div>                  
                 </Modal>
 
                 {/* Edit Modal */}
@@ -884,6 +899,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                 >
                 <button class="move-right" onClick={closeEditModal}>Close</button>
                 <form onSubmit={handleUpdateSubmit}>
+                <div className='section-container'>
                     <div className='section-Small-Header'>
                         Meeting Information
                     </div>
@@ -1001,6 +1017,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                         {/* <button className='button' type='button' onClick={clearData}>Clear</button> */}
                         <button className='button' type='submit'>Save</button>
                     </div>
+                </div>
                 </form>
                 </Modal>
             </div>

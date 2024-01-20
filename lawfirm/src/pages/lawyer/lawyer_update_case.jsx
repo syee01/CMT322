@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import '../../cssFolder/lawyer/lawyer_update_case.css';
 import { storage, db } from '../../firebase';
 import { getStorage, ref as storageRef, deleteObject, getDownloadURL } from 'firebase/storage';
-import { doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, deleteDoc, serverTimestamp} from 'firebase/firestore';
 import * as cons from "../constant"
 import * as util from "../utility.js"
 import { apiCalendar } from '../../googleapi'
@@ -157,6 +157,13 @@ const LawyerUpdateCase = ({ userId }) => {
                 case_title: formData.case_title,
                 case_description: formData.case_description
             });
+
+            if((util.getCaseStatusName(collectionsData[cons.case_statusCollectionName], formData.case_status)) === 'Finished'){
+                await updateDoc(itemRef, {
+                    case_finished_date: serverTimestamp(),
+                    case_price: formData.case_price
+                });
+            }
 
             console.log('Item data updated successfully!');
             setIsSubmitting(false);
@@ -358,7 +365,7 @@ const LawyerUpdateCase = ({ userId }) => {
                                 <div className='form-person-container-right'>
                                     <div className='form-inner-left'>
                                         <div className='label-field'>Lawyer</div>
-                                        <div className='label-field'>Case Price</div>
+                                        <div className='label-field'>Case Price (RM)</div>
                                         <div className='label-field'>Submitted Date</div>
                                     </div>
                                     <div className='form-inner-right'>
@@ -367,6 +374,7 @@ const LawyerUpdateCase = ({ userId }) => {
                                             className='input-field' 
                                             type="text"
                                             name="case_price" 
+                                            onChange={handleChange}
                                             value={formData.case_price}
                                         />
                                         <div className='submit-date-display-field'>{collectionsData[cons.caseCollectionName].data.case_created_date.toDate().toLocaleTimeString([], { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase()}</div>
