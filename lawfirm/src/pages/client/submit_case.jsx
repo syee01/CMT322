@@ -13,7 +13,20 @@ const SubmitCase = ({ userId }) => {
     const navigate = useNavigate();
     const [collectionsData, setCollectionsData] = useState({});
     const [uploadedFiles, setUploadedFiles] = useState([]);
-    const [formData, setFormData] = useState(initialFormData);
+    const [formData, setFormData] = useState({
+        name: '',
+        gender: '',
+        contact: '',
+        dob: '',
+        email: '',
+        ic: '',
+        case_type: '',
+        case_title: '',
+        lawyer: '',
+        case_description: '',
+        case_created_date: '',
+        case_finished_date: ''
+    });
 
     // retrieve user details, lawyers, case_type, case_status from firestore and save in collectionsData
     useEffect(() => {
@@ -31,22 +44,6 @@ const SubmitCase = ({ userId }) => {
         fetchOptions();
 
     }, []);
-
-    const initialFormData = {
-        name: '',
-        gender: '',
-        contact: '',
-        dob: '',
-        email: '',
-        ic: '',
-        case_type: '',
-        case_title: '',
-        lawyer: '',
-        event_date: '',
-        case_description: '',
-        case_created_date: '',
-        case_finished_date: ''
-    };
 
     const onDrop = (acceptedFiles) => {
         setUploadedFiles(acceptedFiles);
@@ -127,7 +124,7 @@ const SubmitCase = ({ userId }) => {
             });
             alert("Case Submitted Successfully");
             console.log("Case Submitted Successfully");
-            navigate("/home")
+            navigate("/ViewCases")
         } catch (error) {
             console.error('Error submitting data:', error);
         }
