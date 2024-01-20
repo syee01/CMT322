@@ -35,7 +35,7 @@ const AdminViewSpecificCase  = () => {
         };
 
         fetchData();
-    }, [case_id]); // Dependency array ensures useEffect runs when case_id changes
+    }, [case_id]); 
 
     if (isLoading) {
         return <div></div>;
@@ -52,7 +52,7 @@ const AdminViewSpecificCase  = () => {
     function openURL(url){
         window.open(url, '_blank');
     };
-    // Main component rendering
+    
     return (
         <div className='admin_view_specific_rejected_case-page'>
             <div className='page-header'>CASE DETAILS</div>

@@ -30,12 +30,16 @@ const AdminViewAllCases = () => {
 
     // Based on the status name, navigate to the appropriate page
     function directToCase(case_id, case_status_id) {
+        
         if (case_status_id === collectionsData[cons.case_statusCollectionName][0].id) {
             navigate(`/admin/ViewCaseApplication/${case_id}`);
+            //Pending
         } else if (case_status_id === collectionsData[cons.case_statusCollectionName][1].id) {
+            //Rejected 
             navigate(`/admin/ViewRejectedCases/${case_id}`)
-        } else { //in progress finished pending accept
+        } else { 
             navigate(`/admin/ViewSpecificCase/${case_id}`);
+            //in progress, finished ,pending accept
         }
     }
     
