@@ -29,13 +29,13 @@ const Signup = () => {
             const user = userCredential.user;
             sendEmailVerification(user)
             .then(() => {
-                // Email verification sent and navigate to the home page 
+                // email verification sent and navigate to the home page 
                 setEmailVerificationMessage("Verification email sent. Please check your inbox.");
                 setIsVerificationEmailSent(true);
                 navigate("/Login"); 
             });
          
-            // Use the user's UID as the document ID in Firestore
+            // use the user's UID as the document ID in Firestore
             const userDocRef = doc(db, 'users', user.uid);
             setDoc(userDocRef, {
                 fullname: fullname,
@@ -148,7 +148,6 @@ const Signup = () => {
                     />
                 </div>
                     <button className='createbutton' onClick={onSubmit}>Confirm</button>
-                    {/* If want to move to login page */}
                     <div className="links-container">
                        <NavLink to="/Login">Login Here</NavLink>
                    </div>

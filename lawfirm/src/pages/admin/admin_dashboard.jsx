@@ -113,7 +113,6 @@ const AdminDashboard = () => {
           };
         });
 
-        console.log("casedata", casesData)
         setCases(casesData);
         setChartData({
           labels: Object.keys(caseTypeCounts),
@@ -144,21 +143,19 @@ const AdminDashboard = () => {
   useEffect(() => {
     const fetchCasesStatusData = async () => {
 
-      // Fetch lawyer names based on IDs
       const lawyerNames = {};
       const lawyerList = await util.getLawyerFromUsers();
       lawyerList.forEach(lawyer =>{
         lawyerNames[lawyer.id] = lawyer.data.fullname
       })
   
-      // Assuming `cases` is already populated with the required `lawyer` and `case_status` fields
       const inProgress = cases.filter(c => c.case_status === 'In Progress');
       const finished = cases.filter(c => c.case_status === 'Finished');
   
       const getChartData = (caseArray) => {
-        const counts = {}; // { lawyerName: count }
+        const counts = {}; 
         caseArray.forEach(c => {
-          const lawyerName = lawyerNames[c.lawyer] || 'Unknown'; // Map ID to name, fallback to 'Unknown'
+          const lawyerName = lawyerNames[c.lawyer] || 'Unknown'; 
           counts[lawyerName] = (counts[lawyerName] || 0) + 1;
         });
   
@@ -182,37 +179,34 @@ const AdminDashboard = () => {
   }, [cases]);
   
   useEffect(() => {
-    const fetchFinancialData = async () => {
-      // Filter out finished cases with a valid date and price
+    const fetchFinancialData = async () => {  
       const finishedCases = cases.filter(c => c.case_status === 'Finished' && c.case_finished_date && c.case_price);
   
-      // Group and sum up the case prices by month and year
       const monthlyTotals = finishedCases.reduce((acc, c) => {
         const date = c.case_finished_date.toDate();
         const year = date.getFullYear();
         const month = date.getMonth();
         const monthYear = `${year}-${month}`;
   
-        acc[monthYear] = (acc[monthYear] || 0) + c.case_price;
+        const casePrice = Number(c.case_price);
+
+        acc[monthYear] = (acc[monthYear] || 0) + casePrice;
         return acc;
       }, {});
   
-      // Sort by year and month
       const sortedMonths = Object.keys(monthlyTotals).sort((a, b) => new Date(a.split('-')[0], a.split('-')[1]) - new Date(b.split('-')[0], b.split('-')[1]));
   
-      // Create labels in the format "Month Year" (e.g., "January 2024")
       const labels = sortedMonths.map(monthYear => {
         const [year, month] = monthYear.split('-');
         return `${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}`;
       });
   
-      // Map sorted keys to their values for the data points
       const data = sortedMonths.map(monthYear => monthlyTotals[monthYear]);
   
       setFinancialChartData({
         labels,
         datasets: [{
-          label: 'Total Case Price',
+          label: 'Total Case Price (RM)',
           data,
           fill: false,
           borderColor: 'rgb(57, 62, 104)',

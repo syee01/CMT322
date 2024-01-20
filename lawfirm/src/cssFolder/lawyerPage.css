@@ -20,11 +20,11 @@
     justify-content: space-between;
     margin-bottom: 2rem;
     padding: 20px;
-    box-shadow: 0 2px 4px rgba(83, 82, 82, 0.5); /* Optional: Adds subtle shadow for depth */
+    box-shadow: 0 2px 4px rgba(83, 82, 82, 0.5); 
   }
   
   .lawyer-profile:nth-child(odd) {
-    flex-direction: row-reverse; /* Reverses the order for odd items */
+    flex-direction: row-reverse; 
     padding-left: 50px;
   }
 
@@ -53,9 +53,9 @@
   }
   
   .lawyer-description {
-    text-align: justify; /* Justify the text of the description */
+    text-align: justify;
     line-height: 1.6;
-    color: #666; /* Lighter text color for description */
+    color: #666;
     padding-right: 20px;
   }
   
@@ -66,7 +66,7 @@
   
   .icon.email-icon {
     color: #333;
-    font-size: 20px; /* Adjust icon size as needed */
+    font-size: 20px; 
     margin-right: 0.5rem;
   }
   
@@ -76,11 +76,8 @@
   }
   
   .lawyer-image-container {
-    /* flex-basis: 20%; */
-    /* padding: 5px; */
-    /* display: flex; */
-    justify-content: center; /* Center the image in its container */
-    align-items: center; /* Align the image vertically */
+    justify-content: center; 
+    align-items: center;
   }
   
   .lawyer-image {
@@ -88,6 +85,6 @@
     width: 300px;
     height: 400px;
     display: block;
-    border-radius: 0px; /* Adds rounded corners to the image */
+    border-radius: 0px; 
   }
   

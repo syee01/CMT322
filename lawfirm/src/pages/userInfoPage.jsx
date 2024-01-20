@@ -17,6 +17,8 @@ const UserInfoPage = ({ userId }) => {
   const [editedName, setEditedName] = useState('');
   const [editedContactNumber, setEditedContactNumber] = useState('');
   const [isUploading, setIsUploading] = useState(false);
+  const [nameError, setNameError] = useState('');
+  const [contactNumberError, setContactNumberError] = useState('');
 
   // check the current user by using the userID store in the database 
   useEffect(() => {
@@ -69,7 +71,7 @@ const UserInfoPage = ({ userId }) => {
       return;
     }
 
-    // Start uploading
+    // start uploading
     setIsUploading(true);
 
     // upload the picture to the database 
@@ -89,7 +91,7 @@ const UserInfoPage = ({ userId }) => {
   const updateProfileImageInFirestore = async (imageUrl) => {
     const userDocRef = doc(db, 'users', userId);
   
-    // Function to delete existing profile image in the database
+    // function to delete existing profile image in the database
     const deleteExistingImage = async () => {
       try {
         const existingImageUrl = userInfo.profileImageUrl;
@@ -134,17 +136,36 @@ const UserInfoPage = ({ userId }) => {
   // if cancel to edit the information
   const cancelEdit = (field) => {
     setEditMode({ ...editMode, [field]: false });
+    if (field === 'name') {
+      setNameError('');
+    } else if (field === 'contactNumber') {
+      setContactNumberError('');
+    }
   };
-
+  
   const handleCancel = () => {
     setShowFileInput(false);
   };
 
   // update the name edited or the contact number edited in the database
   const handleUpdate = async (field) => {
-  const updateValue = field === 'name' ? editedName : editedContactNumber;
-  const userDocRef = doc(db, 'users', userId);
-
+    const updateValue = field === 'name' ? editedName : editedContactNumber;
+  
+    // Check if the input is empty and set error message
+    if (!updateValue.trim()) {
+      if (field === 'name') {
+        setNameError('Name cannot be empty');
+      } else if (field === 'contactNumber') {
+        setContactNumberError('Contact number cannot be empty');
+      }
+      return;
+    }
+  
+    // If input is not empty, clear the error messages
+    setNameError('');
+    setContactNumberError('');
+  
+    const userDocRef = doc(db, 'users', userId);
     try {
       await updateDoc(userDocRef, { [field === 'name' ? 'fullname' : 'phoneNumber']: updateValue });
       setUserInfo({ ...userInfo, [field === 'name' ? 'fullname' : 'phoneNumber']: updateValue });
@@ -170,7 +191,7 @@ const UserInfoPage = ({ userId }) => {
           <div className="filesection">
             {/* Only allow the file with png, jpg and jpeg in the user desktop to be uploaded*/}
               {showFileInput ? (
-                  <div className='filesection'>
+                  <div className='filesection1'>
                     <input type="file" className='file-input'
                       accept=".png, .jpg"
                       onChange={(e) => setSelectedFile(e.target.files[0])} 
@@ -197,8 +218,9 @@ const UserInfoPage = ({ userId }) => {
                 <>
                 <div className='edit-box'>
                 <div className='left'>
-                  <input type="text" value={editedName} onChange={(e) => setEditedName(e.target.value)} />
-                  </div>
+                  <input type="text"  className='input' value={editedName} onChange={(e) => setEditedName(e.target.value)} />
+                  {nameError && <p className="error1">{nameError}</p>}
+                </div>
                   <div className='right'>
                   <FaCheck onClick={() => handleUpdate('name')} className='tick' />
                   <FaTimes onClick={() => cancelEdit('name')} className='cancel'/>
@@ -219,8 +241,9 @@ const UserInfoPage = ({ userId }) => {
                 <div>
                 <div className='edit-box'>
                 <div className='left'>
-                  <input type="text" value={editedContactNumber} onChange={(e) => setEditedContactNumber(e.target.value)} />
-                  </div>
+                  <input type="text" className='input' value={editedContactNumber} onChange={(e) => setEditedContactNumber(e.target.value)} />
+                  {contactNumberError && <p className="error1">{contactNumberError}</p>}
+                </div>
                   <div className='right'>
                   <FaCheck onClick={() => handleUpdate('contactNumber')} className='tick'/>
                   <FaTimes onClick={() => cancelEdit('contactNumber')} className='cancel'/>

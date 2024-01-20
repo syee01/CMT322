@@ -8,7 +8,7 @@ import * as cons from "../constant"
 import * as util from "../utility"
 
 const AdminCaseApplication = () => {
-    const { case_id } = useParams();  // Assuming case_id is from URL params
+    const { case_id } = useParams();  
     const [collectionsData, setCollectionsData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -43,7 +43,7 @@ const AdminCaseApplication = () => {
         };
 
         fetchData();
-    }, [case_id]); // Dependency array ensures useEffect runs when case_id changes
+    }, [case_id]); 
 
     if (isLoading) {
         return <div></div>;
@@ -67,18 +67,17 @@ const AdminCaseApplication = () => {
             return;
         }
     
-        // Fetch the ID of the 'In Progress' status
         const inProgressStatusId = collectionsData['case_status'].find(status => status.data.case_status_name === 'Pending Accept').id;
     
         const caseRef = doc(db, cons.caseCollectionName, case_id);
     
         try {
             await updateDoc(caseRef, {
-                lawyer: selectedLawyer, // this now contains the lawyer's ID
-                case_status: inProgressStatusId // setting the case status to 'In Progress'
+                lawyer: selectedLawyer, 
+                case_status: inProgressStatusId 
             });
             alert('The lawyer has been assigned and the case status has been updated to Pending Accept.');
-            setShowModal(false); // close the modal
+            setShowModal(false); 
             navigate(`/admin/ViewSpecificCase/${case_id}`);
         } catch (error) {
             console.error("Error updating case: ", error);
@@ -92,7 +91,6 @@ const AdminCaseApplication = () => {
     };
 
     const confirmRejection = async () => {
-        // Fetch the ID of the 'Rejected' status
         const rejectedStatusId = collectionsData['case_status'].find(status => status.data.case_status_name === 'Rejected').id;
 
         const caseRef = doc(db, cons.caseCollectionName, case_id);
@@ -102,7 +100,7 @@ const AdminCaseApplication = () => {
                 case_status: rejectedStatusId
             });
             alert('The case has been marked as Rejected.');
-            setShowRejectionConfirm(false); // close the modal
+            setShowRejectionConfirm(false); 
             navigate(`/admin/ViewRejectedCases/${case_id}`);
         } catch (error) {
             console.error("Error updating case status: ", error);
@@ -110,7 +108,6 @@ const AdminCaseApplication = () => {
         }
     };
 
-    // Main component rendering
     return (
         <div className='admin_view_specific_rejected_case-page'>
             <div className='page-header'>CASE APPLICATION DETAILS</div>
@@ -212,7 +209,7 @@ const AdminCaseApplication = () => {
                     </button>
                 </div>
 
-
+                {/*To assign lawyer when accept case */}
                 {showModal && (
                     <div className='modal'>
                         <div className='modal-content'>
@@ -242,6 +239,7 @@ const AdminCaseApplication = () => {
                     </div>
                 )}
 
+                {/*To confirm rejection of case */}
                 {showRejectionConfirm && (
                     <div className='modal'>
                         <div className='modal-content'>

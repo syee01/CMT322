@@ -7,13 +7,13 @@ import { doc, updateDoc } from 'firebase/firestore';
 import * as cons from "../constant"
 import * as util from "../utility"
 import Modal from 'react-modal';
+import { Timestamp } from 'firebase/firestore';
 
 
 const ViewSpecificCase = ({ userId }) => {
-    const { case_id } = useParams();  // Assuming case_id is from URL params
+    const { case_id } = useParams();
     const [collectionsData, setCollectionsData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [acceptConfirmation, setAcceptConfirmation] = useState(false);
     const [rejectConfirmation, setRejectConfirmation] = useState(false);
     const navigate = useNavigate();
@@ -21,22 +21,22 @@ const ViewSpecificCase = ({ userId }) => {
     const [meetingID, setMeetingID] = useState(null);
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
     const [selectedMeeting, setSelectedMeeting] = useState({
-        meeting:{
-            data:{
-                event: '',
-                date: '',
-                case: '',
-                description: '',
-                location: '',
-                status: ''
-            }
+        data:{
+            event: '',
+            date: Timestamp.fromDate(new Date(2023, 0, 1)),
+            case: '',
+            description: '',
+            location: '',
+            status: ''
         }
     });
 
+    // retrieve user details, lawyers, case_type, case_status from firestore and save in collectionsData
+    // also retrieve all the meetings details under this specific case
+    // if the user that views this page is not client, redirect them back to home page
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
-            setError(null);
             try {
                 const data = {};
                 data[cons.caseCollectionName] = await util.getOneCase(case_id);
@@ -58,29 +58,20 @@ const ViewSpecificCase = ({ userId }) => {
 
                 setCollectionsData(data);
             } catch (error) {
-                setError(error);
                 console.error("Error fetching data: ", error);
             }
             setIsLoading(false);
         };
 
         fetchData();
-    }, [case_id]); // Dependency array ensures useEffect runs when case_id changes
+    }, [case_id]);
 
+    // if collectionsData is not done retrieving, wait until it is done before rendering the actual page
     if (isLoading) {
         return <div></div>;
     }
 
-    if (error) {
-        return <div>Error loading data: {error.message}</div>;
-    }
-
-    if (!collectionsData) {
-        return <div>No case data available.</div>;
-    }
-
-    console.log(collectionsData)
-
+    // if the case is in "Pending Accept", show "accept" "reject" button for client to make choice
     function displayWithCaseStatus () {
         const cur_case_status = collectionsData[cons.caseCollectionName].data.case_status;
         const pendingAcceptID = collectionsData['case_status'].find(status => status.data.case_status_name === 'Pending Accept').id;
@@ -104,10 +95,9 @@ const ViewSpecificCase = ({ userId }) => {
         }
     }
 
+    // update the case status from "Pending Accept" to "In Progress" to be handled by the lawyer
     const updateLawyerForCase = async () => {
-        
         const inProgressStatusId = collectionsData['case_status'].find(status => status.data.case_status_name === 'In Progress').id;
-    
         const caseRef = doc(db, cons.caseCollectionName, case_id);
     
         try {
@@ -122,11 +112,10 @@ const ViewSpecificCase = ({ userId }) => {
         }
     };
 
+    // get the details of a specific meeting under this case and show it to the client
     const openInfoModal = async(meeting_id) => {
         try {
-            console.log("HI", meeting_id)
-            const data = {};
-            data[cons.meetingCollectionName] = await util.getOneMeeting(meeting_id);
+            const data = await util.getOneMeeting(meeting_id);
             collectionsData['meeting_document'] = await util.getDocumentFromOneMeeting(meeting_id);
 
             setSelectedMeeting(data);
@@ -138,12 +127,14 @@ const ViewSpecificCase = ({ userId }) => {
         }
     };
 
+    // close the meeting details when client finishes reviewing it
     const closeInfoModal = () => {
         collectionsData['meeting_document'] = [];
         setIsInfoModalOpen(false);
         navigate(`/ViewSpecificCase/${case_id}`)
     };
 
+    // update the case status from "Pending Accept" to "Rejected" when client is not satisfied with the assigned lawyer
     const confirmRejection = async () => {
         const rejectedStatusId = collectionsData['case_status'].find(status => status.data.case_status_name === 'Rejected').id;
 
@@ -161,6 +152,7 @@ const ViewSpecificCase = ({ userId }) => {
         }
     };
 
+    // on clicking the document, it will open a new window to display the document, from firebase storage
     function openURL(url){
         window.open(url, '_blank');
     };
@@ -235,7 +227,7 @@ const ViewSpecificCase = ({ userId }) => {
                             <div className='inner-right-part'>
                                 <div className='content-data-field'>{util.getLawyerName(collectionsData[cons.lawyerCollectionName], collectionsData[cons.caseCollectionName].data.lawyer)}</div>
                                 <div className='content-data-field'>{collectionsData[cons.caseCollectionName].data.case_price}</div>
-                                <div className='content-data-field'>{collectionsData[cons.caseCollectionName].data.case_created_date.toDate().toLocaleString()}</div>
+                                <div className='content-data-field'>{collectionsData[cons.caseCollectionName].data.case_created_date.toDate().toLocaleTimeString([], { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase()}</div>
                             </div>
                         </div>
                     </div>
@@ -273,13 +265,13 @@ const ViewSpecificCase = ({ userId }) => {
                                 <div className='date-header'>Location</div>
                                 <div className='date-header'>Status</div>
                             </div>
-                            {collectionsData[cons.meetingCollectionName]?.map((item) => (
+                            {collectionsData[cons.meetingCollectionName]?.sort((a, b) => b.data.date.toMillis() - a.data.date.toMillis()).map((item) => (
                                 <React.Fragment key={item.id}>
                                     <div className='date-section-row'>
                                         <div className='lawyer-meetings-row-content-small'>
-                                            {item.data.date}
+                                            {item.data.date.toDate().toLocaleTimeString([], { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase()}
                                         </div>
-                                        <div className='lawyer-meetings-row-content-title' onClick={() => openInfoModal(item.id)}>
+                                        <div className='lawyer-meetings-row-content-title' type="button" onClick={() => openInfoModal(item.id)}>
                                             {item.data.event}
                                         </div> 
                                         <div className='lawyer-meetings-row-content-small'>
@@ -295,17 +287,16 @@ const ViewSpecificCase = ({ userId }) => {
                     </div>
                 </div>
 
-                {/* Info Modal */}
+                <div>
                 <Modal
                     isOpen={isInfoModalOpen}
                     onRequestClose={closeInfoModal}
                     contentLabel="Info Modal"
                 >
-                    <div></div>
-                    <button class="move-right" onClick={closeInfoModal}>Close</button>
                     <div>
-                        <div className='modal-section-small-header'>
+                        <div className='section-Small-Header'>
                             Meeting Information
+                            <button class="move-right" onClick={closeInfoModal}>Close</button>
                         </div>
                         <div className='section-divider'>
                             <div className='divider-left'>
@@ -314,8 +305,8 @@ const ViewSpecificCase = ({ userId }) => {
                                     <div className='content-label-field'>Date</div>
                                 </div>
                                 <div className='inner-right-part'>
-                                    <div className='content-data-field'>{selectedMeeting[cons.meetingCollectionName].data.event}</div>
-                                    <div className='content-data-field'>{selectedMeeting[cons.meetingCollectionName].data.date}</div>
+                                    <div className='content-data-field'>{selectedMeeting.data.event}</div>
+                                    <div className='content-data-field'>{selectedMeeting.data.date.toDate().toLocaleTimeString([], { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase()}</div>
                                 </div>
                             </div>
                             <div className='divider-right'>
@@ -324,8 +315,8 @@ const ViewSpecificCase = ({ userId }) => {
                                     <div className='content-label-field'>Location</div>
                                 </div>
                                 <div className='inner-right-part'>
-                                    <div className='content-data-field'>{util.getStatusName(collectionsData[cons.meeting_statusCollectionName], selectedMeeting[cons.meetingCollectionName].data.status)}</div>
-                                    <div className='content-data-field'>{util.getLocationName(collectionsData[cons.meeting_locationCollectionName], selectedMeeting[cons.meetingCollectionName].data.location)}</div>
+                                    <div className='content-data-field'>{util.getStatusName(collectionsData[cons.meeting_statusCollectionName], selectedMeeting.data.status)}</div>
+                                    <div className='content-data-field'>{util.getLocationName(collectionsData[cons.meeting_locationCollectionName], selectedMeeting.data.location)}</div>
                                 </div>
                             </div>
                         </div>
@@ -336,7 +327,7 @@ const ViewSpecificCase = ({ userId }) => {
                             Description
                         </div>
                         <div className='content-frame'>
-                        {selectedMeeting[cons.meetingCollectionName].data.description}
+                            {selectedMeeting.data.description}
                         </div>
                     </div>
 
@@ -350,8 +341,9 @@ const ViewSpecificCase = ({ userId }) => {
                             ))}
                         </div>
                     </div>
-                                     
+                                      
                 </Modal>
+                </div>
 
                 {displayWithCaseStatus()}
 

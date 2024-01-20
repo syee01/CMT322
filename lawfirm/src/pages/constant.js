@@ -1,3 +1,4 @@
+// constant that can be refered easily and maintain if needed
 export const role = 'role';
 export const usersCollectionName = 'users';
 export const caseCollectionName = 'case';

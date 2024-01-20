@@ -31,7 +31,7 @@ const ForgotPassword = () => {
 
   return (
     <div className="login-container"> 
-      <div className="panel"> 
+      <div className="panel1"> 
         <div className='form'> 
           <h2 className='h2resettag'>Reset Password</h2>
           <form onSubmit={onSubmit}>
