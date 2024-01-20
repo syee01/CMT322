@@ -304,47 +304,6 @@ const LawyerViewSpecificCase = ({ userId }) => {
         }
     };
 
-    function scheduleMeeting() {
-        try{
-            const eventStartTime = new Date(formData.date);
-            const eventEndTime = new Date(eventStartTime);
-            eventEndTime.setHours(eventEndTime.getHours() + 2);
-            const event = {
-                summary: formData.event,
-                location: formData.location,
-                description: formData.description,
-                start: {
-                    dateTime: eventStartTime.toISOString(),
-                    timeZone: timeZone
-                },
-                end: {
-                    dateTime:eventEndTime.toISOString(),
-                    timeZone: timeZone
-                },
-                attendees: [
-                    { 
-                        email: collectionsData[cons.usersCollectionName].data.email, 
-                        displayName: collectionsData[cons.usersCollectionName].data.fullname 
-                    },
-                ],
-                sendUpdates: 'all'
-            }
-            apiCalendar.createEvent(event, 'primary').then((result) => {
-                console.log( "result: ",result)
-                console.log( "event id 1: ", result.result.id)
-                // setEventID(result.result.id);
-            }).catch((error) => {
-                console.log("error: ", error)
-            })
-            // console.log( "result 1: ",result)
-            // console.log( "event id 1: ", result.result.id)
-            // setEventID(result.result.id);
-        }catch(e){
-            console.log("API Error: ", e)
-        }
-        
-    }
-
     const handleUpdateSubmit = async (e) => {
         e.preventDefault();
 
@@ -711,7 +670,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                 <form onSubmit={handleAddSubmit}>
                 <div className='section-container1'>
                     <div className='section-Small-Header'>
-                        Meeting Information
+                        Add New Meeting
                     </div>
                     <div className='form-case-container'>
                             <div className='form-person-container'>
@@ -813,7 +772,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                 <button class="move-right" onClick={closeInfoModal}>Close</button>
                 <div className='section-container1'>
                         <div className='section-Small-Header'>
-                            Meeting Information
+                            Meeting Details
                             <button onClick={() => openEditModal(selectedMeeting.id)} className="update-btn"
                             style={{ 
                                 display: 
@@ -900,7 +859,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                 <form onSubmit={handleUpdateSubmit}>
                 <div className='section-container1'>
                     <div className='section-Small-Header'>
-                        Meeting Information
+                        Update Meeting Details
                     </div>
                         <div className='form-case-container'>
                             <div className='form-person-container'>
