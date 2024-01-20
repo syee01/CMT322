@@ -709,7 +709,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                 >
                 <button class="move-right" onClick={closeAddModal}>Close</button>
                 <form onSubmit={handleAddSubmit}>
-                <div className='section-container'>
+                <div className='section-container1'>
                     <div className='section-Small-Header'>
                         Meeting Information
                     </div>
@@ -811,8 +811,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                     contentLabel="Info Modal"
                 >
                 <button class="move-right" onClick={closeInfoModal}>Close</button>
-                <div className='section-container'>
-    
+                <div className='section-container1'>
                         <div className='section-Small-Header'>
                             Meeting Information
                             <button onClick={() => openEditModal(selectedMeeting.id)} className="update-btn"

@@ -21,8 +21,8 @@
 }
 
 .section-container1 {
-    width: 90%; 
-    height: 185%; 
+    /* width: 90%;  */
+    /* height: 100%;  */
     background-color:  #f0f2f7;
     /* border: 3px #393E68 solid; */
     margin: 5%;
