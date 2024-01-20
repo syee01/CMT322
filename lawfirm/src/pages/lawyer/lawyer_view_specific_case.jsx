@@ -899,7 +899,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                 >
                 <button class="move-right" onClick={closeEditModal}>Close</button>
                 <form onSubmit={handleUpdateSubmit}>
-                <div className='section-container'>
+                <div className='section-container1'>
                     <div className='section-Small-Header'>
                         Meeting Information
                     </div>
