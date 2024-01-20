@@ -193,7 +193,10 @@ const AdminDashboard = () => {
         const month = date.getMonth();
         const monthYear = `${year}-${month}`;
   
-        acc[monthYear] = (acc[monthYear] || 0) + c.case_price;
+        // Ensure case_price is treated as a number
+        const casePrice = Number(c.case_price);
+
+        acc[monthYear] = (acc[monthYear] || 0) + casePrice;
         return acc;
       }, {});
   
@@ -212,7 +215,7 @@ const AdminDashboard = () => {
       setFinancialChartData({
         labels,
         datasets: [{
-          label: 'Total Case Price',
+          label: 'Total Case Price (RM)',
           data,
           fill: false,
           borderColor: 'rgb(57, 62, 104)',
