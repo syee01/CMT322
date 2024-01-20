@@ -113,7 +113,6 @@ const AdminDashboard = () => {
           };
         });
 
-        console.log("casedata", casesData)
         setCases(casesData);
         setChartData({
           labels: Object.keys(caseTypeCounts),
