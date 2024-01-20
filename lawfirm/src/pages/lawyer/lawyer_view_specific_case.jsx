@@ -89,9 +89,6 @@ const LawyerViewSpecificCase = ({ userId }) => {
 
                 setCollectionsData(data);
                 console.log(selectedMeeting);
-                // console.log("Hehe", collectionsData[cons.meetingCollectionName]);
-                // console.log("Hehe", collectionsData[cons.caseCollectionName]);
-
             } catch (error) {
                 setError(error);
                 console.error("Error fetching data: ", error);
@@ -152,13 +149,9 @@ const LawyerViewSpecificCase = ({ userId }) => {
 
     const openEditModal = async(meeting_id) => {
         try {
-            // const data = {};
-            // data[cons.meetingCollectionName] = await util.getOneMeeting(meeting_id);
-            // setFormData(data);
             closeInfoModal();
             setIsEditModalOpen(true);
             collectionsData['meeting_document'] = await util.getDocumentFromOneMeeting(meeting_id);
-            // setCollectionsData(data);
             const itemRef = doc(db, 'meeting', meeting_id);
             const itemDoc = await getDoc(itemRef);
             console.log(meeting_id);
@@ -198,23 +191,9 @@ const LawyerViewSpecificCase = ({ userId }) => {
 
     const clearData = async () => {
         setFormData(formData);
-        // setSelectedMeeting(selectedMeeting);
         setUploadedFiles([]);
         console.log("clear")
     }
-    
-    // const handleBlur = (attribute) => {
-        // if (!isSubmitting) {
-        //     const prevValue = formData[attribute]
-        //     if (formData[attribute] !== data[attribute]) {
-        //         setFormData((prevData) => ({
-        //         ...prevData,
-        //         [attribute]: data[attribute],
-        //         }));
-                
-        //     }
-        // }
-    // };
 
     const handleAddSubmit = async (e) => {
         e.preventDefault();
@@ -254,12 +233,10 @@ const LawyerViewSpecificCase = ({ userId }) => {
             }
             
             
-            const result = await apiCalendar.createEvent(event, 'primary');  //.events.insert
-            // const result = await apiCalendar.createCalendar(event, 'primary');
+            const result = await apiCalendar.createEvent(event, 'primary');  
             console.log( "result: ",result);
             console.log( "event id 1: ", result.result.id);
 
-            // setIsSubmitting(true);
             const meetingDocRef = collection(db, 'meeting');
             const newMeetingRef = doc(meetingDocRef);
             await setDoc(newMeetingRef, {
@@ -363,8 +340,6 @@ const LawyerViewSpecificCase = ({ userId }) => {
             clearData();
             setIsEditModalOpen(false);
             openInfoModal(meetingID);
-            // setIsSubmitting(false);
-            // navigate(`/LawyerViewSpecificCase/${case_id}`)
         } catch (error) {
             console.error('Error updating item data:', error);
         }
@@ -691,8 +666,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                             className='input-field' 
                                             type="datetime-local"
                                             name="date" 
-                                            onChange={handleChange}
-                                            // onBlur={() => handleBlur('date')} 
+                                            onChange={handleChange} 
                                             required
                                         />
                                     </div>
@@ -733,8 +707,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                     <textarea 
                                         cols="30" 
                                         rows="10"
-                                        name="description" 
-                                        // onBlur={() => handleBlur('description')} 
+                                        name="description"  
                                         onChange={handleChange}
                                         required
                                     ></textarea>
@@ -751,12 +724,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                 </div>
                             </div>
                         </div>
-                    {/* <div class="button-row">
-                        <button type='button' onClick={clearData}>Clear</button>
-                        <button class="move-right"type="submit">Save</button>
-                    </div> */}
                     <div className='button-section'>
-                        {/* <button className='button' type='button' onClick={clearData}>Clear</button> */}
                         <button className='button' type='submit'>Submit</button>
                     </div>
                 </div>
@@ -883,7 +851,6 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                             name="date" 
                                             value={formData.date}
                                             onChange={handleChange}
-                                            // onBlur={() => handleBlur('date')} 
                                             required
                                         />
                                     </div>
@@ -924,7 +891,6 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                         rows="10"
                                         name="description" 
                                         value={formData.description}
-                                        // onBlur={() => handleBlur('description')} 
                                         onChange={handleChange}
                                         required
                                     ></textarea>
@@ -934,9 +900,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                 <div>
                                     <div className='content-Label-Field'>
                                         Related Documents
-                                        {/* <div className="update-btn" > */}
                                         <button className="update-btn" type="button" onClick={handleDelete}>Delete</button>
-                                        {/* </div> */}
                                     </div>                              
 
                                     <div className='content-frame'>
@@ -967,12 +931,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                 </div>
                             </div>
                         </div>
-                    {/* <div class="button-row">
-                        <button type='button' onClick={clearData}>Clear</button>
-                        <button class="move-right"type="submit">Save</button>
-                    </div> */}
                     <div className='button-section'>
-                        {/* <button className='button' type='button' onClick={clearData}>Clear</button> */}
                         <button className='button' type='submit'>Save</button>
                     </div>
                 </div>

@@ -29,7 +29,6 @@ const LawyerUpdateCase = ({ userId }) => {
         case_type: '',
         case_title: '',
         lawyer: '',
-        // event_date: '',
         case_description: '',
     });
     const [formData, setFormData] = useState({
@@ -42,7 +41,6 @@ const LawyerUpdateCase = ({ userId }) => {
         case_type: '',
         case_title: '',
         lawyer: '',
-        // event_date: '',
         case_description: '',
     });
     
@@ -127,19 +125,6 @@ const LawyerUpdateCase = ({ userId }) => {
         setFormData(formData);
         console.log("clear")
     }
-    
-    // const handleBlur = (attribute) => {
-    //     if (!isSubmitting) {
-    //         const prevValue = formData[attribute]
-    //         if (formData[attribute] !== data[attribute]) {
-    //             setFormData((prevData) => ({
-    //             ...prevData,
-    //             [attribute]: data[attribute],
-    //             }));
-                
-    //         }
-    //     }
-    // };
 
     const handleBack = async (e) => {
         navigate(`/LawyerViewSpecificCase/${case_id}`)      
@@ -227,9 +212,6 @@ const LawyerUpdateCase = ({ userId }) => {
             const meetingDocList = await util.getDocumentFromOneMeeting(itemId);
 
             await Promise.all(meetingDocList?.map(async (item) => {
-                // const item = meetingDocList[key];
-                // Now 'item' contains the value of the current property
-                // console.log(key, item);
                 const eventIdRef = doc(db, 'meeting', item.id);
                 const getEvent = await getDoc(eventIdRef);
                 await apiCalendar.handleAuthClick();
@@ -250,20 +232,8 @@ const LawyerUpdateCase = ({ userId }) => {
                 deleteObject(documentRef);
                 await deleteDoc(itemRef);
                 
-                // Your logic for each item goes here
             }));
             
-            // meetingDocList.forEach(async (itemId) => {
-            //     console.log("Delete again: ", itemId);
-            //     console.log("List: ", selectedItems);
-            //     const itemRef = doc(db, cons.documentCollectionName, itemId);
-            //     const itemDataRef = await getDoc(itemRef);
-            //     console.log("delete item: ", itemDataRef.data().case_id);
-            //     const documentRef = storageRef(storage, `case_document/${itemDataRef.data().case_id}/${itemDataRef.data().document_name}`);
-            //     // Delete the file
-            //     deleteObject(documentRef);
-            //     await deleteDoc(itemRef);
-            // });
             console.log("Delete again: ", itemId);
             console.log("List: ", selectedItems);
             const itemRef = doc(db, cons.meetingCollectionName, itemId);
@@ -279,7 +249,7 @@ const LawyerUpdateCase = ({ userId }) => {
             <div className='client-page'>
             <div className="header-section-1">
                 <div>
-                    <h1 className='headertitle-1'>SUBMIT YOUR CASE</h1>
+                    <h1 className='headertitle-1'>UPDATE CASE DETAILS</h1>
                 </div>
             </div>
             <div>
@@ -378,14 +348,6 @@ const LawyerUpdateCase = ({ userId }) => {
                                             value={formData.case_price}
                                         />
                                         <div className='submit-date-display-field'>{collectionsData[cons.caseCollectionName].data.case_created_date.toDate().toLocaleTimeString([], { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase()}</div>
-                                        {/* <input
-                                            className='input-field' 
-                                            type="date"
-                                            name="event_date" 
-                                            value={formData.event_date}
-                                            onChange={handleChange}
-                                            required
-                                        /> */}
                                         <div className='content-data-field'></div>
                                     </div>
                                 </div>
@@ -422,10 +384,9 @@ const LawyerUpdateCase = ({ userId }) => {
                                                             <CheckboxItem
                                                             key={item.id}
                                                             id={item.id}
-                                                            label={item.label} // Replace with the actual property you want to display
+                                                            label={item.label} 
                                                             onSelect={handleSelect}
                                                             isSelected={selectedItems.includes(item.id, 'document')}
-                                                            // onSelect={handleSelect}
                                                             />
                                                         </div>
                                                         <hr></hr>
@@ -452,7 +413,7 @@ const LawyerUpdateCase = ({ userId }) => {
                                         <div className='date-header'>Location</div>
                                         <div className='date-header'
                                         style={{
-                                            marginRight: '10.5px'  // Set your desired right margin value
+                                            marginRight: '10.5px'  
                                         }}
                                         >
                                         Status</div>
@@ -474,8 +435,8 @@ const LawyerUpdateCase = ({ userId }) => {
                                                     style={{
                                                         marginRight: 
                                                           ((util.getStatusName(collectionsData[cons.meeting_statusCollectionName], item.data.status)) === 'Finished') 
-                                                            ? '15px'  // Set your desired right margin value
-                                                            : '0'    // Set the default right margin value when display is 'inline-block'
+                                                            ? '15px'  
+                                                            : '0'    
                                                     }}
                                                     >
                                                         {util.getStatusName(collectionsData[cons.meeting_statusCollectionName], item.data.status)}
@@ -489,7 +450,7 @@ const LawyerUpdateCase = ({ userId }) => {
                                                     }}
                                                     key={item.id}
                                                     id={item.id}
-                                                    label={item.label} // Replace with the actual property you want to display
+                                                    label={item.label} 
                                                     isSelected={selectedItems.includes(item.id, cons.meetingCollectionName)}
                                                     onSelect={handleSelect}
                                                     meetingStatus={item.data.status}
