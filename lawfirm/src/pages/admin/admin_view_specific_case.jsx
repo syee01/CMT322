@@ -25,6 +25,9 @@ const AdminViewSpecificCase  = () => {
                 data[cons.lawyerCollectionName] = await util.getLawyerFromUsers();
                 data[cons.case_typeCollectionName] = await util.getCaseTypeStatus(cons.case_typeCollectionName);
                 data[cons.case_statusCollectionName] = await util.getCaseTypeStatus(cons.case_statusCollectionName);
+                data[cons.meetingCollectionName] = await util.getAllMeetingsUnderOneCase(case_id);
+                data[cons.meeting_locationCollectionName] = await util.getCaseTypeStatus(cons.meeting_locationCollectionName);
+                data[cons.meeting_statusCollectionName] = await util.getCaseTypeStatus(cons.meeting_statusCollectionName);
                 
                 setCollectionsData(data);
             } catch (error) {
@@ -156,12 +159,24 @@ const AdminViewSpecificCase  = () => {
                                 <div className='date-header'>Location</div>
                                 <div className='date-header'>Status</div>
                             </div>
-                            <div className='date-section-row'>
-                                <div className='date-content-value'>Data</div>
-                                <div className='date-content-value'>Data</div>
-                                <div className='date-content-value'>Data</div>
-                                <div className='date-content-value'>Data</div>
-                            </div>
+                            {collectionsData[cons.meetingCollectionName]?.sort((a, b) => b.data.date.toMillis() - a.data.date.toMillis()).map((item) => (
+                                <React.Fragment key={item.id}>
+                                    <div className='date-section-row'>
+                                        <div className='lawyer-meetings-row-content-small'>
+                                            {item.data.date.toDate().toLocaleTimeString([], { day: 'numeric', month: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }).toUpperCase()}
+                                        </div>
+                                        <div className='lawyer-meetings-row-content-title'>
+                                            {item.data.event}
+                                        </div> 
+                                        <div className='lawyer-meetings-row-content-small'>
+                                            {util.getLocationName(collectionsData[cons.meeting_locationCollectionName], item.data.location)}
+                                        </div>
+                                        <div className='lawyer-meetings-row-content-small'>
+                                            {util.getStatusName(collectionsData[cons.meeting_statusCollectionName], item.data.status)}
+                                        </div>
+                                    </div>
+                                </React.Fragment>
+                            ))}
                         </div>
                     </div>
                 </div>
