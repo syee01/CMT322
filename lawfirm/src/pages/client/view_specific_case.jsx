@@ -38,7 +38,6 @@ const ViewSpecificCase = ({ userId }) => {
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
-            setError(null);
             try {
                 const data = {};
                 data[cons.caseCollectionName] = await util.getOneCase(case_id);
