@@ -226,8 +226,8 @@ const LawyerViewSpecificCase = ({ userId }) => {
                 reminders: {
                     useDefault: false,
                     overrides: [
-                        { method: 'popup', minutes: 40320 },
-                        { method: 'email', minutes: 40320 }
+                        { method: 'email', minutes: 40320 },
+                        { method: 'email', minutes: 1440 }
                     ]
                 }
             }
@@ -274,6 +274,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
             console.log('Item data updated successfully!');
             clearData();
             setIsAddModalOpen(false);
+            navigate(`/LawyerViewSpecificCase/${case_id}`);
             openInfoModal(newMeetingId);
 
         } catch (error) {
@@ -320,7 +321,14 @@ const LawyerViewSpecificCase = ({ userId }) => {
                         email: collectionsData[cons.usersCollectionName].data.email, 
                         displayName: collectionsData[cons.usersCollectionName].data.fullname 
                     },
-                ]
+                ],
+                reminders: {
+                    useDefault: false,
+                    overrides: [
+                        { method: 'email', minutes: 40320 },
+                        { method: 'email', minutes: 1440 }
+                    ]
+                }
             }
             const result = await apiCalendar.createEvent(event, 'primary');  //.events.insert
             console.log( "result: ",result);
@@ -850,7 +858,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                             name="date" 
                                             value={formData.date}
                                             onChange={handleChange}
-                                            required
+                                            // required
                                         />
                                     </div>
                                 </div>
@@ -899,7 +907,7 @@ const LawyerViewSpecificCase = ({ userId }) => {
                                 <div>
                                     <div className='content-Label-Field'>
                                         Related Documents
-                                        <button className="update-btn" type="button" onClick={handleDelete}>Delete</button>
+                                        <button className="update-btn" onClick={handleDelete}>Delete</button>
                                     </div>                              
 
                                     <div className='content-frame'>

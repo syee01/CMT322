@@ -209,20 +209,23 @@ const LawyerUpdateCase = ({ userId }) => {
 
     const handleMeetingsDelete = async () => {
         selectedItems.forEach(async (itemId, collectionName) => {
+            console.log("Deleted meeting: ", itemId);
+            const eventIdRef = doc(db, 'meeting', itemId);
+            const getEvent = await getDoc(eventIdRef);
+            console.log("Deleted meeting doc: ", getEvent);
+            await apiCalendar.handleAuthClick();
+            const existingEventId = getEvent.data().event_id;
+            if (existingEventId) {
+                apiCalendar.deleteEvent(existingEventId, 'primary').then((result) => {
+                console.log('Previous event deleted:', result);
+                }).catch((error) => {
+                console.log('Error deleting previous event:', error);
+                });
+            }
+
             const meetingDocList = await util.getDocumentFromOneMeeting(itemId);
 
             await Promise.all(meetingDocList?.map(async (item) => {
-                const eventIdRef = doc(db, 'meeting', item.id);
-                const getEvent = await getDoc(eventIdRef);
-                await apiCalendar.handleAuthClick();
-                const existingEventId = getEvent.data().event_id;
-                if (existingEventId) {
-                    apiCalendar.deleteEvent(existingEventId, 'primary').then((result) => {
-                    console.log('Previous event deleted:', result);
-                    }).catch((error) => {
-                    console.log('Error deleting previous event:', error);
-                    });
-                }
                 console.log("Testing Delete again: ", item.id);
                 const itemRef = doc(db, cons.documentCollectionName, item.id);
                 const itemDataRef = await getDoc(itemRef);
@@ -239,6 +242,7 @@ const LawyerUpdateCase = ({ userId }) => {
             const itemRef = doc(db, cons.meetingCollectionName, itemId);
             console.log("delete item: ", itemRef);
             await deleteDoc(itemRef);
+            await new Promise(resolve => setTimeout(resolve, 1000));
         });    
         // Clear the selectedItems after deletion
         setSelectedItems([]);
